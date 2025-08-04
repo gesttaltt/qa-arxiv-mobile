@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="abc12345-6789-4def-aaaa-1234567890ab" name="QA Automation – Arxiv Papers" runUser="qa_user">
+  <Times creation="2025-08-04T14:00:00.000Z" queuing="2025-08-04T14:00:01.000Z" start="2025-08-04T14:00:02.000Z" finish="2025-08-04T14:00:05.000Z" />
+  <Results>
+    <UnitTestResult executionId="e1" testId="t1" testName="test_search_valid" outcome="Passed" startTime="2025-08-04T14:00:02.123Z" endTime="2025-08-04T14:00:03.456Z" />
+    <UnitTestResult executionId="e2" testId="t2" testName="test_search_empty" outcome="Failed" startTime="2025-08-04T14:00:03.567Z" endTime="2025-08-04T14:00:04.999Z">
+      <Output>
+        <ErrorInfo>
+          <Message>Expected alert not found</Message>
+          <StackTrace>AssertionError: No validation message shown for empty query</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="test_search_valid" id="t1">
+      <Execution id="e1" />
+      <TestMethod codeBase="automation/tests/test_search_valid.py" className="test_search_valid" name="test_search_valid" />
+    </UnitTest>
+    <UnitTest name="test_search_empty" id="t2">
+      <Execution id="e2" />
+      <TestMethod codeBase="automation/tests/test_search_empty.py" className="test_search_empty" name="test_search_empty" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="t1" executionId="e1" />
+    <TestEntry testId="t2" executionId="e2" />
+  </TestEntries>
+</TestRun>
