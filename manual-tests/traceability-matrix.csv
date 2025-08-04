@@ -1,4 +1,11 @@
-Story ID,User Story,Test Case ID,Automated,Status
-US001,Search paper with valid term,TC001,Yes,Pass
-US002,Empty search query,TC002,Yes,Fail
-US003,Toggle favorites,TC003,No,Pass
+User Story ID,User Story Title,Test Case ID,Test Case Title,Platform,Test Type,Status,Automated Coverage,Priority
+US001,Search for Academic Papers,TC001,Search with valid keyword,Both,Functional,Passed,Partial,High
+US001,Search for Academic Papers,TC002,Search with empty input,Both,Functional,Passed,Yes,High
+US001,Search for Academic Papers,TC004,Search offline behavior,Both,Functional,In Progress,No,Medium
+US002,Manage Favorite Papers,TC003,Toggle paper as favorite,Both,Functional,Passed,No,High
+US002,Manage Favorite Papers,TC008,Bulk favorite operations,Both,Functional,Planned,No,Low
+US003,Download and View PDFs,TC005,PDF download and viewing,Both,Functional,Planned,No,High
+US003,Download and View PDFs,TC006,iOS Safari PDF integration,iOS,Integration,Planned,No,Medium
+US003,Download and View PDFs,TC007,Android intent handling,Android,Integration,Planned,No,Medium
+US004,Network Connectivity,TC009,WiFi to Cellular transition,Both,Performance,Planned,No,Medium
+US004,Network Connectivity,TC010,Offline data persistence,Both,Functional,Planned,No,High

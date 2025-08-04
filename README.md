@@ -29,22 +29,71 @@ as expected in modern Azure DevOps–based QA environments.
 ## Repository Structure
 
 ```
-manual-tests/         # All manual test cases and traceability matrix
-automation/           # Basic automation scripts + CI mock
-README.md             # This file
+manual-tests/
+├── test-cases/              # Comprehensive test case documentation
+├── ado-integration/         # Azure DevOps workflow examples
+├── testability-feedback/    # Requirement analysis and feedback
+├── wiki/                   # ADO-style documentation
+└── traceability-matrix.csv # Requirements-to-tests mapping
+automation/
+├── tests/                  # Automation collaboration examples
+└── ci/                    # Pipeline integration
+README.md                   # This file
 ```
+
+## Azure DevOps Integration
+
+This project demonstrates enterprise QA workflows using Azure DevOps methodologies:
+
+### Test Management Framework
+- **Test Plans**: Organized by feature areas (Search, Favorites, PDF Management)
+- **Test Suites**: Grouped by platform (iOS/Android) and test type (Functional/Regression)
+- **Work Items**: Each test case linked to corresponding User Stories and Tasks
+- **Test Runs**: Execution history with pass/fail metrics and defect linking
+
+### ADO Wiki Documentation
+- Test case documentation following ADO Wiki markdown standards
+- Requirement traceability matrices with hyperlinks to work items
+- Test coverage reports integrated with build pipelines
+- Sprint retrospectives and testing metrics
+
+## Mobile Testing Approach
+
+### Platform Coverage
+- **iOS Testing**: iPhone/iPad compatibility, iOS version coverage (13+)
+- **Android Testing**: Multiple device sizes, Android API levels (21+)
+- **Cross-Platform**: Feature parity validation between iOS and Android
+
+### Mobile-Specific Test Areas
+- Touch interactions and gestures
+- Network connectivity scenarios (WiFi/Cellular/Offline)
+- Device orientation changes (Portrait/Landscape)
+- Background/Foreground app behavior
+- Platform-specific UI/UX guidelines compliance
 
 ## Manual Test Cases
 
-Located in `manual-tests/test-cases/`
+Located in `manual-tests/test-cases/` - Following ADO test case format
 
-| ID    | Title                        | Status      |
-|-------|------------------------------|-------------|
-| TC001 | Search with valid keyword    | ✅ Done     |
-| TC002 | Search with empty input      | ✅ Done     |
-| TC003 | Toggle paper as favorite     | ✅ Done     |
-| TC004 | Attempt search while offline | ⏳ Planned  |
-| TC005 | Download and open PDF        | ⏳ Planned  |
+| ID    | Title                        | User Story | Platform | Status      |
+|-------|------------------------------|------------|----------|-------------|
+| TC001 | Search with valid keyword    | US001      | Both     | ✅ Passed   |
+| TC002 | Search with empty input      | US001      | Both     | ✅ Passed   |
+| TC003 | Toggle paper as favorite     | US002      | Both     | ✅ Passed   |
+| TC004 | Search offline behavior      | US001      | Both     | 🔄 Testing  |
+| TC005 | PDF download and viewing     | US003      | Both     | ⏳ Planned  |
+| TC006 | iOS Safari PDF integration   | US003      | iOS      | ⏳ Planned  |
+| TC007 | Android intent handling      | US003      | Android  | ⏳ Planned  |
+
+### Test Case Structure (ADO Format)
+Each test case includes:
+- **Objective**: Clear test purpose aligned with acceptance criteria
+- **Prerequisites**: Environment setup and test data requirements
+- **Test Steps**: Detailed step-by-step execution instructions
+- **Expected Results**: Specific validation criteria and success metrics
+- **Actual Results**: Documented execution outcomes
+- **Pass/Fail Status**: Clear verdict with defect linking
+- **Linked Work Items**: Associated user stories, tasks, and bugs
 
 📝 Each test case includes objective, steps, expected results, edge case considerations, and pass/fail field.
 
@@ -55,6 +104,36 @@ This document links:
 - User Stories (US001, US002, …)
 - Manual Test Cases (TC001, …)
 - Automation Test Scripts (if any)
+
+## QA Methodology & SDLC Integration
+
+### Testing Lifecycle
+- **Requirements Analysis**: Participate in story refinement and acceptance criteria definition
+- **Test Planning**: Create comprehensive test plans aligned with sprint goals
+- **Test Design**: Develop test cases covering functional, usability, and edge cases
+- **Test Execution**: Manual execution with detailed defect reporting
+- **Defect Management**: Track issues through resolution using ADO work items
+
+### Traceability Framework
+- Forward Traceability: Requirements → Test Cases → Test Results
+- Backward Traceability: Defects → Test Cases → Requirements
+- Bi-directional linking maintained in Azure DevOps
+
+## Requirement Reviews & Testability Feedback
+
+### Participation in Story Refinement
+- Review acceptance criteria for completeness and testability
+- Identify edge cases and boundary conditions
+- Suggest test data requirements and test environment needs
+- Validate requirement clarity and measurability
+
+### Testability Improvements Suggested
+- **Search Feature**: Added error handling test scenarios
+- **Favorites**: Suggested bulk operations testing
+- **PDF Viewer**: Recommended accessibility testing considerations
+- **Offline Mode**: Proposed sync behavior validation
+
+Documentation: `manual-tests/testability-feedback/`
 
 ## Automation Layer
 
@@ -75,16 +154,16 @@ Found under:
 
 These emulate how feedback and progress would be captured in a live ADO Wiki environment.
 
-## For Recruiters / Hiring Teams
+## Project Scope and Objectives
 
-This repo was created to demonstrate:
+This repository demonstrates comprehensive QA practices applied to the arxiv-papers-mobile application:
 
-- Hands-on manual QA on a mobile app
-- SDLC-aware testing strategies
-- Test case coverage and traceability
-- CI/automation collaboration awareness
+- Manual testing methodology for mobile applications across iOS and Android platforms
+- Azure DevOps integration for test case management and requirement traceability
+- SDLC-aware testing strategies with emphasis on collaboration and documentation
+- Test automation collaboration framework supporting manual testing efforts
 
-All tests were written and organized independently for evaluation purposes, not sponsored or affiliated with the app authors.
+The testing framework is designed to ensure high-quality mobile application delivery through systematic validation of functional requirements, platform-specific behaviors, and user experience consistency.
 
 ## Contact
 

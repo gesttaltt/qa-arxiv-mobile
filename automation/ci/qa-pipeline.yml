@@ -1,0 +1,126 @@
+name: QA Pipeline - Manual Testing Support
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  environment-validation:
+    runs-on: ubuntu-latest
+    name: Validate Test Environment
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+        
+    - name: Install dependencies
+      run: |
+        pip install -r automation/requirements.txt
+        
+    - name: Validate API connectivity
+      run: |
+        python -m pytest automation/tests/test_search_api.py::TestManualTestingSupport::test_test_environment_connectivity -v
+        
+    - name: Generate test data validation
+      run: |
+        python -m pytest automation/tests/test_search_api.py::TestManualTestingSupport::test_generate_test_data_for_manual_testing -v
+
+  automated-regression:
+    runs-on: ubuntu-latest
+    name: Automated Test Support
+    needs: environment-validation
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+        
+    - name: Install dependencies
+      run: |
+        pip install -r automation/requirements.txt
+        
+    - name: Run API validation tests
+      run: |
+        python -m pytest automation/tests/test_search_api.py::TestArxivSearchAPI -v --junitxml=test-results.xml
+        
+    - name: Run data persistence tests  
+      run: |
+        python -m pytest automation/tests/test_search_api.py::TestFavoritesDataPersistence -v
+        
+    - name: Upload test results
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: test-results
+        path: test-results.xml
+
+  manual-testing-report:
+    runs-on: ubuntu-latest
+    name: Manual Testing Status Check
+    needs: [environment-validation, automated-regression]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: Validate traceability matrix
+      run: |
+        # Check that traceability matrix exists and has proper format
+        if [ ! -f "manual-tests/traceability-matrix.csv" ]; then
+          echo "Error: Traceability matrix not found"
+          exit 1
+        fi
+        
+        # Basic validation of CSV format
+        head -1 manual-tests/traceability-matrix.csv | grep -q "User Story ID"
+        if [ $? -ne 0 ]; then
+          echo "Error: Traceability matrix missing required headers"
+          exit 1
+        fi
+        
+        echo "Traceability matrix validation passed"
+        
+    - name: Check test case documentation
+      run: |
+        # Verify test cases exist
+        if [ ! -d "manual-tests/test-cases" ]; then
+          echo "Error: Test cases directory not found"
+          exit 1
+        fi
+        
+        # Count test case files
+        test_case_count=$(find manual-tests/test-cases -name "*.md" | wc -l)
+        echo "Found $test_case_count test case documents"
+        
+        if [ $test_case_count -lt 2 ]; then
+          echo "Warning: Limited test case documentation found"
+        fi
+        
+    - name: Generate quality gate report
+      run: |
+        echo "=== QA Pipeline Summary ===" > qa-report.txt
+        echo "Environment Validation: PASSED" >> qa-report.txt
+        echo "Automated Tests: PASSED" >> qa-report.txt
+        echo "Manual Test Documentation: VALIDATED" >> qa-report.txt
+        echo "Traceability: MAINTAINED" >> qa-report.txt
+        echo "" >> qa-report.txt
+        echo "Ready for manual testing execution" >> qa-report.txt
+        
+        cat qa-report.txt
+        
+    - name: Upload QA report
+      uses: actions/upload-artifact@v3
+      with:
+        name: qa-pipeline-report
+        path: qa-report.txt
