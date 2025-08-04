@@ -1,0 +1,4 @@
+Story ID,User Story,Test Case ID,Automated,Status
+US001,Search paper with valid term,TC001,Yes,Pass
+US002,Empty search query,TC002,Yes,Fail
+US003,Toggle favorites,TC003,No,Pass
