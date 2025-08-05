@@ -1,0 +1,28 @@
+# Ruff configuration for Python linting
+target-version = "py312"
+line-length = 88
+indent-width = 4
+
+[lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings  
+    "F",   # Pyflakes
+    "UP",  # pyupgrade
+    "B",   # flake8-bugbear
+    "SIM", # flake8-simplify
+    "I",   # isort
+]
+ignore = [
+    "E501",  # Line too long (handled by black)
+    "UP007", # Use X | Y for type unions (Python 3.10+ feature)
+]
+
+[lint.per-file-ignores]
+"tests/*" = ["S101"]  # Allow assert statements in tests
+
+[format]
+quote-style = "double"
+indent-style = "space"
+skip-source-first-line = false
+line-ending = "auto"

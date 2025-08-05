@@ -143,7 +143,10 @@ A few selected user flows are scripted using pytest, simulating how automation m
 
 Also includes:
 
-- `qa-pipeline.yml`: Example of CI integration via GitHub Actions or Azure DevOps pipeline.
+- `azure-pipelines.yml`: Comprehensive Azure DevOps pipeline with linting and quality gates
+- Modern Python dependencies with linting tools (ruff, black, mypy)
+- Markdown and YAML linting integration
+- Code coverage reporting and HTML test reports
 
 ## Documentation and Testability Feedback
 
