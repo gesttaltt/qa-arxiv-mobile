@@ -168,6 +168,42 @@ This repository demonstrates comprehensive QA practices applied to the arxiv-pap
 
 The testing framework is designed to ensure high-quality mobile application delivery through systematic validation of functional requirements, platform-specific behaviors, and user experience consistency.
 
+## ✅ Real Mobile Test Execution
+
+This repository includes **real manual test execution** on the actual arXiv Papers Mobile app:
+
+### 📱 Live Testing Evidence
+- **🤖 Android Testing:** Executed on real devices/emulators with video evidence
+- **🍎 iOS Testing:** Executed on iPhone/simulator with video evidence  
+- **🎥 Video Documentation:** All test executions recorded and linked
+- **📊 Traceability:** Complete evidence linking from requirements to results
+
+### 🎯 Executed Test Cases
+| Test Case | Description | Android | iOS | Evidence |
+|-----------|-------------|---------|-----|----------|
+| TC001 | Search with valid keyword | ✅ Verified | ✅ Verified | 🎥 [Video Evidence](manual-tests/test-execution/traceability-with-evidence.md) |
+| TC002 | Empty query handling | ✅ Verified | ✅ Verified | 🎥 [Video Evidence](manual-tests/test-execution/traceability-with-evidence.md) |
+| TC003 | Toggle favorite functionality | ✅ Verified | ✅ Verified | 🎥 [Video Evidence](manual-tests/test-execution/traceability-with-evidence.md) |
+
+### 📋 Evidence Repository
+- **Test Execution Guide:** [`manual-tests/test-execution/README.md`](manual-tests/test-execution/README.md)
+- **Evidence with Links:** [`manual-tests/test-execution/traceability-with-evidence.md`](manual-tests/test-execution/traceability-with-evidence.md)
+- **Execution Summary:** [`manual-tests/test-execution/execution-summary.md`](manual-tests/test-execution/execution-summary.md)
+- **Detailed Logs:** [`manual-tests/test-execution/execution-logs/`](manual-tests/test-execution/execution-logs/)
+
+### 🚀 Quick Start for Real Testing
+```bash
+# Run the setup script to prepare the app
+./setup-app.sh
+
+# Follow the execution guide
+open manual-tests/test-execution/README.md
+```
+
+This demonstrates **genuine QA work** with verifiable evidence on a real React Native mobile application, showcasing enterprise-level manual testing processes with comprehensive documentation and traceability.
+
+---
+
 ## Contact
 
 **Author:** Jonathan Verdun  
