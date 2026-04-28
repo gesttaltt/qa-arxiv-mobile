@@ -1,0 +1,232 @@
+{
+  "info": {
+    "name": "arXiv API – QA Test Suite",
+    "_postman_id": "a3f2c1d0-8b4e-4f7a-9c6e-1d2e3f4a5b6c",
+    "description": "Manual and exploratory API tests for the arXiv Atom/XML API used by arxiv-papers-mobile.\nCovers TC001 (valid search), TC002 (empty query), edge cases, and response time checks.\nRun with: Collection Runner or Newman CLI — `newman run arXiv_API.postman_collection.json`",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://export.arxiv.org/api/query",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "TC001 – Valid search returns results",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Content-Type is Atom XML', function () {",
+              "    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/atom+xml');",
+              "});",
+              "",
+              "pm.test('Response body contains search term', function () {",
+              "    pm.expect(pm.response.text().toLowerCase()).to.include('machine learning');",
+              "});",
+              "",
+              "pm.test('Response contains at least one entry element', function () {",
+              "    pm.expect(pm.response.text()).to.include('<entry>');",
+              "});",
+              "",
+              "pm.test('Response time is under 3000ms', function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(3000);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}?search_query=all:machine+learning&start=0&max_results=10",
+          "host": ["{{baseUrl}}"],
+          "query": [
+            { "key": "search_query", "value": "all:machine+learning" },
+            { "key": "start",        "value": "0" },
+            { "key": "max_results",  "value": "10" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "TC002 – Empty query handles gracefully",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200 or 400', function () {",
+              "    pm.expect([200, 400]).to.include(pm.response.code);",
+              "});",
+              "",
+              "pm.test('Response does not contain a server error (5xx)', function () {",
+              "    pm.expect(pm.response.code).to.be.below(500);",
+              "});",
+              "",
+              "pm.test('Response time is under 3000ms', function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(3000);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}?search_query=&start=0&max_results=10",
+          "host": ["{{baseUrl}}"],
+          "query": [
+            { "key": "search_query", "value": "" },
+            { "key": "start",        "value": "0" },
+            { "key": "max_results",  "value": "10" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "EP – Author field search (field-specific query)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Response contains author element', function () {",
+              "    pm.expect(pm.response.text()).to.include('<author>');",
+              "});",
+              "",
+              "pm.test('Response contains the queried author name', function () {",
+              "    pm.expect(pm.response.text().toLowerCase()).to.include('lecun');",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}?search_query=au:lecun&start=0&max_results=5",
+          "host": ["{{baseUrl}}"],
+          "query": [
+            { "key": "search_query", "value": "au:lecun" },
+            { "key": "start",        "value": "0" },
+            { "key": "max_results",  "value": "5" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "BVA – Boundary: max_results = 1 (minimum meaningful result set)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Exactly one entry returned', function () {",
+              "    const body = pm.response.text();",
+              "    const matches = body.match(/<entry>/g);",
+              "    pm.expect(matches).to.not.be.null;",
+              "    pm.expect(matches.length).to.equal(1);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}?search_query=all:quantum&start=0&max_results=1",
+          "host": ["{{baseUrl}}"],
+          "query": [
+            { "key": "search_query", "value": "all:quantum" },
+            { "key": "start",        "value": "0" },
+            { "key": "max_results",  "value": "1" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "BVA – Boundary: start = 0 vs start = 1 (pagination edge)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('opensearch:startIndex reflects the requested offset', function () {",
+              "    pm.expect(pm.response.text()).to.include('<opensearch:startIndex>1</opensearch:startIndex>');",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}?search_query=all:deep+learning&start=1&max_results=5",
+          "host": ["{{baseUrl}}"],
+          "query": [
+            { "key": "search_query", "value": "all:deep+learning" },
+            { "key": "start",        "value": "1" },
+            { "key": "max_results",  "value": "5" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Error Guessing – Special characters in query",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is not 5xx (server must not crash)', function () {",
+              "    pm.expect(pm.response.code).to.be.below(500);",
+              "});",
+              "",
+              "pm.test('Response time is under 5000ms', function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(5000);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}?search_query=all:%3Cscript%3Ealert(1)%3C%2Fscript%3E&start=0&max_results=5",
+          "host": ["{{baseUrl}}"],
+          "query": [
+            { "key": "search_query", "value": "all:<script>alert(1)</script>" },
+            { "key": "start",        "value": "0" },
+            { "key": "max_results",  "value": "5" }
+          ]
+        }
+      }
+    }
+  ]
+}

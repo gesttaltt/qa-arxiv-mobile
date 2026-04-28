@@ -150,3 +150,70 @@ stages:
               summaryFileLocation: 'coverage.xml'
             displayName: 'Publish Code Coverage'
             condition: always()
+
+  - stage: AppiumSmoke
+    displayName: 'Appium Mobile Smoke Tests'
+    dependsOn: Testing
+    # Only runs when APPIUM_ENABLED variable is set to 'true'.
+    # Set it in the pipeline UI or pass --variable APPIUM_ENABLED=true at queue time.
+    condition: and(succeeded(), eq(variables['APPIUM_ENABLED'], 'true'))
+    jobs:
+      - job: AppiumJob
+        displayName: 'Appium Android Smoke Tests'
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: '$(pythonVersion)'
+              addToPath: true
+            displayName: 'Set up Python'
+
+          - task: Checkout@1
+            displayName: 'Checkout repository'
+
+          - script: |
+              python -m pip install --upgrade pip
+              pip install -r automation/requirements.txt
+            displayName: 'Install dependencies'
+
+          - script: |
+              npm install -g appium
+              appium driver install uiautomator2
+            displayName: 'Install Appium and UiAutomator2 driver'
+
+          - script: |
+              appium --log appium.log &
+              echo "Waiting for Appium server to start..."
+              sleep 5
+              curl -s http://127.0.0.1:4723/status | python -m json.tool
+            displayName: 'Start Appium server'
+
+          - script: |
+              echo "Running Appium smoke tests..."
+              pytest automation/tests/appium/ -m appium \
+                --html=test-results/appium-report.html \
+                --trx=test-results/appium-results.trx \
+                -v
+            displayName: 'Execute Appium Smoke Tests'
+            env:
+              APPIUM_SERVER_URL: 'http://127.0.0.1:4723'
+              ARXIV_APK_PATH: '$(ARXIV_APK_PATH)'
+              ANDROID_DEVICE_NAME: '$(ANDROID_DEVICE_NAME)'
+            continueOnError: true
+
+          - task: PublishTestResults@2
+            inputs:
+              testResultsFormat: 'VSTest'
+              testResultsFiles: '**/appium-results.trx'
+              failTaskOnFailedTests: false
+              testRunTitle: 'Appium Smoke – Android'
+            displayName: 'Publish Appium Results'
+            condition: always()
+
+          - task: PublishHtmlReport@1
+            inputs:
+              reportDir: 'test-results'
+              tabName: 'Appium Smoke Report'
+            displayName: 'Publish Appium HTML Report'
+            condition: always()

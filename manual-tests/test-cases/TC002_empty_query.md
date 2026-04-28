@@ -4,7 +4,7 @@
 Verify that the app handles empty search submissions gracefully.
 
 **Preconditions:**  
-- App is open.  
+- App is open on Android **or** iOS.  
 - No text has been entered in the search field.
 
 **Test Steps:**  
@@ -20,3 +20,12 @@ Verify that the app handles empty search submissions gracefully.
 |------|------------------------------------|-----------|
 | 1    | Validation prevents empty search   |           |
 | 1    | No crash or blank screen appears   |           |
+
+---
+
+**Platform Notes:**
+
+| Platform | Specific behaviour to verify |
+|---|---|
+| Android | Toast or inline error message is announced by TalkBack if enabled |
+| iOS | Validation message is readable via VoiceOver; keyboard dismiss does not submit |

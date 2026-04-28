@@ -4,7 +4,7 @@
 Verify that the user can successfully search for academic papers using a valid keyword.
 
 **Preconditions:**  
-- App is installed and running on an Android emulator or device.  
+- App is installed and running on an Android emulator/device **or** iOS simulator/device.  
 - User has internet connection.  
 
 **Test Steps:**  
@@ -24,3 +24,13 @@ Verify that the user can successfully search for academic papers using a valid k
 | 1    | App loads without errors         |           |
 | 3    | Input accepts the keyword        |           |
 | 5    | Results are shown successfully   |           |
+
+---
+
+**Platform Notes:**
+
+| Platform | Specific behaviour to verify |
+|---|---|
+| Android | Back button returns to home without crashing |
+| iOS | Keyboard dismiss via swipe-down works; results remain visible after keyboard hides |
+| Both | Landscape orientation retains results without layout breaking |

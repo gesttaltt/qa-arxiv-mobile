@@ -1,0 +1,22 @@
+title: "QA – arXiv Papers Mobile"
+description: "QA documentation for the arxiv-papers-mobile React Native app. Manual test cases, Appium automation, ADO-style traceability, and testing theory reference."
+theme: just-the-docs
+
+# Navigation order for the sidebar
+nav_order_default: alpha
+
+# Enable search
+search_enabled: true
+
+# GitHub repo link in the top-right corner
+gh_edit_link: true
+gh_edit_link_text: "Edit this page on GitHub"
+gh_edit_repository: "https://github.com/gesttaltt/qa-arxiv-mobile"
+gh_edit_branch: "main"
+gh_edit_source: docs
+
+# Footer
+footer_content: "QA portfolio project — arxiv-papers-mobile"
+
+# Colour scheme
+color_scheme: light

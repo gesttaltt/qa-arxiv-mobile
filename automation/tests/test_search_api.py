@@ -1,3 +1,5 @@
+import time
+
 import pytest
 import requests
 from unittest.mock import Mock, patch
@@ -162,6 +164,35 @@ class TestManualTestingSupport:
             # Ensure each test term returns results for manual testing
             assert response.status_code == 200
             assert len(response.text) > 500  # Reasonable content for manual review
+
+class TestPerformanceBaseline:
+    """
+    Non-functional: API response time assertions.
+    Establishes a 3-second SLA baseline for the arXiv search endpoint.
+    See docs/TESTING_THEORY.md § 5 (Performance Testing Categories).
+    """
+
+    BASE_URL = "http://export.arxiv.org/api/query"
+    RESPONSE_TIME_SLA_SECONDS = 3.0
+
+    @pytest.mark.parametrize("search_term", ["machine learning", "quantum computing"])
+    def test_api_response_time(self, search_term: str) -> None:
+        """API must respond within 3 seconds under normal conditions."""
+        params = {
+            "search_query": f"all:{search_term}",
+            "start": 0,
+            "max_results": 5,
+        }
+        start = time.monotonic()
+        response = requests.get(self.BASE_URL, params=params, timeout=15)
+        elapsed = time.monotonic() - start
+
+        assert response.status_code == 200
+        assert elapsed < self.RESPONSE_TIME_SLA_SECONDS, (
+            f"Response time {elapsed:.2f}s exceeded SLA of "
+            f"{self.RESPONSE_TIME_SLA_SECONDS}s for query '{search_term}'"
+        )
+
 
 if __name__ == "__main__":
     # Run basic environment validation
