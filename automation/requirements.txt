@@ -13,10 +13,7 @@ ruff==0.8.4
 black==24.10.0
 mypy==1.13.0
 
-# Markdown linting
-markdownlint-cli2==0.15.0
-
-# YAML linting  
+# YAML linting
 yamllint==1.35.1
 
 # Additional testing utilities
