@@ -20,7 +20,11 @@ class TestArxivSearchAPI:
         """
         # Arrange
         search_term = "machine learning"
-        params = {"search_query": f"all:{search_term}", "start": "0", "max_results": "10"}
+        params = {
+            "search_query": f"all:{search_term}",
+            "start": "0",
+            "max_results": "10",
+        }
 
         # Act
         response = requests.get(BASE_URL, params=params)
@@ -71,7 +75,11 @@ class TestArxivSearchAPI:
         Data-driven testing to validate search relevance
         Supports manual testing by ensuring consistent test data
         """
-        params = {"search_query": f"all:{search_term}", "start": "0", "max_results": "5"}
+        params = {
+            "search_query": f"all:{search_term}",
+            "start": "0",
+            "max_results": "5",
+        }
 
         response = requests.get(BASE_URL, params=params)
 
@@ -128,7 +136,11 @@ class TestManualTestingSupport:
         Run before manual test execution sessions
         """
         # Verify API accessibility
-        response = requests.get(BASE_URL, params={"search_query": "all:test", "max_results": "1"}, timeout=10)
+        response = requests.get(
+            BASE_URL,
+            params={"search_query": "all:test", "max_results": "1"},
+            timeout=10,
+        )
         assert response.status_code == 200
 
         # Basic API functionality check

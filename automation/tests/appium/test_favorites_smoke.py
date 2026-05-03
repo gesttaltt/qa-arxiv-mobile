@@ -6,10 +6,9 @@ Locators — validate with Appium Inspector before first run (docs/APPIUM_SETUP.
 """
 
 import pytest
+from appium.webdriver.common.appiumby import AppiumBy
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-
-from appium.webdriver.common.appiumby import AppiumBy
 
 
 class _Locators:
@@ -171,7 +170,7 @@ class TestFavoritesSmoke:
 
         self._open_favorites_tab(android_driver)
 
-        wait = self._wait(android_driver, timeout=5)
+        self._wait(android_driver, timeout=5)
         items = android_driver.find_elements(*_Locators.FAVORITES_LIST_ITEM)
 
         assert len(items) == 0, (

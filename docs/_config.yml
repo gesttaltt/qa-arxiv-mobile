@@ -2,6 +2,9 @@ title: "QA – arXiv Papers Mobile"
 description: "QA documentation for the arxiv-papers-mobile React Native app. Manual test cases, Appium automation, ADO-style traceability, and testing theory reference."
 theme: just-the-docs
 
+url: "https://gesttaltt.github.io"
+baseurl: "/qa-arxiv-mobile"
+
 # Navigation order for the sidebar
 nav_order_default: alpha
 
