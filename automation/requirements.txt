@@ -18,3 +18,4 @@ yamllint==1.35.1
 
 # Additional testing utilities
 pytest-mock==3.14.0
+types-requests
