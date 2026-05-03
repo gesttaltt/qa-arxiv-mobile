@@ -6,9 +6,10 @@ Locators — validate with Appium Inspector before first run (docs/APPIUM_SETUP.
 """
 
 import pytest
-from appium.webdriver.common.appiumby import AppiumBy
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+
+from appium.webdriver.common.appiumby import AppiumBy
 
 
 class _Locators:
@@ -70,9 +71,7 @@ class TestFavoritesSmoke:
         try:
             tab = wait.until(EC.element_to_be_clickable(_Locators.FAVORITES_TAB))
         except Exception:
-            tab = wait.until(
-                EC.element_to_be_clickable(_Locators.FAVORITES_TAB_XPATH)
-            )
+            tab = wait.until(EC.element_to_be_clickable(_Locators.FAVORITES_TAB_XPATH))
         tab.click()
 
     def _tap_favorite_button_on_first_result(self, driver) -> None:
@@ -114,9 +113,9 @@ class TestFavoritesSmoke:
         favorites = wait.until(
             EC.presence_of_all_elements_located(_Locators.FAVORITES_LIST_ITEM)
         )
-        assert len(favorites) > 0, (
-            "TC003-Appium FAIL: Favorites tab is empty after marking a paper"
-        )
+        assert (
+            len(favorites) > 0
+        ), "TC003-Appium FAIL: Favorites tab is empty after marking a paper"
 
     def test_remove_paper_from_favorites(self, android_driver) -> None:
         """

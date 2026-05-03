@@ -3,7 +3,7 @@ Appium-Python-Client==4.3.0
 selenium==4.27.1
 pytest==8.3.4
 requests==2.32.3
-pytest-trx==0.3.2
+# pytest-trx==0.3.2 (Not on PyPI, used in Azure Pipelines only)
 pytest-cov==6.0.0
 pytest-html==4.1.1
 pytest-xdist==3.6.0

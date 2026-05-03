@@ -1,7 +1,9 @@
 import os
+
 import pytest
+
 from appium import webdriver
-from appium.options import UiAutomator2Options
+from appium.options.android import UiAutomator2Options
 
 APPIUM_SERVER = os.environ.get("APPIUM_SERVER_URL", "http://127.0.0.1:4723")
 ANDROID_APK = os.environ.get(

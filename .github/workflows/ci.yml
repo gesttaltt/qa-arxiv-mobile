@@ -24,17 +24,15 @@ jobs:
 
       - name: Python formatting check (Black)
         run: black --check --diff automation/
-        continue-on-error: true
 
       - name: Python linting (Ruff)
         run: ruff check automation/
-        continue-on-error: true
 
       - name: Python type checking (MyPy)
-        run: mypy automation/ || true
+        run: mypy automation/
 
       - name: YAML linting
-        run: yamllint automation/ci/ || true
+        run: yamllint automation/ci/
 
       - uses: actions/setup-node@v4
         with:
@@ -43,7 +41,7 @@ jobs:
       - name: Markdown linting
         run: |
           npm install -g markdownlint-cli2
-          markdownlint-cli2 "**/*.md" "!node_modules" || true
+          markdownlint-cli2 "**/*.md" "!node_modules"
 
   test:
     name: Test
@@ -61,14 +59,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r automation/requirements.txt
 
-      - name: Run API and data validation tests (exclude Appium)
+      - name: Run API and data validation tests (exclude Appium and Selenium)
         run: |
-          pytest automation/tests/ -m "not appium" \
+          pytest automation/tests/ -m "not appium and not selenium" \
             --html=test-results/report.html \
             --cov=automation \
             --cov-report=xml \
             -v
-        continue-on-error: true
 
       - name: Upload test report
         uses: actions/upload-artifact@v4

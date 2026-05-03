@@ -1,8 +1,13 @@
 import time
+import pytest
 from selenium import webdriver
+
 from selenium.webdriver.common.by import By
 
-def test_search_empty():
+
+@pytest.mark.integration
+@pytest.mark.selenium
+def test_search_empty() -> None:
     driver = webdriver.Chrome()
     driver.get("http://localhost:8081")  # Replace with actual app URL
 
