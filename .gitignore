@@ -22,6 +22,9 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
 
 # Environments
 .env
@@ -32,8 +35,7 @@ ENV/
 env.bak/
 venv.bak/
 
-# Pytest
-.pytest_cache/
+# Test results & coverage
 test-results/
 coverage.xml
 .coverage
@@ -48,3 +50,8 @@ yarn-error.log*
 # OS
 .DS_Store
 Thumbs.db
+
+# IDE / Project metadata
+.sisyphus/
+.vscode/
+.idea/
