@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 # arXiv Mobile App Setup Script
 # This script helps set up the arXiv Papers Mobile app for manual testing
