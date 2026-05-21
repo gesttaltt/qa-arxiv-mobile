@@ -1,57 +1,57 @@
-# 📁 Evidence Folder Structure
+# Evidence Folder
 
-This folder will contain video and screenshot evidence from real test executions.
+This folder contains real test execution evidence for the arXiv Papers Mobile app.
 
-## 📂 Folder Organization
+## Current Contents
 
-```
-evidence/
-├── android/
-│   ├── TC001_SearchValid_Android_Pass.mp4
-│   ├── TC002_EmptyQuery_Android_Pass.mp4
-│   └── TC003_ToggleFavorite_Android_Pass.mp4
-├── ios/
-│   ├── TC001_SearchValid_iOS_Pass.mp4
-│   ├── TC002_EmptyQuery_iOS_Pass.mp4
-│   └── TC003_ToggleFavorite_iOS_Pass.mp4
-└── screenshots/
-    ├── TC001_android_search_results.png
-    ├── TC001_ios_search_results.png
-    ├── TC002_android_empty_search.png
-    ├── TC002_ios_empty_search.png
-    ├── TC003_before_favorite.png
-    └── TC003_after_favorite.png
-```
+### Android GIF Recordings (9 files)
+| File | Test Case | Description |
+|------|-----------|-------------|
+| TC001_SearchwithValidKeyword_Android_Pass.gif | TC001 | Search with valid keyword |
+| TC002_SearchwithEmptyQuery_Android_Pass.gif | TC002 | Search with empty input |
+| TC003_TogglePaperasFavorite_Android_Pass.gif | TC003 | Toggle paper as favorite |
+| TC004_SearchOfflineBehavior_Android_Pass.gif | TC004 | Search offline behavior |
+| TC005_PDFDownloadandViewing_Android_Pass.gif | TC005 | PDF download and viewing |
+| TC007_AndroidIntentPDFHandling_Android_Pass.gif | TC007 | Android intent PDF handling |
+| TC008_BulkFavoriteOperations_Android_Pass.gif | TC008 | Bulk favorite operations |
+| TC009_WiFitoCellularTransition_Android_Pass.gif | TC009 | WiFi to cellular transition |
+| TC011_AccessibilityTalkBackTesting_Android_Pass.gif | TC011 | Accessibility TalkBack testing |
 
-## 📝 Evidence Guidelines
+### iOS GIF Recordings (8 files)
+| File | Test Case | Description |
+|------|-----------|-------------|
+| TC001_SearchwithValidKeyword_iOS_Pass.gif | TC001 | Search with valid keyword |
+| TC002_SearchwithEmptyQuery_iOS_Pass.gif | TC002 | Search with empty input |
+| TC003_TogglePaperasFavorite_iOS_Pass.gif | TC003 | Toggle paper as favorite |
+| TC004_SearchOfflineBehavior_iOS_Pass.gif | TC004 | Search offline behavior |
+| TC005_PDFDownloadandViewing_iOS_Pass.gif | TC005 | PDF download and viewing |
+| TC006_iOSSafariPDFIntegration_iOS_Pass.gif | TC006 | iOS Safari PDF integration |
+| TC008_BulkFavoriteOperations_iOS_Pass.gif | TC008 | Bulk favorite operations |
+| TC009_WiFitoCellularTransition_iOS_Pass.gif | TC009 | WiFi to cellular transition |
 
-### Video Files:
-- **Format:** MP4 (recommended for compatibility)
-- **Quality:** 720p minimum for clear visibility
-- **Duration:** Focus on test execution (2-5 minutes typical)
-- **Audio:** Optional narration describing steps
+### Screenshots (10 files)
+Evidence directory: `screenshots/`
 
-### Screenshots:
-- **Format:** PNG for UI screenshots
-- **Resolution:** Native device resolution
-- **Content:** Key test states and results
-- **Naming:** Descriptive with test case reference
+| File | Content |
+|------|---------|
+| TC001_android_search_results.png | Search results for "quantum" on Android |
+| TC002_android_empty_search.png | Empty search validation on Android |
+| TC003_before_favorite.png | Paper detail before favorite toggle |
+| TC003_after_favorite.png | Paper detail after favorite toggle |
+| TC004_offline_error.png | Offline error message |
+| TC005_pdf_viewer.png | PDF viewer in action |
+| TC006_safari_pdf.png | PDF opened in Safari on iOS |
+| TC007_intent_chooser.png | Android intent chooser for PDF |
+| TC009_network_transition.png | Network state transition |
+| TC011_talkback.png | TalkBack screen reader active |
 
-### Upload Requirements:
-- Videos uploaded to Loom, Google Drive, or YouTube (unlisted)
-- Screenshots stored locally and referenced in documentation
-- All evidence links updated in traceability matrix
-- Access verified for review purposes
+### Suite Summary
+| File | Description |
+|------|-------------|
+| suite_summary.gif | Animated overview of all 11 test cases and results |
 
-## 🎯 Evidence Collection Checklist
-
-For each test case execution:
-- [ ] Start screen recording
-- [ ] Execute all test steps
-- [ ] Capture key screenshots
-- [ ] Save with proper filename
-- [ ] Upload video to chosen platform
-- [ ] Update traceability matrix with links
-- [ ] Verify links are accessible
-
-**Note:** This folder structure will be populated during actual test execution on the arXiv Papers Mobile app.
+## Evidence Quality
+- **Format:** Animated GIF (test walkthroughs), PNG (screenshots)
+- **All test cases:** 10/11 executed with evidence (TC010 planned)
+- **Platforms:** Android + iOS coverage for cross-platform tests
+- **Total evidence files:** 28
