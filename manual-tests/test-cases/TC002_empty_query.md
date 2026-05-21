@@ -19,7 +19,7 @@ Verify that the app handles empty search submissions gracefully.
 | Step | Expected Outcome                    | Pass/Fail |
 |------|------------------------------------|-----------|
 | 1    | Validation prevents empty search   |           |
-| 1    | No crash or blank screen appears   |           |
+| 2    | No crash or blank screen appears   |           |
 
 ---
 

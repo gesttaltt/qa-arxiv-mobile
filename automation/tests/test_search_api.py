@@ -32,7 +32,18 @@ class TestArxivSearchAPI:
         # Assert
         assert response.status_code == 200
         assert "application/atom+xml" in response.headers.get("content-type", "")
-        assert search_term.replace(" ", "") in response.text.lower().replace(" ", "")
+        import xml.etree.ElementTree as ET
+        root = ET.fromstring(response.content)
+        ns = {"atom": "http://www.w3.org/2005/Atom"}
+        entries = root.findall("atom:entry", ns)
+        assert len(entries) > 0, "No Atom entries returned"
+        all_text = " ".join(
+            (entry.findtext("atom:title", "", ns) + " " + entry.findtext("atom:summary", "", ns)).lower()
+            for entry in entries
+        )
+        assert search_term.lower() in all_text, (
+            f"Search term '{search_term}' not found in any entry title or summary"
+        )
 
     def test_empty_search_api_validation(self) -> None:
         """
@@ -130,6 +141,8 @@ class TestManualTestingSupport:
     Provides data validation and environment verification
     """
 
+    BASE_URL = "http://export.arxiv.org/api/query"
+
     def test_test_environment_connectivity(self) -> None:
         """
         Validates test environment is ready for manual testing
@@ -137,7 +150,7 @@ class TestManualTestingSupport:
         """
         # Verify API accessibility
         response = requests.get(
-            BASE_URL,
+            self.BASE_URL,
             params={"search_query": "all:test", "max_results": "1"},
             timeout=10,
         )
@@ -145,7 +158,7 @@ class TestManualTestingSupport:
 
         # Basic API functionality check
         params = {"search_query": "test", "max_results": "1"}
-        test_response = requests.get(BASE_URL, params=params, timeout=10)
+        test_response = requests.get(self.BASE_URL, params=params, timeout=10)
         assert test_response.status_code == 200
 
     def test_generate_test_data_for_manual_testing(self) -> None:
@@ -162,7 +175,7 @@ class TestManualTestingSupport:
 
         for term in test_search_terms:
             params = {"search_query": f"all:{term}", "start": "0", "max_results": "3"}
-            response = requests.get(BASE_URL, params=params)
+            response = requests.get(self.BASE_URL, params=params)
 
             # Ensure each test term returns results for manual testing
             assert response.status_code == 200
