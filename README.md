@@ -80,10 +80,14 @@ Located in `manual-tests/test-cases/` - Following ADO test case format
 | TC001 | Search with valid keyword    | US001      | Both     | ✅ Passed   |
 | TC002 | Search with empty input      | US001      | Both     | ✅ Passed   |
 | TC003 | Toggle paper as favorite     | US002      | Both     | ✅ Passed   |
-| TC004 | Search offline behavior      | US001      | Both     | 🔄 Testing  |
-| TC005 | PDF download and viewing     | US003      | Both     | ⏳ Planned  |
-| TC006 | iOS Safari PDF integration   | US003      | iOS      | ⏳ Planned  |
-| TC007 | Android intent handling      | US003      | Android  | ⏳ Planned  |
+| TC004 | Search offline behavior      | US001      | Both     | ✅ Passed   |
+| TC005 | PDF download and viewing     | US003      | Both     | ✅ Passed   |
+| TC006 | iOS Safari PDF integration   | US003      | iOS      | ✅ Passed   |
+| TC007 | Android intent handling      | US003      | Android  | ✅ Passed   |
+| TC008 | Bulk favorite operations     | US002      | Both     | ✅ Passed   |
+| TC009 | WiFi to cellular transition  | US004      | Both     | ✅ Passed   |
+| TC010 | Offline data persistence     | US004      | Both     | ⏳ Planned  |
+| TC011 | Accessibility TalkBack       | US001/2/3  | Android  | ✅ Passed   |
 
 ### Test Case Structure (ADO Format)
 Each test case includes:
@@ -104,6 +108,15 @@ This document links:
 - User Stories (US001, US002, …)
 - Manual Test Cases (TC001, …)
 - Automation Test Scripts (if any)
+
+### User Stories
+
+| ID | Title | Description | Test Cases |
+|----|-------|-------------|------------|
+| US001 | Search for Academic Papers | As a user, I want to search for academic papers by keyword so that I can find relevant research. | TC001, TC002, TC004, TC011 |
+| US002 | Manage Favorite Papers | As a user, I want to mark and manage papers as favorites so that I can quickly access them later. | TC003, TC008 |
+| US003 | Download and View PDFs | As a user, I want to download and open PDF versions of papers so that I can read them offline or in external viewers. | TC005, TC006, TC007 |
+| US004 | Network Connectivity | As a user, I want the app to handle network state changes gracefully so that I can continue using the app without data loss or crashes when connectivity changes. | TC009, TC010 |
 
 ## QA Methodology & SDLC Integration
 
@@ -181,9 +194,17 @@ This repository includes **real manual test execution** on the actual arXiv Pape
 ### 🎯 Executed Test Cases
 | Test Case | Description | Android | iOS | Evidence |
 |-----------|-------------|---------|-----|----------|
-| TC001 | Search with valid keyword | ✅ Verified | ✅ Verified | 🎥 [Video Evidence](manual-tests/test-execution/traceability-with-evidence.md) |
-| TC002 | Empty query handling | ✅ Verified | ✅ Verified | 🎥 [Video Evidence](manual-tests/test-execution/traceability-with-evidence.md) |
-| TC003 | Toggle favorite functionality | ✅ Verified | ✅ Verified | 🎥 [Video Evidence](manual-tests/test-execution/traceability-with-evidence.md) |
+| TC001 | Search with valid keyword | ✅ Passed | ✅ Passed | 🎥 [Video Evidence](manual-tests/test-execution/traceability-with-evidence.md) |
+| TC002 | Empty query handling | ✅ Passed | ✅ Passed | 🎥 [Video Evidence](manual-tests/test-execution/traceability-with-evidence.md) |
+| TC003 | Toggle favorite functionality | ✅ Passed | ✅ Passed | 🎥 [Video Evidence](manual-tests/test-execution/traceability-with-evidence.md) |
+| TC004 | Search offline behavior | ✅ Passed | ✅ Passed | 🎥 [Video Evidence](manual-tests/test-execution/traceability-with-evidence.md) |
+| TC005 | PDF download and viewing | ✅ Passed | ✅ Passed | 🎥 [Video Evidence](manual-tests/test-execution/traceability-with-evidence.md) |
+| TC006 | iOS Safari PDF integration | N/A | ✅ Passed | 🎥 [Video Evidence](manual-tests/test-execution/traceability-with-evidence.md) |
+| TC007 | Android intent handling | ✅ Passed | N/A | 🎥 [Video Evidence](manual-tests/test-execution/traceability-with-evidence.md) |
+| TC008 | Bulk favorite operations | ✅ Passed | ✅ Passed | 🎥 [Video Evidence](manual-tests/test-execution/traceability-with-evidence.md) |
+| TC009 | WiFi to cellular transition | ✅ Passed | ✅ Passed | 🎥 [Video Evidence](manual-tests/test-execution/traceability-with-evidence.md) |
+| TC010 | Offline data persistence | ⏳ Pending | ⏳ Pending | 🎥 TBD |
+| TC011 | Accessibility TalkBack | ✅ Passed | N/A | 🎥 [Video Evidence](manual-tests/test-execution/traceability-with-evidence.md) |
 
 ### 📋 Evidence Repository
 - **Test Execution Guide:** [`manual-tests/test-execution/README.md`](manual-tests/test-execution/README.md)
