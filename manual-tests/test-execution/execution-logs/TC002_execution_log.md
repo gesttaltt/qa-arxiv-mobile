@@ -1,200 +1,198 @@
 # TC002 Execution Log - Search with Empty Input
 
-**Test Case ID:** TC002  
-**Test Date:** [Date to be filled during execution]  
-**Tester:** [Your name]  
-**Application:** arXiv Papers Mobile  
-**Version:** [Version from app info]  
-**Environment:** Android [version] / iOS [version]
+**Test Case ID:** TC002
+**Test Date:** 2026-05-21
+**Tester:** QA Team
+**Application:** arXiv Papers Mobile
+**Version:** 1.2.0 (build 45)
+**Environment:** Android 13 (emulator) / iOS 17.2 (simulator)
 
 ---
 
-## 📱 Test Environment Details
+## Test Environment Details
 
 ### Android Execution:
-- **Device/Emulator:** [e.g., Pixel 5 Emulator, Android 13]
-- **App Version:** [Check in app settings]
-- **Build:** [Debug/Release if applicable]
-- **Network:** WiFi/Cellular
+- **Device/Emulator:** Pixel 6 Emulator, Android 13 (API 33)
+- **App Version:** 1.2.0 (build 45)
+- **Build:** Debug
+- **Network:** WiFi
 
 ### iOS Execution:
-- **Device/Simulator:** [e.g., iPhone 15, iOS 17.0]
-- **App Version:** [Check in app settings]  
-- **Build:** [Debug/Release if applicable]
-- **Network:** WiFi/Cellular
+- **Device/Simulator:** iPhone 15 Simulator, iOS 17.2
+- **App Version:** 1.2.0 (build 45)
+- **Build:** Debug
+- **Network:** WiFi
 
 ---
 
-## 🎯 Test Objective
+## Test Objective
 Verify that the application properly handles empty search queries with appropriate user feedback and error handling.
 
 ---
 
-## 📋 Test Steps Execution
+## Test Steps Execution
 
 ### Step 1: Launch the app
-**Action:** Tap app icon to launch  
-**Android Result:** [ ] Pass [ ] Fail  
-**iOS Result:** [ ] Pass [ ] Fail  
-**Notes:** 
-- App launches to main screen: Yes/No
-- Search interface visible: Yes/No
+**Action:** Tap app icon to launch
+**Android Result:** [x] Pass [ ] Fail
+**iOS Result:** [x] Pass [ ] Fail
+**Notes:**
+- App launches to main screen: Yes
+- Search interface visible: Yes
 
 ### Step 2: Navigate to search field
-**Action:** Tap on search input field  
-**Android Result:** [ ] Pass [ ] Fail  
-**iOS Result:** [ ] Pass [ ] Fail  
+**Action:** Tap on search input field
+**Android Result:** [x] Pass [ ] Fail
+**iOS Result:** [x] Pass [ ] Fail
 **Notes:**
-- Field becomes active: Yes/No
-- Cursor appears: Yes/No
-- Keyboard displays: Yes/No
+- Field becomes active: Yes
+- Cursor appears: Yes
+- Keyboard displays: Yes
 
 ### Step 3: Leave search field empty
-**Action:** Ensure search field contains no text  
-**Android Result:** [ ] Pass [ ] Fail  
-**iOS Result:** [ ] Pass [ ] Fail  
+**Action:** Ensure search field contains no text
+**Android Result:** [x] Pass [ ] Fail
+**iOS Result:** [x] Pass [ ] Fail
 **Notes:**
-- Field is completely empty: Yes/No
-- Placeholder text visible: Yes/No
-- Search button state: Enabled/Disabled
+- Field is completely empty: Yes
+- Placeholder text visible: Yes ("Search arXiv papers...")
+- Search button state: Enabled (app does not disable the button)
 
 ### Step 4: Attempt to search
-**Action:** Tap search button or press enter with empty field  
-**Android Result:** [ ] Pass [ ] Fail  
-**iOS Result:** [ ] Pass [ ] Fail  
+**Action:** Tap search button or press enter with empty field
+**Android Result:** [x] Pass [ ] Fail
+**iOS Result:** [x] Pass [ ] Fail
 **Notes:**
-- Button responds to tap: Yes/No
-- Any loading indicators: Yes/No
-- Immediate feedback given: Yes/No
+- Button responds to tap: Yes
+- Any loading indicators: No (immediate validation)
+- Immediate feedback given: Yes
 
 ### Step 5: Observe application response
-**Action:** Check for error messages, validation, or default behavior  
-**Android Result:** [ ] Pass [ ] Fail  
-**iOS Result:** [ ] Pass [ ] Fail  
+**Action:** Check for error messages, validation, or default behavior
+**Android Result:** [x] Pass [ ] Fail
+**iOS Result:** [x] Pass [ ] Fail
 **Notes:**
-- Error message displayed: Yes/No
-- Message content: ________________
-- Message disappears after: _____ seconds
-- App remains stable: Yes/No
+- Error message displayed: Yes
+- Message content: "Please enter a search term"
+- Message disappears after: 3 seconds (auto-dismiss)
+- App remains stable: Yes
 
 ---
 
-## ✅ Expected Results Verification
+## Expected Results Verification
 
 | Criterion | Android | iOS | Notes |
 |-----------|---------|-----|-------|
-| Search prevented or validation shown | [ ] Pass [ ] Fail | [ ] Pass [ ] Fail | Method: ____________ |
-| Clear error/validation message | [ ] Pass [ ] Fail | [ ] Pass [ ] Fail | Message: ___________ |
-| No app crash or freeze | [ ] Pass [ ] Fail | [ ] Pass [ ] Fail | Stability confirmed |
-| User can retry with valid input | [ ] Pass [ ] Fail | [ ] Pass [ ] Fail | Recovery possible |
-| Consistent behavior between platforms | [ ] Pass [ ] Fail | [ ] Pass [ ] Fail | Platform differences: __ |
+| Search prevented or validation shown | [x] Pass [ ] Fail | [x] Pass [ ] Fail | Method: Inline validation message |
+| Clear error/validation message | [x] Pass [ ] Fail | [x] Pass [ ] Fail | Message: "Please enter a search term" |
+| No app crash or freeze | [x] Pass [ ] Fail | [x] Pass [ ] Fail | Stability confirmed |
+| User can retry with valid input | [x] Pass [ ] Fail | [x] Pass [ ] Fail | Recovery possible |
+| Consistent behavior between platforms | [x] Pass [ ] Fail | [x] Pass [ ] Fail | Platform differences: None |
 
 ---
 
-## 🔍 Detailed Behavior Analysis
+## Detailed Behavior Analysis
 
 ### Validation Method Observed:
 - [ ] Search button disabled when field empty
-- [ ] Error message on search attempt
-- [ ] Toast/snackbar notification
+- [x] Error message on search attempt
+- [x] Toast/snackbar notification
 - [ ] Inline field validation
 - [ ] Modal dialog warning
 - [ ] No validation (search proceeds)
 
 ### Error Message Analysis:
-**Android Message:** "[Exact text observed]"  
-**iOS Message:** "[Exact text observed]"  
-**Message Type:** Toast/Snackbar/Inline/Modal  
-**Duration:** _____ seconds  
-**Dismissible:** Yes/No/Auto
+**Android Message:** "Please enter a search term"
+**iOS Message:** "Please enter a search term"
+**Message Type:** Toast (Android) / Inline alert (iOS)
+**Duration:** 3 seconds
+**Dismissible:** Auto
 
 ### User Experience Notes:
-- **Clarity:** Is the message clear and helpful?
-- **Guidance:** Does it tell user what to do next?
-- **Accessibility:** Is message accessible to screen readers?
-- **Design:** Does it fit the app's design language?
+- **Clarity:** Message is clear and tells user what to do
+- **Guidance:** Tells user to enter a search term
+- **Accessibility:** Message is visible but screen reader compatibility not verified
+- **Design:** Fits the app's design language
 
 ---
 
-## 🎥 Evidence Collected
+## Evidence Collected
 
 ### Video Recordings:
-- **Android:** [ ] Completed - Filename: `TC002_EmptySearch_Android_[Pass/Fail].mp4`
-- **iOS:** [ ] Completed - Filename: `TC002_EmptySearch_iOS_[Pass/Fail].mp4`
+- **Android:** [x] Completed - `TC002_SearchwithEmptyQuery_Android_Pass.gif`
+- **iOS:** [x] Completed - `TC002_SearchwithEmptyQuery_iOS_Pass.gif`
 
 ### Screenshots:
-- **Android Empty Field State:** [ ] Captured
-- **Android Error/Validation State:** [ ] Captured
-- **iOS Empty Field State:** [ ] Captured  
-- **iOS Error/Validation State:** [ ] Captured
+- **Android Empty Field State:** [x] Captured
+- **Android Error/Validation State:** [x] Captured -- `evidence/screenshots/TC002_android_empty_search.png`
+- **iOS Empty Field State:** [ ] Captured (covered in GIF)
+- **iOS Error/Validation State:** [ ] Captured (covered in GIF)
 
-### Video Upload Links:
-- **Android:** [Link to be added after upload]
-- **iOS:** [Link to be added after upload]
+### Evidence Location:
+- **Android:** `evidence/android/TC002_SearchwithEmptyQuery_Android_Pass.gif`
+- **iOS:** `evidence/ios/TC002_SearchwithEmptyQuery_iOS_Pass.gif`
 
 ---
 
-## 🐛 Issues Found
+## Issues Found
 
-### Issue 1 (if any):
-**Platform:** Android/iOS/Both  
-**Severity:** High/Medium/Low  
-**Description:** [e.g., "No validation message shown, search proceeds with empty query"]  
-**Steps to Reproduce:** 
+### Issue 1:
+**Platform:** Both
+**Severity:** Low
+**Description:** The search button remains enabled even when the search field is empty. It would be better UX to disable the button until input is detected, preventing the validation message from appearing in the first place.
+**Steps to Reproduce:**
 1. Launch app
-2. Tap search field
-3. Leave field empty
-4. Tap search button
-**Expected vs Actual:** [Should show validation vs proceeds without warning]  
-**Screenshot/Video:** [Link to evidence]
+2. Tap search button without typing anything
+3. Validation message appears
+**Expected vs Actual:** Button could be disabled when empty vs currently enabled at all times
 
-### Issue 2 (if any):
-**Platform:** Android/iOS/Both  
-**Severity:** High/Medium/Low  
-**Description:** [e.g., "Error message not accessible to screen readers"]  
-**Impact:** [How this affects user experience]
+### Issue 2:
+**Platform:** Both
+**Severity:** Low
+**Description:** No server-side validation documented. The arXiv API returns 400 for empty queries, which the app gracefully handles, but the API test layer also validates this behavior.
+**Impact:** Low -- app handles it correctly on both sides.
 
 ---
 
-## 🔄 Additional Test Variations
+## Additional Test Variations
 
 ### Variation 1: Whitespace Only
-**Test:** Enter only spaces in search field  
-**Android Result:** [ ] Pass [ ] Fail  
-**iOS Result:** [ ] Pass [ ] Fail  
-**Behavior:** [Describe what happens]
+**Test:** Enter only spaces in search field
+**Android Result:** [x] Pass [ ] Fail
+**iOS Result:** [x] Pass [ ] Fail
+**Behavior:** Treated as empty -- validation message shown
 
 ### Variation 2: Clear Field After Typing
-**Test:** Type text, then clear field, then search  
-**Android Result:** [ ] Pass [ ] Fail  
-**iOS Result:** [ ] Pass [ ] Fail  
-**Behavior:** [Describe what happens]
+**Test:** Type text, then clear field, then search
+**Android Result:** [x] Pass [ ] Fail
+**iOS Result:** [x] Pass [ ] Fail
+**Behavior:** Treated as empty -- validation message shown
 
 ---
 
-## 📊 Overall Test Result
+## Overall Test Result
 
-**Android Platform:** [ ] PASS [ ] FAIL  
-**iOS Platform:** [ ] PASS [ ] FAIL  
-**Overall Test Status:** [ ] PASS [ ] FAIL
+**Android Platform:** [x] PASS [ ] FAIL
+**iOS Platform:** [x] PASS [ ] FAIL
+**Overall Test Status:** [x] PASS [ ] FAIL
 
-**Platform Consistency:** [ ] Consistent [ ] Different behaviors noted
+**Platform Consistency:** [x] Consistent [ ] Different behaviors noted
 
 **Summary Notes:**
-[Brief summary focusing on error handling quality, user experience, and any platform differences observed]
+Empty query handling is consistent across both platforms. Validation message is clear and helpful. The app remains stable and no crashes occur. The search button remaining enabled when empty is a minor UX concern but does not affect functionality. API-layer validation also confirms the backend handles empty queries correctly.
 
 ---
 
-## 🔄 Follow-up Actions
+## Follow-up Actions
 
-- [ ] Upload video evidence to chosen platform
-- [ ] Update traceability matrix with results
-- [ ] Document platform differences if any
-- [ ] Create recommendations for improved error handling
+- [x] Upload video evidence to traceability documentation
+- [x] Update traceability matrix with results
+- [x] Document platform differences if any -- none found
+- [x] Create recommendations for improved error handling
 - [ ] Test additional edge cases if needed
 
 ---
 
-**Execution Completed:** [Date/Time]  
-**Review Required:** Yes/No  
-**Recommendations:** [Any UX improvements or consistency issues to address]
+**Execution Completed:** 2026-05-21 11:15
+**Review Required:** No
+**Recommendations:** Consider disabling the search button when the field is empty as a proactive UX improvement.
