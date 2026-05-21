@@ -32,7 +32,7 @@ jobs:
         run: mypy automation/
 
       - name: YAML linting
-        run: yamllint automation/ci/
+        run: yamllint . --ignore node_modules/
 
       - uses: actions/setup-node@v4
         with:
