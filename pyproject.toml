@@ -9,12 +9,42 @@ extend-exclude = '''
   | \.git
   | \.hg
   | \.mypy_cache
+  | \.ruff_cache
+  | \.pytest_cache
   | \.tox
   | \.venv
   | build
   | dist
 )/
 '''
+
+[tool.ruff]
+target-version = "py312"
+line-length = 88
+indent-width = 4
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # Pyflakes
+    "UP",  # pyupgrade
+    "B",   # flake8-bugbear
+    "SIM", # flake8-simplify
+    "I",   # isort
+]
+ignore = [
+    "E501",  # Line too long (handled by black)
+    "UP007", # Use X | Y for type unions (Python 3.10+ feature)
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101"]  # Allow assert statements in tests
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
 
 [tool.mypy]
 python_version = "3.12"
