@@ -250,6 +250,30 @@ This demonstrates **genuine QA work** with verifiable evidence on a real React N
 
 ---
 
+## CV / LinkedIn Reference
+
+### CV bullets (ready to adapt)
+
+- Designed and executed 11 manual test cases for a React Native mobile app following ADO enterprise standards: bi-directional traceability (User Stories → Test Cases → Evidence → Defects), structured execution logs, and defect reports with severity classification and remediation suggestions
+- Configured an Android emulator testing environment from scratch (Android SDK CLI, KVM acceleration, API 28 Google Play image) and captured all test evidence with `adb screenrecord` — no Android Studio required
+- Filed 7 defect reports (BUG001–BUG007) covering functional gaps, UX improvements, and a WCAG 2.1 AA accessibility violation (`accessibilityRole` missing on result cards, identified via TalkBack navigation)
+- Authored an Azure Pipelines CI configuration with Python linting (Black, Ruff, mypy), pytest quality gates, Markdown/YAML validation, and an Appium smoke test stage
+- Maintained full test traceability linking 4 user stories to 11 test cases, screen recordings, screenshots, and defect tickets in a single auditable repository
+
+### LinkedIn one-liner
+
+> Built an end-to-end QA portfolio on a real React Native app — 11 test cases, Android screen recordings via `adb screenrecord`, 7 defect reports, ADO traceability, and an Azure DevOps CI pipeline.
+
+### Platform coverage — how to frame it
+
+**Android:** Fully executed. All 10 applicable test cases recorded on Android API 28 emulator with real `adb screenrecord` evidence, verified frame by frame.
+
+**iOS:** Test cases fully designed and structured (TC001–TC006, TC008–TC009) and mirroring the Android suite. Execution and recording are pending access to a macOS environment or physical iOS device. The iOS-specific case (TC006: Safari PDF integration) is documented based on iOS platform behavior documentation.
+
+**In an interview:** *"The Android coverage is complete with verified recordings. The iOS test cases are fully designed — I need a Mac or physical device to record them, which is the next step."*
+
+---
+
 ## Contact
 
 **Author:** Jonathan Verdun  
