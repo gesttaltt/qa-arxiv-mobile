@@ -2,9 +2,22 @@
 
 > Fully documented testing emphasizing **manual QA** and **ADO-style traceability** over a real mobile application.
 
-This repository contains a QA overlay for the open-source [arxiv-papers-mobile](https://github.com/lopespm/arxiv-papers-mobile) app.  
-It demonstrates a full workflow of manual test case creation, traceability to user stories, automation alignment, and documentation —  
-as expected in modern Azure DevOps–based QA environments.
+This repository contains a complete QA portfolio applied to the open-source [arxiv-papers-mobile](https://github.com/lopespm/arxiv-papers-mobile) React Native app — demonstrating the full testing lifecycle from requirements analysis through execution, defect reporting, and CI integration, following Azure DevOps enterprise practices.
+
+---
+
+## Skills Demonstrated
+
+| Area | Details |
+|------|---------|
+| **Mobile Testing** | Manual execution on Android emulator (API 28) with `adb screenrecord`; offline, network, and accessibility scenarios |
+| **Test Design** | 11 ADO-format test cases covering functional, edge-case, and platform-specific flows |
+| **Traceability** | Bi-directional: User Stories → Test Cases → Evidence → Defects (CSV matrix + linked wiki) |
+| **Defect Reporting** | 7 structured defect reports (BUG001–BUG007) with reproduction steps, severity, and fix suggestions |
+| **CI/CD** | Azure Pipelines YAML with linting (Black, Ruff, mypy, markdownlint), pytest quality gates, and Appium smoke stage |
+| **Accessibility** | TC011 TalkBack navigation; WCAG 2.1 AA gap identified in BUG007 (`accessibilityRole` missing) |
+| **Test Automation** | pytest automation layer with Appium scaffolding; coverage reporting via Cobertura |
+| **Documentation** | ADO-style wiki, traceability matrix, execution logs, testability feedback notes |
 
 ---
 
