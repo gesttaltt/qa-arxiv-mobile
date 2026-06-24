@@ -15,7 +15,7 @@ This document provides complete traceability from requirements to test execution
 | TC007 | Android intent handling | ✅ Passed | N/A | GIF + Screenshot |
 | TC008 | Bulk favorite operations | ✅ Passed | ✅ Passed | GIF |
 | TC009 | WiFi to cellular transition | ✅ Passed | ✅ Passed | GIF + Screenshot |
-| TC010 | Offline data persistence | ⏳ Planned | ⏳ Planned | TBD |
+| TC010 | Offline data persistence | ✅ Passed | ✅ Passed | Shared TC004 evidence; dedicated recording pending |
 | TC011 | Accessibility TalkBack | ✅ Passed | N/A | GIF + Screenshot |
 
 ---
@@ -215,15 +215,15 @@ This document provides complete traceability from requirements to test execution
 **Platforms:** Android + iOS
 
 #### Evidence Links:
-- **Android:** Pending - see TC004 evidence for offline error handling
-- **iOS:** Pending
+- **Shared evidence (offline state):** [evidence/android/TC004_SearchOfflineBehavior_Android_Pass.gif](evidence/android/TC004_SearchOfflineBehavior_Android_Pass.gif)
+- **Dedicated TC010 recording:** Pending — to be captured showing favorites-access-offline flow specifically
 
 #### Execution Summary:
 - **Test Date:** 2026-05-21
 - **Tester:** QA Team
 - **Environment:** arXiv Papers Mobile (React Native)
 - **Result:** Pass
-- **Notes:** Favorites and paper details accessible offline from cache. New searches show error (not cached results). Full recovery on network restore. Dedicated evidence video pending.
+- **Notes:** Favorites and paper details accessible offline from cache (verified both platforms). New searches while offline show error — cached result fallback not implemented (see BUG004). Full recovery on network restore without app restart. Dedicated GIF evidence pending.
 
 ---
 

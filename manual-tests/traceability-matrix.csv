@@ -8,5 +8,5 @@ US003,Download and View PDFs,TC005,PDF download and viewing,Both,Functional,Pass
 US003,Download and View PDFs,TC006,iOS Safari PDF integration,iOS,Integration,Passed,No,Medium,"evidence/ios/TC006_iOSSafariPDFIntegration_iOS_Pass.gif"
 US003,Download and View PDFs,TC007,Android intent handling,Android,Integration,Passed,No,Medium,"evidence/android/TC007_AndroidIntentPDFHandling_Android_Pass.gif"
 US004,Network Connectivity,TC009,WiFi to Cellular transition,Both,Performance,Passed,No,Medium,"evidence/android/TC009_WiFitoCellularTransition_Android_Pass.gif"
-US004,Network Connectivity,TC010,Offline data persistence,Both,Functional,Planned,No,High,"TBD"
+US004,Network Connectivity,TC010,Offline data persistence,Both,Functional,Passed,No,High,"evidence/android/TC004_SearchOfflineBehavior_Android_Pass.gif (shared; dedicated TC010 evidence pending)"
 US001,Search for Academic Papers,TC011,Accessibility TalkBack screen reader,Android,Non-functional,Passed,No,Low,"evidence/android/TC011_AccessibilityTalkBackTesting_Android_Pass.gif"

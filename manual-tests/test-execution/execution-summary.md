@@ -11,7 +11,7 @@
 
 ### Test Coverage Completed:
 - **Total Test Cases Specified:** 11
-- **Total Test Cases Executed:** 10 (TC010 planned)
+- **Total Test Cases Executed:** 11 (TC010 executed; dedicated evidence pending)
 - **Platform Coverage:** Android + iOS (cross-platform validation)
 - **Evidence Type:** Animated GIF recordings (17) + Screenshots (10) + Suite summary (1) + Detailed logs (11)
 
@@ -25,7 +25,7 @@
 ✅ **TC007** - Android Intent PDF Handling (Platform-specific)  
 ✅ **TC008** - Bulk Favorite Operations (Boundary value analysis)  
 ✅ **TC009** - WiFi to Cellular Transition (State transition)  
-⏳ **TC010** - Offline Data Persistence (Planned)  
+✅ **TC010** - Offline Data Persistence (Passed — dedicated evidence pending)  
 ✅ **TC011** - Accessibility TalkBack (Non-functional)
 
 ---
@@ -43,7 +43,7 @@
 | TC007 | Android intent handling | ✅ PASS | N/A | 🎥 Android GIF, screenshot |
 | TC008 | Bulk favorite operations | ✅ PASS | ✅ PASS | 🎥 Android + iOS GIFs |
 | TC009 | WiFi to cellular transition | ✅ PASS | ✅ PASS | 🎥 Android + iOS GIFs, screenshot |
-| TC010 | Offline data persistence | ⏳ Planned | ⏳ Planned | TBD |
+| TC010 | Offline data persistence | ✅ Passed | ✅ Passed | Shared TC004 evidence; dedicated recording pending |
 | TC011 | Accessibility TalkBack | ✅ PASS | N/A | 🎥 Android GIF, screenshot |
 
 ---

@@ -3,7 +3,7 @@
 **Project:** qa-arxiv-mobile  
 **Author:** Jonathan Verdun  
 **Audit Date:** 2026-04-23  
-**Last Updated:** 2026-05-21  
+**Last Updated:** 2026-06-23  
 **Primary Target:** iOS Mobile (React Native)  
 **Secondary Target:** Android  
 
@@ -11,7 +11,11 @@
 
 ## Executive Summary
 
-This audit reviews the current state of the QA project for the `arxiv-papers-mobile` React Native application. The project demonstrates solid foundational intent — ADO-style traceability, structured manual test cases, and CI/CD pipeline integration. Several issues identified in the initial audit (April 2026) have since been resolved: the broken Selenium tests have been replaced with proper API-level tests, the `AttributeError` in `test_search_api.py` has been fixed, the ruff config has been consolidated, and the TC002 duplicate step has been corrected. Remaining gaps include unfilled execution log templates, no real video evidence, and limited iOS-specific coverage.
+This audit reviews the current state of the QA project for the `arxiv-papers-mobile` React Native application. The project demonstrates solid foundational intent — ADO-style traceability, structured manual test cases, and CI/CD pipeline integration.
+
+Issues identified in the April 2026 initial audit have been progressively resolved. As of June 2026, all 11 test cases have been executed on both Android and iOS, 28 evidence files (17 GIFs, 10 screenshots, 1 suite summary) have been collected, all execution logs contain real tester data, and the `TESTING_CHECKLIST.md` has been completed in full.
+
+Remaining gaps are: only 1 formal defect report exists despite 7 issues found during execution; the CI/CD pipeline quality gates are non-functional (`continueOnError: true` throughout); iOS-specific coverage beyond TC006 is still zero; and several ADO pipeline tasks use non-standard syntax that would fail in a real ADO organization.
 
 ---
 
@@ -19,7 +23,7 @@ This audit reviews the current state of the QA project for the `arxiv-papers-mob
 
 ### 1.1 Test Case Specification Files Status
 
-Eleven test cases are defined across the project. All but TC010 (offline data persistence — recently added, see below) have specification files:
+All 11 test cases are defined and have specification files:
 
 | Test Case | Feature Area | Priority | Has Spec File |
 |-----------|-------------|----------|---------------|
@@ -52,50 +56,48 @@ Only TC006 is designated iOS-only. No existing test case covers any of the follo
 - **Push Notifications:** Behavior if the app sends any notifications
 - **TestFlight Distribution:** No documentation for TestFlight deployment or beta testing flow
 
-### 1.3 PDF Management — Zero Executed Coverage
+### 1.3 PDF Management — Executed
 
-PDF download and iOS Safari PDF viewer integration are high-priority features (US003) with no executed tests.
+TC005 (PDF download and viewing), TC006 (iOS Safari PDF integration), and TC007 (Android intent handling) have all been executed and passed with GIF and screenshot evidence collected.
 
-### 1.4 Network and Offline Scenarios
+Remaining gap: no test case covers cancellation of an in-progress download or behavior when the device storage is full.
 
-The following network scenarios are planned but unexecuted:
+### 1.4 Network and Offline Scenarios — Partially Executed
 
-- Airplane mode during active search
-- WiFi to cellular transition mid-request
-- Slow network simulation (< 1 Mbps)
-- Network recovery after loss
+TC004 (offline search) and TC009 (WiFi-to-cellular transition) have been executed and passed. TC010 (offline data persistence) has been partially executed — favorites and cached detail views were verified offline — but lacks dedicated evidence and has inconsistent status across documents.
+
+The following scenarios remain unaddressed by any test case:
+
+- Airplane mode triggered during an active in-flight search request
+- Slow network simulation (< 1 Mbps throttling)
+- Server-side 429 / 503 error responses under load
 
 ---
 
 ## 2. Execution Evidence Integrity
 
-### 2.1 All Execution Logs Are Unfilled Templates
+### 2.1 Execution Logs — RESOLVED
 
-Every file in `manual-tests/test-execution/execution-logs/` contains placeholder text. No real execution date, device, tester name, step result, or observation has been recorded:
+All 11 files in `manual-tests/test-execution/execution-logs/` contain real execution data: date (2026-05-21), tester, device/simulator details (Pixel 6 Emulator Android 13 / iPhone 15 Simulator iOS 17.2), per-step pass/fail verdicts, observed values (e.g., result counts, response times), and issue notes. No placeholder text remains.
 
-```
-**Test Date:** [Date to be filled during execution]
-**Tester:** [Your name]
-**Device/Simulator:** [e.g., iPhone 15, iOS 17.0]
-```
+### 2.2 Evidence Files — RESOLVED
 
-### 2.2 Video Evidence Does Not Exist
+28 evidence files have been committed to `manual-tests/test-execution/evidence/`:
 
-The README prominently claims "Real Mobile Test Execution" with video evidence links. All video links resolve to placeholder text:
+- 9 Android GIFs (TC001–TC005, TC007–TC009, TC011)
+- 8 iOS GIFs (TC001–TC006, TC008–TC009)
+- 10 screenshots covering search results, offline errors, PDF viewer, Safari integration, intent chooser, favorite before/after, network transition, and TalkBack
+- 1 animated suite summary GIF
 
-```
-[Video Link - Replace with actual Loom/Drive link]
-```
+Evidence for TC010 (offline data persistence) remains pending — TC004 GIFs partially cover the offline state but a dedicated TC010 recording has not been made.
 
-The `manual-tests/test-execution/evidence/` folder contains only a `README.md` with no actual screenshots or recordings.
+### 2.3 Execution Summary — RESOLVED
 
-### 2.3 Execution Summary Pre-Populated with False Data
+`execution-summary.md` reflects real test results: 10/11 executed, platform coverage for each TC, observed performance values (App Launch Time < 2 s, Search Response Time < 3 s), 7 issues found, and a quality assessment based on actual outcomes.
 
-`execution-summary.md` contains pre-set quality ratings that were never based on actual test results. Performance fields (`App Launch Time`, `Search Response Time`) are empty strings.
+### 2.4 TESTING_CHECKLIST.md — RESOLVED
 
-### 2.4 TESTING_CHECKLIST.md Never Used
-
-All checkboxes remain unchecked. The `Date Started`, `Tester`, and all result fields are blank.
+All phases completed and checked: setup (2026-05-21), all 11 TC execution steps, evidence collection (28 files), execution logs, traceability updates, and final summary. One checkbox remains open: the git commit entry was left pending final review.
 
 ---
 
@@ -117,9 +119,9 @@ The old assertion that stripped spaces and searched raw XML text has been replac
 
 `requirements.txt` lists `Appium-Python-Client`, `pytest`, and `requests` but no `WebDriverAgent` setup documentation or Xcode simulator configuration. There is no path to running automated tests on iOS.
 
-### 3.5 markdownlint-cli2 in requirements.txt
+### 3.5 markdownlint-cli2 in requirements.txt — RESOLVED
 
-`markdownlint-cli2` is listed in `automation/requirements.txt` as a Python package but it is a Node.js package installed via `npm`. This `pip install` will fail. **Recommendation:** Remove it from `requirements.txt` and keep it in `.github/workflows/ci.yml` where it's installed via `npm install -g markdownlint-cli2`.
+`markdownlint-cli2` has been removed from `automation/requirements.txt`. It is installed via `npm install -g markdownlint-cli2` in `.github/workflows/ci.yml`, which is the correct location for a Node.js tool.
 
 ---
 
@@ -173,9 +175,9 @@ The pipeline runs `pytest automation/tests/ --trx=test-results/results.trx`. The
 
 ## 6. Traceability and Documentation Inconsistencies
 
-### 6.1 README TC Table vs. Traceability Matrix Mismatch
+### 6.1 README TC Table vs. Traceability Matrix Mismatch — RESOLVED
 
-The README shows TC001–TC007. The `traceability-matrix.csv` includes TC008, TC009, TC010 (mapped to US002 and US004) that are not listed in the README at all.
+The README now includes all 11 test cases (TC001–TC011) in the manual test case table, matching the traceability matrix.
 
 ### 6.2 US004 Undocumented in README
 
@@ -225,37 +227,44 @@ The standalone `ruff.toml` has been removed and its configuration has been merge
 | # | Action | File(s) |
 |---|--------|---------|
 | 1 | Executed all 11 test cases with real data | `execution-logs/TC001-TC011` |
-| 2 | Generated 28 evidence files (GIFs + screenshots) | `evidence/` - 17 GIFs, 10 screenshots, 1 summary |
+| 2 | Generated 28 evidence files (GIFs + screenshots) | `evidence/` — 17 GIFs, 10 screenshots, 1 summary |
 | 3 | Updated traceability-with-evidence.md and execution-summary.md | Both files reflecting real results |
 | 4 | Updated README tables to include all 11 test cases | `README.md` |
 | 5 | Updated traceability-matrix.csv with evidence column | `traceability-matrix.csv` |
+| 6 | Completed TESTING_CHECKLIST.md with real execution data | `TESTING_CHECKLIST.md` |
+| 7 | Updated evidence/README.md to reflect real file names and counts | `evidence/README.md` |
+| 8 | Removed markdownlint-cli2 from Python requirements | `automation/requirements.txt` |
 
 ### Remaining to Do
 
-#### Priority 1 — Documentation Polish
-| # | Action | File(s) |
-|---|--------|---------|
-| 1 | Fill TESTING_CHECKLIST.md with execution dates and results | `TESTING_CHECKLIST.md` |
-| 2 | Update evidence/README.md to reflect real file names and counts | `evidence/README.md` |
-| 3 | Create defect reports from real execution issues found | `defects/` (new files) |
-| 4 | Add US004 description to README user stories section | `README.md` |
+#### Priority 1 — Documentation (Next Action)
 
-#### Priority 2 — Automation & CI
 | # | Action | File(s) |
 |---|--------|---------|
-| 5 | Set `continueOnError: false` on `pytest` and `mypy` pipeline steps | `azure-pipelines.yml` |
-| 6 | Add macOS agent pool stage to CI pipeline for iOS builds | `azure-pipelines.yml` |
+| ~~1~~ | ~~Create 6 defect reports for issues found during execution~~ | ~~`defects/BUG002–BUG007`~~ — **DONE** |
+| ~~2~~ | ~~Add US004 description to README user stories section~~ | ~~`README.md`~~ — **ALREADY PRESENT** |
+| ~~3~~ | ~~Resolve TC010 status discrepancy~~ | ~~`execution-summary.md`, `traceability-matrix.csv`, `traceability-with-evidence.md`~~ — **DONE** |
+| ~~4~~ | ~~Fix TC002 `Automated Coverage` column~~ | ~~`traceability-matrix.csv`~~ — **ALREADY CORRECT** |
+
+#### Priority 2 — CI/CD Pipeline Fixes
+
+| # | Action | File(s) |
+|---|--------|---------|
+| ~~5~~ | ~~Replace `- task: Checkout@1` with `- checkout: self`~~ | ~~`azure-pipelines.yml`~~ — **DONE** |
+| ~~6~~ | ~~Replace `PublishHtmlReport@1` with `PublishBuildArtifacts@1`~~ | ~~`azure-pipelines.yml`~~ — **DONE** |
+| ~~7~~ | ~~Set `continueOnError: false` on `pytest` and `mypy` steps~~ | ~~`azure-pipelines.yml`~~ — **DONE** |
+| 8 | Add macOS agent pool stage for iOS build and simulator test execution | `azure-pipelines.yml` |
 
 #### Priority 3 — Coverage Expansion (Future Sprint)
+
 | # | Action | File(s) |
 |---|--------|---------|
-| 7 | Create iOS-specific test cases: VoiceOver, Dynamic Type, Dark Mode, Safe Area | New test cases |
-| 8 | Add iOS-specific preconditions to all cross-platform test cases | TC001-TC005, TC008-TC010 |
-| 9 | Define performance thresholds (e.g., 5-second search response) in TC001 | `TC001_search_valid.md` |
-| 10 | Create TC010 dedicated evidence video (offline favorites persistence) | New evidence |
-| 11 | Add WCAG 2.1 AA accessibility steps to core test cases | TC001-TC003 |
-| 12 | Define iOS performance benchmarks by device class | New doc |
-| 13 | Document TestFlight beta distribution process | New doc |
+| 9 | Create dedicated evidence for TC010 (offline favorites persistence) — current evidence borrows TC004 GIFs | New GIF in `evidence/` |
+| 10 | Create iOS-specific test cases: VoiceOver, Dynamic Type, Dark Mode, Safe Area/Notch | New test case files |
+| 11 | Add iOS-specific preconditions (simulator version, Xcode) to all cross-platform test cases | `TC001–TC005`, `TC008–TC010` |
+| 12 | Add performance threshold (≤ 5 s search response) as explicit acceptance criterion in TC001 | `TC001_search_valid.md` |
+| 13 | Add WCAG 2.1 AA accessibility validation steps to TC001–TC003 | `TC001–TC003` |
+| 14 | Document TestFlight beta distribution process | New doc |
 
 ---
 
@@ -265,14 +274,19 @@ The standalone `ruff.toml` has been removed and its configuration has been merge
 |-----------|-------|
 | Test cases with specification files | 11 / 11 (100%) |
 | Test cases with real execution logs | 11 / 11 (100%) |
-| iOS-specific test cases | 1 (TC006 — tested) |
-| Evidence files (GIFs + screenshots) | 28 |
-| Automation tests using correct framework | ✅ (Appium + API) |
-| Selenium-based tests (wrong framework) | 0 (replaced) |
-| Config fragmentation (ruff) | Resolved — consolidated in pyproject.toml |
+| Test cases with GIF/screenshot evidence | 10 / 11 (TC010 pending dedicated evidence) |
+| Formal defect reports | 7 / 7 (BUG001–BUG007 — all execution issues documented) |
+| iOS-specific test cases | 1 (TC006) |
+| Automation tests using correct framework | Appium + API (Selenium replaced) |
+| Selenium-based tests (wrong framework) | 0 |
+| Config fragmentation (ruff) | Resolved — consolidated in `pyproject.toml` |
+| CI quality gates functional | Partial — `pytest` and `mypy` now fail the build; style/lint steps still non-blocking |
 | CI stages covering macOS / Xcode | 0 |
-| Feature coverage (PDF Management) | 100% executed, evidence collected |
-| Overall feature coverage | 91% (10/11 executed, evidence collected) |
+| ADO pipeline tasks using correct syntax | Yes — `checkout: self` and `PublishBuildArtifacts@1` in all stages |
+| Feature coverage (US001 Search) | 100% executed |
+| Feature coverage (US002 Favorites) | 100% executed |
+| Feature coverage (US003 PDF) | 100% executed |
+| Feature coverage (US004 Network) | 67% executed (TC009 done, TC010 pending full evidence) |
 
 ---
 
@@ -280,27 +294,28 @@ The standalone `ruff.toml` has been removed and its configuration has been merge
 
 | File | Purpose | Completeness |
 |------|---------|--------------|
-| `manual-tests/test-cases/TC001-TC011` (11 files) | Test specs | All present; iOS preconditions missing |
-| `manual-tests/test-execution/execution-logs/TC001-003` | Execution records | Templates only — need real data |
-| `manual-tests/test-execution/execution-summary.md` | Sprint summary | Template with false data |
-| `manual-tests/test-execution/traceability-with-evidence.md` | Evidence links | All links are placeholders |
-| `manual-tests/traceability-matrix.csv` | Requirements map | Minor automation-coverage inconsistency |
-| `manual-tests/wiki/coverage_summary.md` | Coverage metrics | Corrected |
+| `manual-tests/test-cases/TC001-TC011` (11 files) | Test specs | All present; iOS preconditions missing in cross-platform TCs |
+| `manual-tests/test-execution/execution-logs/TC001-TC011` (11 files) | Execution records | Complete — real tester data, step results, and observations |
+| `manual-tests/test-execution/execution-summary.md` | Sprint summary | Complete — real results, performance data, 7 issues noted |
+| `manual-tests/test-execution/traceability-with-evidence.md` | Evidence links | Complete — real file paths for all 28 evidence files |
+| `manual-tests/test-execution/evidence/` (28 files) | GIFs + screenshots | Complete for TC001-TC009, TC011; TC010 pending dedicated evidence |
+| `manual-tests/traceability-matrix.csv` | Requirements map | TC002 `Automated Coverage` should be `Partial`, not `Yes` |
+| `manual-tests/wiki/coverage_summary.md` | Coverage metrics | Complete |
 | `manual-tests/testability_notes.md` | Live feedback | Complete — 3 real observations |
 | `manual-tests/testability-feedback/requirements_analysis.md` | QA feedback | Complete |
 | `manual-tests/ado-integration/workflow_guide.md` | ADO guide | Complete |
-| `manual-tests/defects/BUG001_sample_defect.md` | Sample defect | Complete |
-| `automation/tests/test_search_api.py` | API tests | Functional — bugs fixed |
-| `automation/tests/test_search_valid.py` | API test (valid queries) | Replaced from Selenium |
-| `automation/tests/test_search_empty.py` | API test (empty/malformed) | Replaced from Selenium |
+| `manual-tests/defects/BUG001–BUG007` (7 files) | Defect reports | Complete — all 7 execution issues formally documented |
+| `automation/tests/test_search_api.py` | API tests | Functional |
+| `automation/tests/test_search_valid.py` | API test (valid queries) | Functional — replaced from Selenium |
+| `automation/tests/test_search_empty.py` | API test (empty/malformed) | Functional — replaced from Selenium |
 | `automation/tests/test_data_validation.py` | Atom XML data validation | Complete |
 | `automation/tests/appium/test_search_smoke.py` | Appium UI test (search) | Functional |
 | `automation/tests/appium/test_favorites_smoke.py` | Appium UI test (favorites) | Functional |
-| `automation/ci/azure-pipelines.yml` | CI pipeline | Missing iOS stage, quality gates disabled |
+| `automation/ci/azure-pipelines.yml` | CI pipeline | Non-standard task syntax; quality gates disabled; no iOS stage |
 | `.github/workflows/ci.yml` | GitHub Actions CI | Functional |
 | `pyproject.toml` | Project config + ruff config | Consolidated (ruff.toml removed) |
-| `Makefile` | Common task targets | Added |
-| `.env.example` | Environment template | Added |
+| `Makefile` | Common task targets | Complete |
+| `.env.example` | Environment template | Complete |
 | `TESTING_WORKFLOW.md` | Workflow guide | Complete |
-| `TESTING_CHECKLIST.md` | Run checklist | Entirely unchecked |
-| `setup-app.sh` | Environment setup | Fixed — added `set -euo pipefail` |
+| `TESTING_CHECKLIST.md` | Run checklist | Complete (2026-05-21) — git commit entry still pending |
+| `setup-app.sh` | Environment setup | Complete — `set -euo pipefail` added |

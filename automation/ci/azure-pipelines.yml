@@ -29,7 +29,7 @@ stages:
               addToPath: true
             displayName: 'Set up Python $(pythonVersion)'
 
-          - task: Checkout@1
+          - checkout: self
             displayName: 'Checkout repository'
 
           - script: |
@@ -55,9 +55,9 @@ stages:
 
           - script: |
               echo "Running Python type checking..."
-              mypy automation/ --junit-xml=mypy-results.xml || true
+              mypy automation/ --junit-xml=mypy-results.xml
             displayName: 'Python Type Checking (MyPy)'
-            continueOnError: true
+            continueOnError: false
 
           - script: |
               echo "Running YAML linting..."
@@ -94,7 +94,7 @@ stages:
               addToPath: true
             displayName: 'Set up Python $(pythonVersion)'
 
-          - task: Checkout@1
+          - checkout: self
             displayName: 'Checkout repository'
 
           - script: |
@@ -111,7 +111,7 @@ stages:
               echo "Running automated test suite..."
               pytest automation/tests/ --trx=test-results/results.trx --html=test-results/report.html --cov=automation --cov-report=xml
             displayName: 'Execute QA Test Suite'
-            continueOnError: true
+            continueOnError: false
 
           - script: |
               echo "Validating traceability matrix..."
@@ -137,10 +137,10 @@ stages:
             displayName: 'Publish Test Results'
             condition: always()
 
-          - task: PublishHtmlReport@1
+          - task: PublishBuildArtifacts@1
             inputs:
-              reportDir: 'test-results'
-              tabName: 'QA Test Report'
+              pathToPublish: 'test-results'
+              artifactName: 'QA Test Report'
             displayName: 'Publish HTML Test Report'
             condition: always()
 
@@ -169,7 +169,7 @@ stages:
               addToPath: true
             displayName: 'Set up Python'
 
-          - task: Checkout@1
+          - checkout: self
             displayName: 'Checkout repository'
 
           - script: |
@@ -211,9 +211,9 @@ stages:
             displayName: 'Publish Appium Results'
             condition: always()
 
-          - task: PublishHtmlReport@1
+          - task: PublishBuildArtifacts@1
             inputs:
-              reportDir: 'test-results'
-              tabName: 'Appium Smoke Report'
+              pathToPublish: 'test-results'
+              artifactName: 'Appium Smoke Report'
             displayName: 'Publish Appium HTML Report'
             condition: always()

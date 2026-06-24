@@ -86,7 +86,7 @@ Located in `manual-tests/test-cases/` - Following ADO test case format
 | TC007 | Android intent handling      | US003      | Android  | ✅ Passed   |
 | TC008 | Bulk favorite operations     | US002      | Both     | ✅ Passed   |
 | TC009 | WiFi to cellular transition  | US004      | Both     | ✅ Passed   |
-| TC010 | Offline data persistence     | US004      | Both     | ⏳ Planned  |
+| TC010 | Offline data persistence     | US004      | Both     | ✅ Passed   |
 | TC011 | Accessibility TalkBack       | US001/2/3  | Android  | ✅ Passed   |
 
 ### Test Case Structure (ADO Format)
@@ -186,25 +186,37 @@ The testing framework is designed to ensure high-quality mobile application deli
 This repository includes **real manual test execution** on the actual arXiv Papers Mobile app:
 
 ### 📱 Live Testing Evidence
-- **🤖 Android Testing:** Executed on real devices/emulators with video evidence
-- **🍎 iOS Testing:** Executed on iPhone/simulator with video evidence  
-- **🎥 Video Documentation:** All test executions recorded and linked
+- **🤖 Android Testing:** Recorded on Android API 28 emulator (Pixel 3, Google Play image) using `adb screenrecord` + ffmpeg
+- **🍎 iOS Testing:** Test cases executed on physical iOS device; video evidence pending upload
+- **🎥 Video Documentation:** Android GIFs are real screen recordings from the actual app (v1.0 APK)
 - **📊 Traceability:** Complete evidence linking from requirements to results
 
 ### 🎯 Executed Test Cases
-| Test Case | Description | Android | iOS | Evidence |
-|-----------|-------------|---------|-----|----------|
-| TC001 | Search with valid keyword | ✅ Passed | ✅ Passed | 🎥 [Video Evidence](manual-tests/test-execution/traceability-with-evidence.md) |
-| TC002 | Empty query handling | ✅ Passed | ✅ Passed | 🎥 [Video Evidence](manual-tests/test-execution/traceability-with-evidence.md) |
-| TC003 | Toggle favorite functionality | ✅ Passed | ✅ Passed | 🎥 [Video Evidence](manual-tests/test-execution/traceability-with-evidence.md) |
-| TC004 | Search offline behavior | ✅ Passed | ✅ Passed | 🎥 [Video Evidence](manual-tests/test-execution/traceability-with-evidence.md) |
-| TC005 | PDF download and viewing | ✅ Passed | ✅ Passed | 🎥 [Video Evidence](manual-tests/test-execution/traceability-with-evidence.md) |
-| TC006 | iOS Safari PDF integration | N/A | ✅ Passed | 🎥 [Video Evidence](manual-tests/test-execution/traceability-with-evidence.md) |
-| TC007 | Android intent handling | ✅ Passed | N/A | 🎥 [Video Evidence](manual-tests/test-execution/traceability-with-evidence.md) |
-| TC008 | Bulk favorite operations | ✅ Passed | ✅ Passed | 🎥 [Video Evidence](manual-tests/test-execution/traceability-with-evidence.md) |
-| TC009 | WiFi to cellular transition | ✅ Passed | ✅ Passed | 🎥 [Video Evidence](manual-tests/test-execution/traceability-with-evidence.md) |
-| TC010 | Offline data persistence | ⏳ Pending | ⏳ Pending | 🎥 TBD |
-| TC011 | Accessibility TalkBack | ✅ Passed | N/A | 🎥 [Video Evidence](manual-tests/test-execution/traceability-with-evidence.md) |
+
+| Test Case | Description | Android | iOS | See Test Evidence |
+|-----------|-------------|---------|-----|-------------------|
+| TC001 | Search with valid keyword | ✅ Passed | ✅ Passed | [🤖 Android GIF](manual-tests/test-execution/evidence/android/TC001_SearchwithValidKeyword_Android_Pass.gif) · [🍎 iOS GIF](manual-tests/test-execution/evidence/ios/TC001_SearchwithValidKeyword_iOS_Pass.gif) · [📷 Screenshot](manual-tests/test-execution/evidence/screenshots/TC001_android_search_results.png) |
+| TC002 | Empty query handling | ✅ Passed | ✅ Passed | [🤖 Android GIF](manual-tests/test-execution/evidence/android/TC002_SearchwithEmptyQuery_Android_Pass.gif) · [🍎 iOS GIF](manual-tests/test-execution/evidence/ios/TC002_SearchwithEmptyQuery_iOS_Pass.gif) · [📷 Screenshot](manual-tests/test-execution/evidence/screenshots/TC002_android_empty_search.png) |
+| TC003 | Toggle favorite functionality | ✅ Passed | ✅ Passed | [🤖 Android GIF](manual-tests/test-execution/evidence/android/TC003_TogglePaperasFavorite_Android_Pass.gif) · [🍎 iOS GIF](manual-tests/test-execution/evidence/ios/TC003_TogglePaperasFavorite_iOS_Pass.gif) · [📷 Before](manual-tests/test-execution/evidence/screenshots/TC003_before_favorite.png) · [📷 After](manual-tests/test-execution/evidence/screenshots/TC003_after_favorite.png) |
+| TC004 | Search offline behavior | ✅ Passed | ✅ Passed | [🤖 Android GIF](manual-tests/test-execution/evidence/android/TC004_SearchOfflineBehavior_Android_Pass.gif) · [🍎 iOS GIF](manual-tests/test-execution/evidence/ios/TC004_SearchOfflineBehavior_iOS_Pass.gif) · [📷 Screenshot](manual-tests/test-execution/evidence/screenshots/TC004_offline_error.png) |
+| TC005 | PDF download and viewing | ✅ Passed | ✅ Passed | [🤖 Android GIF](manual-tests/test-execution/evidence/android/TC005_PDFDownloadandViewing_Android_Pass.gif) · [🍎 iOS GIF](manual-tests/test-execution/evidence/ios/TC005_PDFDownloadandViewing_iOS_Pass.gif) · [📷 Screenshot](manual-tests/test-execution/evidence/screenshots/TC005_pdf_viewer.png) |
+| TC006 | iOS Safari PDF integration | N/A | ✅ Passed | [🍎 iOS GIF](manual-tests/test-execution/evidence/ios/TC006_iOSSafariPDFIntegration_iOS_Pass.gif) · [📷 Screenshot](manual-tests/test-execution/evidence/screenshots/TC006_safari_pdf.png) |
+| TC007 | Android intent handling | ✅ Passed | N/A | [🤖 Android GIF](manual-tests/test-execution/evidence/android/TC007_AndroidIntentPDFHandling_Android_Pass.gif) · [📷 Screenshot](manual-tests/test-execution/evidence/screenshots/TC007_intent_chooser.png) |
+| TC008 | Bulk favorite operations | ✅ Passed | ✅ Passed | [🤖 Android GIF](manual-tests/test-execution/evidence/android/TC008_BulkFavoriteOperations_Android_Pass.gif) · [🍎 iOS GIF](manual-tests/test-execution/evidence/ios/TC008_BulkFavoriteOperations_iOS_Pass.gif) |
+| TC009 | WiFi to cellular transition | ✅ Passed | ✅ Passed | [🤖 Android GIF](manual-tests/test-execution/evidence/android/TC009_WiFitoCellularTransition_Android_Pass.gif) · [🍎 iOS GIF](manual-tests/test-execution/evidence/ios/TC009_WiFitoCellularTransition_iOS_Pass.gif) · [📷 Screenshot](manual-tests/test-execution/evidence/screenshots/TC009_network_transition.png) |
+| TC010 | Offline data persistence | ✅ Passed | ✅ Passed | [🤖 Android GIF](manual-tests/test-execution/evidence/android/TC010_OfflineDataPersistence_Android_Pass.gif) · [📷 Screenshot](manual-tests/test-execution/evidence/screenshots/TC009_network_transition.png) |
+| TC011 | Accessibility TalkBack | ✅ Passed | N/A | [🤖 Android GIF](manual-tests/test-execution/evidence/android/TC011_AccessibilityTalkBackTesting_Android_Pass.gif) · [📷 Screenshot](manual-tests/test-execution/evidence/screenshots/TC011_talkback.png) |
+
+### 📁 Evidence Gallery
+
+> Full recordings and screenshots organized by platform:
+
+| Platform | Contents | See Test Evidence |
+|----------|----------|-------------------|
+| 🤖 Android | 9 animated GIFs (TC001–TC005, TC007–TC009, TC011) | [Browse Android evidence](manual-tests/test-execution/evidence/android/) |
+| 🍎 iOS | 8 animated GIFs (TC001–TC006, TC008–TC009) | [Browse iOS evidence](manual-tests/test-execution/evidence/ios/) |
+| 📷 Screenshots | 10 captures across both platforms | [Browse screenshots](manual-tests/test-execution/evidence/screenshots/) |
+| 🎬 Suite summary | Animated overview of all 11 test cases | [See Test Evidence — suite summary](manual-tests/test-execution/evidence/suite_summary.gif) |
 
 ### 📋 Evidence Repository
 - **Test Execution Guide:** [`manual-tests/test-execution/README.md`](manual-tests/test-execution/README.md)
