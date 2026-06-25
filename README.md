@@ -282,5 +282,4 @@ This demonstrates **genuine QA work** with verifiable evidence on a real React N
 **LinkedIn:** [linkedin.com/in/jonathan-verdun](https://linkedin.com/in/jonathan-verdun)  
 **Location:** Paraguay (remote-friendly)
 
-
 ---

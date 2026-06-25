@@ -31,7 +31,7 @@ This document provides complete traceability from requirements to test execution
 #### Evidence Links:
 - **Android Execution:** [evidence/android/TC001_SearchwithValidKeyword_Android_Pass.gif](evidence/android/TC001_SearchwithValidKeyword_Android_Pass.gif)
 - **iOS Execution:** [evidence/ios/TC001_SearchwithValidKeyword_iOS_Pass.gif](evidence/ios/TC001_SearchwithValidKeyword_iOS_Pass.gif)
-- **Screenshots:** 
+- **Screenshots:**
   - Android search results: `evidence/screenshots/TC001_android_search_results.png`
   - iOS search results: `evidence/screenshots/TC001_ios_search_results.png`
 
