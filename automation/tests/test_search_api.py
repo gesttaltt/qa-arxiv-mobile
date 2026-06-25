@@ -33,17 +33,22 @@ class TestArxivSearchAPI:
         assert response.status_code == 200
         assert "application/atom+xml" in response.headers.get("content-type", "")
         import xml.etree.ElementTree as ET
+
         root = ET.fromstring(response.content)
         ns = {"atom": "http://www.w3.org/2005/Atom"}
         entries = root.findall("atom:entry", ns)
         assert len(entries) > 0, "No Atom entries returned"
         all_text = " ".join(
-            (entry.findtext("atom:title", "", ns) + " " + entry.findtext("atom:summary", "", ns)).lower()
+            (
+                entry.findtext("atom:title", "", ns)
+                + " "
+                + entry.findtext("atom:summary", "", ns)
+            ).lower()
             for entry in entries
         )
-        assert search_term.lower() in all_text, (
-            f"Search term '{search_term}' not found in any entry title or summary"
-        )
+        assert (
+            search_term.lower() in all_text
+        ), f"Search term '{search_term}' not found in any entry title or summary"
 
     def test_empty_search_api_validation(self) -> None:
         """

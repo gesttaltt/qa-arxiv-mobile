@@ -13,10 +13,14 @@ See also:
   - automation/tests/appium/test_search_smoke.py (UI-layer smoke tests)
 """
 
+import time
+
 import pytest
 import requests
 
 BASE_URL = "http://export.arxiv.org/api/query"
+
+_RATE_LIMIT_DELAY = 1.5  # seconds between requests to avoid arXiv 429s
 
 
 @pytest.mark.integration
@@ -56,6 +60,7 @@ class TestValidSearchAPI:
                 "start": "0",
                 "max_results": str(expected_count),
             }
+            time.sleep(_RATE_LIMIT_DELAY)
             response = requests.get(BASE_URL, params=params, timeout=15)
             assert response.status_code == 200
             # Count <entry> elements

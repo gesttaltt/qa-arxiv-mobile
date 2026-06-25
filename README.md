@@ -1,5 +1,7 @@
 # QA for Arxiv Papers Mobile App
 
+[![CI](https://github.com/gesttaltt/qa-arxiv-mobile/actions/workflows/ci.yml/badge.svg)](https://github.com/gesttaltt/qa-arxiv-mobile/actions/workflows/ci.yml)
+
 > Fully documented testing emphasizing **manual QA** and **ADO-style traceability** over a real mobile application.
 
 This repository contains a complete QA portfolio applied to the open-source [arxiv-papers-mobile](https://github.com/lopespm/arxiv-papers-mobile) React Native app — demonstrating the full testing lifecycle from requirements analysis through execution, defect reporting, and CI integration, following Azure DevOps enterprise practices.
