@@ -1,4 +1,6 @@
 import os
+from datetime import datetime
+from pathlib import Path
 
 import pytest
 from appium import webdriver
@@ -10,6 +12,7 @@ ANDROID_APK = os.environ.get(
     "/tmp/arxiv-mobile-testing/arxiv-papers-mobile/android/app/build/outputs/apk/debug/app-debug.apk",
 )
 DEVICE_NAME = os.environ.get("ANDROID_DEVICE_NAME", "Android Emulator")
+SCREENSHOTS_DIR = Path("test-results/screenshots")
 
 
 @pytest.fixture(scope="session")
@@ -27,3 +30,23 @@ def android_driver():
     driver.implicitly_wait(10)
     yield driver
     driver.quit()
+
+
+@pytest.hookimpl(tryfirst=True, hookwrapper=True)
+def pytest_runtest_makereport(item, call):
+    outcome = yield
+    report = outcome.get_result()
+
+    if report.when == "call" and report.failed:
+        driver = item.funcargs.get("android_driver")
+        if driver is None:
+            return
+
+        SCREENSHOTS_DIR.mkdir(parents=True, exist_ok=True)
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        filename = (
+            SCREENSHOTS_DIR
+            / f"{item.nodeid.replace('/', '_').replace('::', '__')}_{timestamp}.png"
+        )
+        driver.save_screenshot(str(filename))
+        report.sections.append(("Screenshot", str(filename)))
