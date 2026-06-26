@@ -67,12 +67,18 @@ class TestArxivSearchAPI:
     def test_search_relevance_data_validation(
         self, search_term: str, expected_min_results: int
     ) -> None:
-        """Data-driven testing to validate search relevance."""
+        """Each academic keyword must return at least expected_min_results entries."""
         response = arxiv_get(
             {"search_query": f"all:{search_term}", "start": "0", "max_results": "5"}
         )
         assert response.status_code == 200
-        assert len(response.text) > 100
+        root = ET.fromstring(response.content)
+        ns = {"atom": "http://www.w3.org/2005/Atom"}
+        entries = root.findall("atom:entry", ns)
+        assert len(entries) >= expected_min_results, (
+            f"'{search_term}' returned {len(entries)} results, "
+            f"expected at least {expected_min_results}"
+        )
 
 
 class TestFavoritesDataPersistence:
