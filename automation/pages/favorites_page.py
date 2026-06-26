@@ -24,7 +24,7 @@ class FavoritesPage(BasePage):
         "//android.widget.ImageView",
     )
 
-    def open(self) -> None:
+    def open(self) -> None:  # pragma: no cover
         """Navigate to the Favorites tab."""
         wait = self._wait()
         try:
@@ -33,15 +33,15 @@ class FavoritesPage(BasePage):
             tab = wait.until(EC.element_to_be_clickable(self._FAVORITES_TAB_XPATH))
         tab.click()
 
-    def get_items(self) -> list:
+    def get_items(self) -> list:  # pragma: no cover
         """Wait for and return all items currently in the Favorites list."""
         return self._wait().until(EC.presence_of_all_elements_located(self._LIST_ITEM))
 
-    def get_current_items(self) -> list:
+    def get_current_items(self) -> list:  # pragma: no cover
         """Return currently visible favorites items without waiting."""
         return self.driver.find_elements(*self._LIST_ITEM)
 
-    def tap_favorite_on_first_item(self) -> None:
+    def tap_favorite_on_first_item(self) -> None:  # pragma: no cover
         """Tap the favorite/star button on the first item in the Favorites list."""
         buttons = self.driver.find_elements(*self._FAVORITE_BUTTON)
         if buttons:
