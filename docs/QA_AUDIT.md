@@ -134,8 +134,8 @@ The following improvements have been made since the initial audit:
 - **`TestPerformanceBaseline`**: replaced the real-HTTP SLA test with mock-based tests that simulate 0.5 s (passes) and 3.5 s (fails) responses, validating the assertion logic rather than third-party API latency.
 - **`TestFavoritesDataPersistence`**: replaced the old hardcoded dict assertion with 4 real API contract tests (`id`, `title`, `authors`, `published`) that would catch API schema changes before the UI is even involved.
 - **BDD / Gherkin**: `automation/features/search.feature` (5 scenarios including Scenario Outline) and `automation/tests/bdd/test_search.py` (step definitions via pytest-bdd 7.3.0).
-- **100% code coverage**: `pyproject.toml` configured to measure only library code (`pages/`, `utils.py`); Appium method bodies excluded via `# pragma: no cover` (require real device); `--cov-fail-under=100` enforced in CI.
-- **Codecov**: `.codecov.yml` added; coverage badge pinned to public Codecov report.
+- **Honest coverage (52%)**: `# pragma: no cover` removed from all Page Object methods; coverage now reflects the real state — `utils.py` 100%, page objects 37–71% (method bodies require Appium device). `--cov-fail-under=50` enforces a meaningful gate without gaming metrics.
+- **Codecov**: `.codecov.yml` added; coverage badge reflects the live 52% figure.
 
 ---
 
@@ -304,8 +304,8 @@ The standalone `ruff.toml` has been removed and its configuration has been merge
 | Automation tests using correct framework | 43 — Appium + API + BDD (Selenium replaced) |
 | Selenium-based tests (wrong framework) | 0 |
 | Config fragmentation (ruff) | Resolved — consolidated in `pyproject.toml` |
-| Code coverage (library code) | 100% — enforced via `--cov-fail-under=100` in GitHub Actions |
-| CI quality gates functional (GitHub Actions) | Full — lint + type check + pytest + coverage gate; all blocking |
+| Code coverage | 52% overall — `utils.py` 100%, page objects 37–71%; gate at `--cov-fail-under=50` |
+| CI quality gates functional (GitHub Actions) | Full — lint + type check + pytest + `--cov-fail-under=50`; all blocking |
 | CI quality gates functional (Azure Pipelines) | Partial — `pytest` and `mypy` blocking; style/lint non-blocking; no coverage gate |
 | CI stages covering macOS / Xcode | 0 |
 | ADO pipeline tasks using correct syntax | Yes — `checkout: self` and `PublishBuildArtifacts@1` in all stages |
