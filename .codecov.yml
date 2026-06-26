@@ -1,0 +1,25 @@
+codecov:
+  notify:
+    wait_for_ci: true   # upload only after all CI jobs finish
+
+coverage:
+  precision: 1          # show one decimal (e.g. 49.3%)
+  round: down           # round down, never inflate the number
+  range: "40...80"      # red below 40%, green above 80%, yellow in between
+
+  status:
+    project:
+      default:
+        # "auto" uses the previous commit as the target so the threshold
+        # rises automatically as coverage improves — no hardcoded floor to update.
+        target: auto
+        threshold: 2%   # allow up to 2% variance before marking the build red
+    patch:
+      default:
+        target: 70%     # new code introduced in a PR must be at least 70% covered
+        threshold: 5%   # allow 5% variance on patch coverage
+
+comment:
+  layout: "reach,diff,files"
+  behavior: default
+  require_changes: true # only comment on PRs when coverage actually changes
