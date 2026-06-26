@@ -138,13 +138,20 @@ class TestFavoritesDataPersistence:
         assert published and published.strip(), "Entry is missing <published> date"
 
 
-class TestManualTestingSupport:
-    """Utility tests that verify the environment is ready for manual testing."""
+class TestSearchKeywordSanity:
+    """
+    Sanity checks for the search keywords used across the test suite.
 
-    def test_test_environment_connectivity(self) -> None:
-        """Validates test environment is ready for manual testing."""
+    These tests verify that the arXiv API returns well-formed results for
+    the academic terms that appear in TC001, BDD scenarios, and parametrised
+    tests — so a failure here points to a data-layer problem, not a test bug.
+    """
+
+    def test_api_returns_atom_feed(self) -> None:
+        """API must respond with a valid Atom feed for a generic query."""
         response = arxiv_get({"search_query": "all:test", "max_results": "1"})
         assert response.status_code == 200
+        assert "application/atom+xml" in response.headers.get("content-type", "")
 
     @pytest.mark.parametrize(
         "term",
@@ -155,13 +162,18 @@ class TestManualTestingSupport:
             "deep learning",
         ],
     )
-    def test_generate_test_data_for_manual_testing(self, term: str) -> None:
-        """Ensures each standard test keyword returns results for manual testers."""
+    def test_common_keyword_returns_at_least_one_result(self, term: str) -> None:
+        """Each standard academic keyword must return at least one Atom entry."""
         response = arxiv_get(
             {"search_query": f"all:{term}", "start": "0", "max_results": "3"}
         )
         assert response.status_code == 200
-        assert len(response.text) > 500
+        root = ET.fromstring(response.content)
+        ns = {"atom": "http://www.w3.org/2005/Atom"}
+        entries = root.findall("atom:entry", ns)
+        assert (
+            len(entries) >= 1
+        ), f"'{term}' returned 0 results — keyword may be too specific or API changed"
 
 
 class TestPerformanceBaseline:
