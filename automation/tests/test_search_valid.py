@@ -46,20 +46,20 @@ class TestValidSearchAPI:
         assert response.status_code == 200
         assert "<entry>" in response.text
 
-    def test_max_results_param_respected(self) -> None:
+    @pytest.mark.parametrize("max_results", [1, 3, 10])
+    def test_max_results_param_respected(self, max_results: int) -> None:
         """The max_results parameter must cap the number of entries returned."""
-        for expected_count in (1, 3, 10):
-            response = arxiv_get(
-                {
-                    "search_query": "all:test",
-                    "start": "0",
-                    "max_results": str(expected_count),
-                }
-            )
-            assert response.status_code == 200
-            root = ET.fromstring(response.content)
-            ns = {"atom": "http://www.w3.org/2005/Atom"}
-            entries = root.findall("atom:entry", ns)
-            assert (
-                len(entries) <= expected_count
-            ), f"Expected <= {expected_count} entries, got {len(entries)}"
+        response = arxiv_get(
+            {
+                "search_query": "all:test",
+                "start": "0",
+                "max_results": str(max_results),
+            }
+        )
+        assert response.status_code == 200
+        root = ET.fromstring(response.content)
+        ns = {"atom": "http://www.w3.org/2005/Atom"}
+        entries = root.findall("atom:entry", ns)
+        assert (
+            len(entries) <= max_results
+        ), f"Expected <= {max_results} entries, got {len(entries)}"

@@ -29,10 +29,10 @@ Comprehensive test coverage analysis for arxiv-papers-mobile application focusin
 | Test Type | Count | Percentage |
 |-----------|-------|------------|
 | Functional (manual) | 11 | 26% |
-| API integration (pytest) | 34 | 79% |
+| API integration (pytest) | 36 | 80% |
 | Retry / unit (mock-based) | 4 | 9% |
-| BDD / Gherkin (pytest-bdd) | 5 | 12% |
-| Performance / SLA (mock-based) | 2 | 5% |
+| BDD / Gherkin (pytest-bdd) | 5 | 11% |
+| Performance / SLA (mock-based) | 2 | 4% |
 
 > Totals exceed 100% because API and BDD tests overlap in scope with manual test cases.
 > Performance / SLA (2) is a subset of API integration (34), shown separately for emphasis.
@@ -51,9 +51,9 @@ Comprehensive test coverage analysis for arxiv-papers-mobile application focusin
 ### Test Execution Summary
 
 - **Manual test cases**: 11 executed, 11 passed
-- **Automated API + unit tests**: 38 passing (pytest, runs in CI on every push)
+- **Automated API + unit tests**: 40 passing (pytest, runs in CI on every push)
 - **BDD scenarios**: 5 passing (pytest-bdd, Gherkin feature file)
-- **Total automated**: 43 (excludes 8 Appium tests — require real device)
+- **Total automated**: 45 (excludes 8 Appium tests — require real device)
 - **Code coverage**: 52% overall — `automation/tests/utils.py` 100% (fully unit-tested), page objects 37–71% (method bodies require a real Appium device to execute); gate set at `--cov-fail-under=50`
 - **CI pipeline**: GitHub Actions — green badge on `main`
 - **Average manual execution time**: ~15 minutes per test case
@@ -64,7 +64,7 @@ All test cases properly linked to user stories with bidirectional traceability.
 
 - Total User Stories: **4** (US001–US004)
 - Manual Test Cases: **11** (TC001–TC011)
-- Automated Test Cases: **43** (38 API/unit + 5 BDD, excludes 8 Appium — requires device)
+- Automated Test Cases: **45** (40 API/unit + 5 BDD, excludes 8 Appium — requires device)
 - Traceability Matrix: ✅ Present (`manual-tests/traceability-matrix.csv`)
 - CI Pipeline: ✅ GitHub Actions (`.github/workflows/ci.yml` — active, green badge)
 - ADO Pipeline: ✅ Azure Pipelines config (`automation/ci/azure-pipelines.yml`)
