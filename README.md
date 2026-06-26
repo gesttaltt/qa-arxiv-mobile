@@ -1,6 +1,10 @@
 # QA for Arxiv Papers Mobile App
 
 [![CI](https://github.com/gesttaltt/qa-arxiv-mobile/actions/workflows/ci.yml/badge.svg)](https://github.com/gesttaltt/qa-arxiv-mobile/actions/workflows/ci.yml)
+![Python](https://img.shields.io/badge/python-3.12-3776AB?logo=python&logoColor=white)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+![Appium](https://img.shields.io/badge/Appium-mobile%20automation-662D91?logo=appium&logoColor=white)
+![BDD](https://img.shields.io/badge/BDD-Gherkin%20%2B%20pytest--bdd-23D96C?logo=cucumber&logoColor=white)
 
 ![pytest suite — 36 tests passing](docs/pytest-ci-demo.gif)
 
