@@ -109,7 +109,11 @@ stages:
 
           - script: |
               echo "Running automated test suite..."
-              pytest automation/tests/ --trx=test-results/results.trx --html=test-results/report.html --cov=automation --cov-report=xml
+              pytest automation/tests/ \
+                --trx=test-results/results.trx \
+                --html=test-results/report.html \
+                --cov=automation \
+                --cov-report=xml
             displayName: 'Execute QA Test Suite'
             continueOnError: false
 
