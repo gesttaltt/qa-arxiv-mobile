@@ -154,13 +154,14 @@ These queries serve as **data layer assertions** — complementing the UI tests 
 
 | Category | What it measures | Tool | Covered in project |
 |---|---|---|---|
-| **Response time** | API round-trip under normal load | pytest (`time`), Postman | `test_search_api.py` — `test_api_response_time` |
+| **Response time** | SLA assertion logic under simulated latency | pytest + `unittest.mock` | `test_search_api.py` — `TestPerformanceBaseline` |
 | **Load testing** | Behaviour under expected concurrent users | JMeter, k6 | Not implemented (out of scope for junior portfolio) |
 | **Stress testing** | Breaking point beyond normal load | JMeter | Not implemented |
 | **Soak testing** | Stability over extended time | Custom script | Not implemented |
 
-The response time assertion in this project establishes a baseline (< 3 s) for the
-arXiv API and demonstrates awareness of non-functional requirements.
+`TestPerformanceBaseline` uses mocks to simulate 0.5 s (fast) and 3.5 s (slow) responses
+and asserts that the SLA check logic correctly detects each case. Measuring arXiv's actual
+server speed in CI is not meaningful — it is a third-party service outside our control.
 
 ---
 
@@ -180,10 +181,10 @@ See `manual-tests/test-cases/TC011_accessibility_talkback.md`.
 
 | Level | Definition | Examples in this project |
 |---|---|---|
-| **Unit** | Smallest testable unit in isolation | `test_favorites_data_structure` in `test_search_api.py` |
-| **Integration** | Interaction between components | `test_search_valid_keyword_api_response` (app ↔ arXiv API) |
+| **Unit** | Smallest testable unit in isolation | `TestArxivGetRetry` in `test_utils.py` — mocks HTTP and `time.sleep` to test retry logic in isolation |
+| **Integration** | Interaction between components | `test_search_valid_keyword_api_response` (app ↔ arXiv API); `TestFavoritesDataPersistence` (API contract) |
 | **System** | End-to-end behaviour of the full system | All Appium smoke tests in `automation/tests/appium/` |
-| **Acceptance** | Business requirements met | Manual TCs against real app build |
+| **Acceptance** | Business requirements met | BDD scenarios in `automation/features/search.feature`; manual TCs against real app build |
 
 ---
 
@@ -192,8 +193,81 @@ See `manual-tests/test-cases/TC011_accessibility_talkback.md`.
 | Type | Examples in this project |
 |---|---|
 | **Functional** | TC001–TC005, TC008–TC009 |
-| **Non-functional (Performance)** | TC009, `test_api_response_time` |
+| **Non-functional (Performance)** | TC009; `TestPerformanceBaseline` in `test_search_api.py` (mock-based SLA validation) |
 | **Non-functional (Accessibility)** | TC011 |
 | **Regression** | Re-running TC001–TC003 after any build change |
 | **Smoke** | Appium tests in `automation/tests/appium/` |
 | **Exploratory** | Postman collection — manual API exploration |
+| **BDD/Acceptance** | Gherkin scenarios in `automation/features/search.feature` executed via pytest-bdd |
+
+---
+
+## 9. Behaviour-Driven Development (BDD)
+
+BDD extends test-driven development by expressing test scenarios in natural language
+(Gherkin) that both technical and non-technical stakeholders can read and validate.
+This removes the translation layer between business requirements and test code.
+
+### Gherkin structure
+
+Given–When–Then steps map directly to: precondition, action, and expected outcome.
+
+```gherkin
+Feature: arXiv paper search
+
+  Scenario: Valid keyword returns results
+    Given I have access to the arXiv search API
+    When I search for "machine learning"
+    Then the response status is 200
+    And the response contains at least 1 paper
+    And each paper has a non-empty title
+```
+
+### BDD vs traditional test cases
+
+| Aspect | ADO/JIRA Test Case | BDD Scenario |
+|---|---|---|
+| Author | QA engineer | QA + Product Owner |
+| Language | Technical steps | Plain English |
+| Traceability | Manual linkage to User Stories | Implicit in the scenario title |
+| Step re-use | None | `Given I have access to the arXiv search API` shared across all scenarios |
+| Parametrisation | Separate test cases per variant | `Scenario Outline` with `Examples` table |
+
+### Implementation in this project
+
+| File | Role |
+|---|---|
+| `automation/features/search.feature` | Gherkin scenarios covering TC001, TC002, and a Scenario Outline × 3 keywords |
+| `automation/tests/bdd/test_search.py` | pytest-bdd step definitions; `scenarios()` auto-collects all scenarios |
+
+Step definitions use a shared `result` dict fixture to pass state between
+Given/When/Then steps without global variables:
+
+```python
+@pytest.fixture
+def result() -> dict:
+    return {}
+
+@when(parsers.parse('I search for "{keyword}"'))
+def search_for_keyword(result: dict, keyword: str) -> None:
+    result["response"] = arxiv_get({"search_query": f"all:{keyword}", ...})
+
+@then("the response contains at least 1 paper")
+def has_at_least_one_result(result: dict) -> None:
+    entries = ET.fromstring(result["response"].content).findall(...)
+    assert len(entries) >= 1
+```
+
+The `Scenario Outline` demonstrates parametrised BDD — one scenario template runs
+against multiple data rows (quantum physics, neural networks, computer science),
+generating three independent pytest functions automatically.
+
+### BDD coverage map
+
+| User Story | Gherkin Scenario | Automated test ID |
+|---|---|---|
+| US001 (TC001) | Valid keyword returns results | `test_valid_keyword_returns_results` |
+| US001 (TC002) | Empty query is handled gracefully | `test_empty_query_is_handled_gracefully` |
+| US001 (TC001 ×3) | Popular academic topics — quantum physics | `test_popular_academic_topics_all_return_results[quantum physics]` |
+| US001 (TC001 ×3) | Popular academic topics — neural networks | `test_popular_academic_topics_all_return_results[neural networks]` |
+| US001 (TC001 ×3) | Popular academic topics — computer science | `test_popular_academic_topics_all_return_results[computer science]` |
