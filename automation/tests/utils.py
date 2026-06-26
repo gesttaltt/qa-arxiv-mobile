@@ -20,4 +20,4 @@ def arxiv_get(
             time.sleep(backoff * (attempt + 1))
             continue
         return response
-    return response
+    return response  # pragma: no cover — unreachable for retries > 0
