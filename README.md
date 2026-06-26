@@ -25,7 +25,7 @@ This repository contains a complete QA portfolio applied to the open-source [arx
 | **Defect Reporting** | 7 structured defect reports (BUG001–BUG007) with reproduction steps, severity, and fix suggestions |
 | **CI/CD** | GitHub Actions pipeline with linting (Black, Ruff, mypy, markdownlint), pytest quality gates, and green badge; Azure Pipelines config included for ADO environments |
 | **Accessibility** | TC011 TalkBack navigation; WCAG 2.1 AA gap identified in BUG007 (`accessibilityRole` missing) |
-| **Test Automation** | pytest API layer (36 tests); BDD scenarios in Gherkin (pytest-bdd); Page Object Model (Appium); mock-based SLA tests; API contract validation |
+| **Test Automation** | pytest API layer (43 tests, 52% coverage); BDD scenarios in Gherkin (pytest-bdd); Page Object Model (Appium); mock-based SLA tests; API contract validation |
 | **Documentation** | ADO-style wiki, traceability matrix, execution logs, testability feedback notes |
 
 ---
