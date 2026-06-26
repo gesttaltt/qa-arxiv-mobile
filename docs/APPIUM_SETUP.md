@@ -8,11 +8,11 @@ Mobile UI automation for the arXiv Papers mobile app (React Native, Android/iOS)
 
 | Tool | Version | Install |
 |---|---|---|
-| Node.js | 18 LTS or later | https://nodejs.org |
+| Node.js | 20 LTS or later (CI uses 24) | https://nodejs.org |
 | Appium | 2.x | `npm install -g appium` |
 | UiAutomator2 driver | latest | `appium driver install uiautomator2` |
 | Android Studio + SDK | latest stable | https://developer.android.com/studio |
-| Java JDK | 11 or 17 | https://adoptium.net |
+| Java JDK | 17 or 21 | https://adoptium.net |
 | Python | 3.12 | https://python.org |
 | Python deps | (see below) | `pip install -r automation/requirements.txt` |
 
