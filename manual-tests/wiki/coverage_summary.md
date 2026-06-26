@@ -28,12 +28,14 @@ Comprehensive test coverage analysis for arxiv-papers-mobile application focusin
 
 | Test Type | Count | Percentage |
 |-----------|-------|------------|
-| Functional (manual) | 11 | 30% |
-| API integration (pytest) | 31 | 84% |
-| BDD / Gherkin (pytest-bdd) | 5 | 14% |
+| Functional (manual) | 11 | 26% |
+| API integration (pytest) | 34 | 79% |
+| Retry / unit (mock-based) | 4 | 9% |
+| BDD / Gherkin (pytest-bdd) | 5 | 12% |
 | Performance / SLA (mock-based) | 2 | 5% |
 
 > Totals exceed 100% because API and BDD tests overlap in scope with manual test cases.
+> Performance / SLA (2) is a subset of API integration (34), shown separately for emphasis.
 
 ## Quality Metrics
 
@@ -49,8 +51,10 @@ Comprehensive test coverage analysis for arxiv-papers-mobile application focusin
 ### Test Execution Summary
 
 - **Manual test cases**: 11 executed, 11 passed
-- **Automated API tests**: 31 passing (pytest, runs in CI on every push)
+- **Automated API + unit tests**: 38 passing (pytest, runs in CI on every push)
 - **BDD scenarios**: 5 passing (pytest-bdd, Gherkin feature file)
+- **Total automated**: 43 (excludes 8 Appium tests — require real device)
+- **Code coverage**: 100% on library code (`automation/pages/`, `automation/tests/utils.py`) — enforced via `--cov-fail-under=100`
 - **CI pipeline**: GitHub Actions — green badge on `main`
 - **Average manual execution time**: ~15 minutes per test case
 
@@ -60,7 +64,7 @@ All test cases properly linked to user stories with bidirectional traceability.
 
 - Total User Stories: **4** (US001–US004)
 - Manual Test Cases: **11** (TC001–TC011)
-- Automated Test Cases: **36** (31 API + 5 BDD, excludes Appium — requires device)
+- Automated Test Cases: **43** (38 API/unit + 5 BDD, excludes 8 Appium — requires device)
 - Traceability Matrix: ✅ Present (`manual-tests/traceability-matrix.csv`)
 - CI Pipeline: ✅ GitHub Actions (`.github/workflows/ci.yml` — active, green badge)
 - ADO Pipeline: ✅ Azure Pipelines config (`automation/ci/azure-pipelines.yml`)
@@ -88,6 +92,7 @@ All test cases properly linked to user stories with bidirectional traceability.
 - API automation covers the data layer for Search (TC001, TC002) and Favorites API contract (TC003)
 - BDD scenarios in `automation/features/search.feature` bridge TC001/TC002 to Gherkin, readable by non-technical stakeholders
 - SLA logic tested deterministically via mocks — not subject to network variability
+- Retry logic (`arxiv_get()` 429 backoff) covered by 4 dedicated mock-based unit tests in `automation/tests/test_utils.py`
 - Offline and UI-only flows (TC004, TC005–TC011) remain manual-only, appropriate for scenarios that depend on device state
 
 ---
