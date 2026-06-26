@@ -37,13 +37,17 @@ Manual test cases are in [`manual-tests/test-cases/`](https://github.com/gesttal
 | TC007 | Android intent handling | Decision Table | Android |
 | TC008 | Bulk favourite operations | Boundary Value Analysis | Both |
 | TC009 | WiFi to Cellular transition | State Transition | Both |
+| TC010 | Offline data persistence | State Transition + Error Guessing | Both |
 | TC011 | Accessibility – TalkBack | Platform Integration | Android |
 
 ---
 
 ## Automation
 
-- **API tests** — `automation/tests/test_search_api.py`, `test_data_validation.py`
-- **Mobile UI (Appium)** — `automation/tests/appium/`
-- **CI/CD** — Azure Pipelines (`automation/ci/azure-pipelines.yml`) + GitHub Actions (`.github/workflows/ci.yml`)
-- **Postman collection** — `automation/postman/arXiv_API.postman_collection.json`
+43 automated tests (38 API/unit + 5 BDD) — 52% coverage, enforced in CI.
+
+- **API + unit tests** — `automation/tests/` (43 tests: integration, SLA, contract, retry logic)
+- **BDD / Gherkin** — `automation/features/search.feature` + `automation/tests/bdd/`
+- **Mobile UI (Appium)** — `automation/tests/appium/` (Page Object Model, 8 tests, require device)
+- **Postman collection** — `automation/postman/arXiv_API.postman_collection.json` (6 requests, Newman CLI)
+- **CI/CD** — GitHub Actions (`.github/workflows/ci.yml`) + Azure Pipelines (`automation/ci/azure-pipelines.yml`)

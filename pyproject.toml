@@ -64,8 +64,8 @@ ignore_missing_imports = true
 
 [tool.coverage.run]
 # Measure library/utility code only — not the tests themselves.
-# Pages/ shows partial coverage because Appium methods need a real device.
-# utils.py shows partial coverage because the 429 retry path isn't exercised in CI.
+# pages/: 37-71% because Appium method bodies need a real device to execute.
+# tests/utils.py: 100% — retry logic fully covered by mock-based tests in test_utils.py.
 omit = [
     "automation/tests/test_*.py",
     "automation/tests/bdd/test_*.py",
