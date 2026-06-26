@@ -98,22 +98,18 @@ date format assertion) with commentary.
 
 ---
 
-### 3.4 Postman / API Testing Visibility — OPEN
+### 3.4 Postman / API Testing Visibility — RESOLVED
 
 **Market demand:** Postman is the single most cited API testing tool across all 2025–2026 job
 postings reviewed. Even Tietoevry's junior posting expects "good API and API testing notions."
 
-**Current state:** API testing exists in Python (`requests` library, 43 pytest tests) but no
-Postman collection is visible in the repo. Recruiters scanning a portfolio specifically look
-for a Postman collection as proof of tool familiarity.
-
-**What to add:**
-
-- Export an actual Postman collection (`arXiv_API.postman_collection.json`) covering:
-  - Valid search request + response assertion
-  - Empty query edge case
-  - Rate limit / error response
-- Include the collection in `automation/` with a short usage note in README
+**Resolution (June 2026):** `automation/postman/arXiv_API.postman_collection.json` contains
+6 requests with `pm.test()` assertions covering TC001 (valid search — status, Content-Type,
+body, response time), TC002 (empty query — no 5xx, response time), Equivalence Partitioning
+(author field query), BVA (max\_results=1 boundary, start=1 pagination offset), and Error
+Guessing (XSS special characters — server must not crash). Uses a `{{baseUrl}}` collection
+variable for easy environment switching. Run via Newman CLI:
+`newman run arXiv_API.postman_collection.json`
 
 ---
 
@@ -239,14 +235,14 @@ scenarios (TC001 valid search, TC002 empty query, Scenario Outline × 3 academic
 | 9 | Accessibility TC (TalkBack) + defect | ✅ Done (TC011, BUG007) |
 | 10 | BDD / Gherkin scenarios (pytest-bdd) | ✅ Done (added beyond original scope) |
 | 11 | Honest coverage reporting (52%, no pragma gaming) | ✅ Done (Codecov badge) |
+| 12 | Postman collection (6 requests + pm.test() assertions) | ✅ Done (`automation/postman/`) |
 
 ### Remaining
 
 | # | Area | Effort | Impact |
 |---|---|---|---|
-| 1 | Postman collection export | Low | High — most-cited tool by recruiters |
-| 2 | iOS Appium fixture (requires macOS + Xcode) | High | Medium |
-| 3 | macOS CI stage for iOS simulator | High | Low (hardware constraint) |
+| 1 | iOS Appium fixture (requires macOS + Xcode) | High | Medium |
+| 2 | macOS CI stage for iOS simulator | High | Low (hardware constraint) |
 
 ---
 
@@ -272,7 +268,7 @@ These areas are solid and should be maintained — they already match or exceed 
 | Tool | Market Frequency | In Project | Status |
 |---|---|---|---|
 | JIRA | Universal | Referenced in defect reports | Present (conceptual) |
-| Postman | Universal | Missing | **Remaining gap** |
+| Postman | Universal | `automation/postman/arXiv_API.postman_collection.json` | Present |
 | Selenium/Cypress/Playwright | Very high | Not applicable (mobile app) | Appium substitutes |
 | Appium | High (mobile roles) | POM + smoke tests | Present |
 | pytest-bdd / Gherkin | Moderate-high | Feature file + step defs | Present |

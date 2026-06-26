@@ -187,6 +187,7 @@ Also includes:
 - `automation/features/search.feature`: Gherkin scenarios (TC001, TC002) with Scenario Outline for parametrised runs
 - `automation/tests/bdd/test_search.py`: pytest-bdd step definitions wiring Gherkin to Python
 - `automation/pages/`: Page Object Model layer (SearchPage, FavoritesPage) for Appium tests
+- `automation/postman/arXiv_API.postman_collection.json`: Postman collection — 6 requests covering TC001, TC002, EP (author field), BVA (max\_results boundary, pagination offset), and Error Guessing (special characters); run with Newman CLI or Postman Collection Runner
 - Modern Python tooling: ruff, black, mypy, pytest-cov, pytest-html, pytest-bdd
 - Markdown and YAML linting integration
 - Mock-based SLA tests and API contract validation for the Favorites feature
