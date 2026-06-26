@@ -43,6 +43,23 @@ jobs:
           npm install -g markdownlint-cli2
           markdownlint-cli2 "**/*.md" "!node_modules"
 
+  postman:
+    name: Postman / Newman
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Install Newman
+        run: npm install -g newman
+
+      - name: Run Postman collection
+        run: newman run automation/postman/arXiv_API.postman_collection.json
+
   test:
     name: Test
     runs-on: ubuntu-latest
