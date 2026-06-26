@@ -140,20 +140,22 @@ class TestManualTestingSupport:
         response = arxiv_get({"search_query": "all:test", "max_results": "1"})
         assert response.status_code == 200
 
-    def test_generate_test_data_for_manual_testing(self) -> None:
-        """Ensures each standard test keyword returns results for manual testers."""
-        test_search_terms = [
+    @pytest.mark.parametrize(
+        "term",
+        [
             "machine learning",
             "quantum computing",
             "artificial intelligence",
             "deep learning",
-        ]
-        for term in test_search_terms:
-            response = arxiv_get(
-                {"search_query": f"all:{term}", "start": "0", "max_results": "3"}
-            )
-            assert response.status_code == 200
-            assert len(response.text) > 500
+        ],
+    )
+    def test_generate_test_data_for_manual_testing(self, term: str) -> None:
+        """Ensures each standard test keyword returns results for manual testers."""
+        response = arxiv_get(
+            {"search_query": f"all:{term}", "start": "0", "max_results": "3"}
+        )
+        assert response.status_code == 200
+        assert len(response.text) > 500
 
 
 class TestPerformanceBaseline:
