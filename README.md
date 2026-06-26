@@ -16,7 +16,7 @@ This repository contains a complete QA portfolio applied to the open-source [arx
 | **Test Design** | 11 ADO-format test cases covering functional, edge-case, and platform-specific flows |
 | **Traceability** | Bi-directional: User Stories → Test Cases → Evidence → Defects (CSV matrix + linked wiki) |
 | **Defect Reporting** | 7 structured defect reports (BUG001–BUG007) with reproduction steps, severity, and fix suggestions |
-| **CI/CD** | Azure Pipelines YAML with linting (Black, Ruff, mypy, markdownlint), pytest quality gates, and Appium smoke stage |
+| **CI/CD** | GitHub Actions pipeline with linting (Black, Ruff, mypy, markdownlint), pytest quality gates, and green badge; Azure Pipelines config included for ADO environments |
 | **Accessibility** | TC011 TalkBack navigation; WCAG 2.1 AA gap identified in BUG007 (`accessibilityRole` missing) |
 | **Test Automation** | pytest automation layer with Appium scaffolding; coverage reporting via Cobertura |
 | **Documentation** | ADO-style wiki, traceability matrix, execution logs, testability feedback notes |
@@ -45,14 +45,16 @@ This repository contains a complete QA portfolio applied to the open-source [arx
 
 ```
 manual-tests/
-├── test-cases/              # Comprehensive test case documentation
+├── test-cases/              # 11 ADO-format test cases
 ├── ado-integration/         # Azure DevOps workflow examples
 ├── testability-feedback/    # Requirement analysis and feedback
 ├── wiki/                   # ADO-style documentation
 └── traceability-matrix.csv # Requirements-to-tests mapping
 automation/
-├── tests/                  # Automation collaboration examples
-└── ci/                    # Pipeline integration
+├── pages/                  # Page Object Model (SearchPage, FavoritesPage)
+├── tests/                  # pytest API + Appium smoke tests
+└── ci/                     # Azure Pipelines config (ADO environments)
+.github/workflows/          # GitHub Actions CI (active pipeline)
 README.md                   # This file
 ```
 
@@ -171,8 +173,10 @@ A few selected user flows are scripted using pytest, simulating how automation m
 
 Also includes:
 
-- `azure-pipelines.yml`: Comprehensive Azure DevOps pipeline with linting and quality gates
-- Modern Python dependencies with linting tools (ruff, black, mypy)
+- `.github/workflows/ci.yml`: GitHub Actions pipeline (lint + test, runs on every push — see badge above)
+- `automation/ci/azure-pipelines.yml`: Equivalent Azure DevOps pipeline for ADO environments
+- `automation/pages/`: Page Object Model layer (SearchPage, FavoritesPage) for Appium tests
+- Modern Python tooling: ruff, black, mypy, pytest-cov, pytest-html
 - Markdown and YAML linting integration
 - Code coverage reporting and HTML test reports
 
@@ -259,12 +263,12 @@ This demonstrates **genuine QA work** with verifiable evidence on a real React N
 - Designed and executed 11 manual test cases for a React Native mobile app following ADO enterprise standards: bi-directional traceability (User Stories → Test Cases → Evidence → Defects), structured execution logs, and defect reports with severity classification and remediation suggestions
 - Configured an Android emulator testing environment from scratch (Android SDK CLI, KVM acceleration, API 28 Google Play image) and captured all test evidence with `adb screenrecord` — no Android Studio required
 - Filed 7 defect reports (BUG001–BUG007) covering functional gaps, UX improvements, and a WCAG 2.1 AA accessibility violation (`accessibilityRole` missing on result cards, identified via TalkBack navigation)
-- Authored an Azure Pipelines CI configuration with Python linting (Black, Ruff, mypy), pytest quality gates, Markdown/YAML validation, and an Appium smoke test stage
+- Authored a GitHub Actions CI pipeline with Python linting (Black, Ruff, mypy), pytest quality gates, Markdown/YAML validation, and an Appium smoke test stage; mirrored as Azure Pipelines config for ADO environments
 - Maintained full test traceability linking 4 user stories to 11 test cases, screen recordings, screenshots, and defect tickets in a single auditable repository
 
 ### LinkedIn one-liner
 
-> Built an end-to-end QA portfolio on a real React Native app — 11 test cases, Android screen recordings via `adb screenrecord`, 7 defect reports, ADO traceability, and an Azure DevOps CI pipeline.
+> Built an end-to-end QA portfolio on a real React Native app — 11 test cases, Android screen recordings via `adb screenrecord`, 7 defect reports, ADO traceability, and a GitHub Actions CI pipeline with green badge.
 
 ### Platform coverage — how to frame it
 
