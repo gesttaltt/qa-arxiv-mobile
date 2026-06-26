@@ -76,9 +76,9 @@ jobs:
           name: test-report
           path: test-results/
 
-      - name: Upload coverage
-        uses: actions/upload-artifact@v4
-        if: always()
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
         with:
-          name: coverage
-          path: coverage.xml
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: coverage.xml
+          fail_ci_if_error: false
