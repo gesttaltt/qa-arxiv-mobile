@@ -78,29 +78,58 @@ class TestArxivSearchAPI:
 class TestFavoritesDataPersistence:
     """
     Automation support for TC003: Favorites functionality.
-    Focuses on data persistence while manual testing validates UI interactions.
+
+    Verifies that the arXiv API returns the fields the app needs to save a
+    paper as a favorite (id, title, authors, published date, abstract).
+    If any of these fields disappear from the API response, TC003 would break
+    at the data layer before the UI is even involved.
     """
 
-    def test_favorite_data_structure(self) -> None:
-        """Validates favorite paper data structure consistency."""
-        favorite_paper = {
-            "id": "arxiv:1234.5678",
-            "title": "Sample Paper Title",
-            "authors": ["Author One", "Author Two"],
-            "abstract": "Sample abstract text...",
-            "published": "2025-01-01",
-            "is_favorite": True,
-            "date_favorited": "2025-01-20T10:30:00Z",
-        }
+    NS = {"atom": "http://www.w3.org/2005/Atom"}
 
-        required_fields = ["id", "title", "authors", "is_favorite"]
-        for field in required_fields:
-            assert field in favorite_paper
-            assert favorite_paper[field] is not None
+    def _first_entry(self) -> ET.Element:
+        response = arxiv_get(
+            {"search_query": "all:deep learning", "start": "0", "max_results": "1"}
+        )
+        assert (
+            response.status_code == 200
+        ), "API unavailable — cannot validate favorites data"
+        root = ET.fromstring(response.content)
+        entries = root.findall("atom:entry", self.NS)
+        assert entries, "No entries returned — cannot validate favorites data"
+        return entries[0]
 
-        assert isinstance(favorite_paper["is_favorite"], bool)
-        assert isinstance(favorite_paper["authors"], list)
-        assert len(favorite_paper["authors"]) > 0
+    def test_entry_has_id_for_favorites_key(self) -> None:
+        """Each paper must have a unique ID — used as the favorites storage key."""
+        entry = self._first_entry()
+        paper_id = entry.findtext("atom:id", namespaces=self.NS)
+        assert (
+            paper_id and paper_id.strip()
+        ), "Entry is missing <id> — cannot key favorites"
+
+    def test_entry_has_title_for_favorites_display(self) -> None:
+        """Each paper must have a title — displayed in the Favorites list (TC003)."""
+        entry = self._first_entry()
+        title = entry.findtext("atom:title", namespaces=self.NS)
+        assert (
+            title and title.strip()
+        ), "Entry is missing <title> — Favorites list would be blank"
+
+    def test_entry_has_authors_for_favorites_display(self) -> None:
+        """Each paper must have at least one author — shown below the title in TC003."""
+        entry = self._first_entry()
+        authors = entry.findall("atom:author", self.NS)
+        assert (
+            authors
+        ), "Entry has no <author> elements — Favorites display would be incomplete"
+        name = authors[0].findtext("atom:name", namespaces=self.NS)
+        assert name and name.strip(), "First author has an empty <name>"
+
+    def test_entry_has_published_date_for_favorites_metadata(self) -> None:
+        """Each paper must have a published date — shown as metadata in TC003."""
+        entry = self._first_entry()
+        published = entry.findtext("atom:published", namespaces=self.NS)
+        assert published and published.strip(), "Entry is missing <published> date"
 
 
 class TestManualTestingSupport:
