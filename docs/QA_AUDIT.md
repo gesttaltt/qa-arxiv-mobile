@@ -3,7 +3,7 @@
 **Project:** qa-arxiv-mobile  
 **Author:** Jonathan Verdun  
 **Audit Date:** 2026-04-23  
-**Last Updated:** 2026-06-23  
+**Last Updated:** 2026-06-26  
 **Primary Target:** iOS Mobile (React Native)  
 **Secondary Target:** Android  
 
@@ -13,9 +13,11 @@
 
 This audit reviews the current state of the QA project for the `arxiv-papers-mobile` React Native application. The project demonstrates solid foundational intent — ADO-style traceability, structured manual test cases, and CI/CD pipeline integration.
 
-Issues identified in the April 2026 initial audit have been progressively resolved. As of June 2026, all 11 test cases have been executed on both Android and iOS, 28 evidence files (17 GIFs, 10 screenshots, 1 suite summary) have been collected, all execution logs contain real tester data, and the `TESTING_CHECKLIST.md` has been completed in full.
+Issues identified in the April 2026 initial audit have been progressively resolved. As of June 2026, all 11 test cases have been executed on both Android and iOS, 28 evidence files (17 GIFs, 10 screenshots, 1 suite summary) have been collected, all execution logs contain real tester data, and the `TESTING_CHECKLIST.md` has been completed in full. All 7 issues found during execution are formally documented as BUG001–BUG007.
 
-Remaining gaps are: only 1 formal defect report exists despite 7 issues found during execution; the CI/CD pipeline quality gates are non-functional (`continueOnError: true` throughout); iOS-specific coverage beyond TC006 is still zero; and several ADO pipeline tasks use non-standard syntax that would fail in a real ADO organization.
+The automation layer has been substantially expanded: 43 automated tests across API integration, BDD/Gherkin scenarios, and mock-based unit tests; 100% code coverage on all measured library code enforced as a CI quality gate (`--cov-fail-under=100`); GitHub Actions pipeline fully green with lint, type checking, and coverage gates. The Azure Pipelines configuration has been corrected to use standard ADO task syntax with `continueOnError: false` on critical steps.
+
+Remaining gaps: TC010 dedicated evidence is still pending (TC004 GIFs partially cover the offline state); iOS-specific test coverage beyond TC006 remains zero; no macOS CI stage exists for iOS simulator execution.
 
 ---
 
@@ -109,7 +111,7 @@ The Selenium-based `test_search_valid.py` and `test_search_empty.py` have been r
 
 ### 3.2 `self.BASE_URL` Bug — RESOLVED
 
-`TestManualTestingSupport` in `test_search_api.py` now defines its own `BASE_URL = "http://export.arxiv.org/api/query"`. The `AttributeError` from the previous version will no longer occur.
+`BASE_URL` is now centralised in `automation/tests/utils.py` as `ARXIV_BASE_URL` and shared across all test classes via `from .utils import ARXIV_BASE_URL, arxiv_get`. The `AttributeError` from the previous version will no longer occur. `TestManualTestingSupport` has been renamed `TestSearchKeywordSanity` with semantically correct method names and XML-parsed assertions replacing the old `len(response.text) > 500` check.
 
 ### 3.3 Fragile API Assertion — RESOLVED
 
@@ -122,6 +124,18 @@ The old assertion that stripped spaces and searched raw XML text has been replac
 ### 3.5 markdownlint-cli2 in requirements.txt — RESOLVED
 
 `markdownlint-cli2` has been removed from `automation/requirements.txt`. It is installed via `npm install -g markdownlint-cli2` in `.github/workflows/ci.yml`, which is the correct location for a Node.js tool.
+
+### 3.6 Automation Layer Expansion — RESOLVED
+
+The following improvements have been made since the initial audit:
+
+- **`automation/tests/utils.py`**: centralised `arxiv_get()` helper with automatic 429 retry (exponential backoff, configurable retries). Used by all test classes.
+- **`automation/tests/test_utils.py`**: 4 mock-based unit tests covering the retry logic — success path, 1-retry, 2-retry backoff, and exhausted-retries branches. All branches covered without real network calls.
+- **`TestPerformanceBaseline`**: replaced the real-HTTP SLA test with mock-based tests that simulate 0.5 s (passes) and 3.5 s (fails) responses, validating the assertion logic rather than third-party API latency.
+- **`TestFavoritesDataPersistence`**: replaced the old hardcoded dict assertion with 4 real API contract tests (`id`, `title`, `authors`, `published`) that would catch API schema changes before the UI is even involved.
+- **BDD / Gherkin**: `automation/features/search.feature` (5 scenarios including Scenario Outline) and `automation/tests/bdd/test_search.py` (step definitions via pytest-bdd 7.3.0).
+- **100% code coverage**: `pyproject.toml` configured to measure only library code (`pages/`, `utils.py`); Appium method bodies excluded via `# pragma: no cover` (require real device); `--cov-fail-under=100` enforced in CI.
+- **Codecov**: `.codecov.yml` added; coverage badge pinned to public Codecov report.
 
 ---
 
@@ -159,9 +173,9 @@ None of the test cases include a step to verify VoiceOver announces the result (
 
 `PublishHtmlReport@1` is a third-party marketplace extension (not included by default). The pipeline should either install this extension explicitly or use `PublishBuildArtifacts@1` for report publishing.
 
-### 5.3 All Quality Gates Use `continueOnError: true`
+### 5.3 Quality Gates — PARTIALLY RESOLVED
 
-Every linting and testing step has `continueOnError: true`, meaning the pipeline will always report green even if Python linting, type checking, or tests fail.
+The Azure Pipelines `pytest` and `mypy` steps now use `continueOnError: false`, meaning test failures and type errors correctly fail the build. Style and lint steps remain non-blocking by design (developer aid, not gates). The GitHub Actions pipeline (`.github/workflows/ci.yml`) has full quality gates: Black formatting check, Ruff lint, mypy type checking, yamllint, markdownlint, and `pytest --cov-fail-under=100` — all blocking. Remaining gap: Azure pipeline has no equivalent `--cov-fail-under` gate.
 
 ### 5.4 No iOS Build or Test Stage
 
@@ -183,14 +197,13 @@ The README now includes all 11 test cases (TC001–TC011) in the manual test cas
 
 The traceability matrix references `US004 — Network Connectivity` with TC009 and TC010, but US004 is never mentioned in the README's User Stories or QA Goals section.
 
-### 6.3 Automated Coverage Column is Inconsistent
+### 6.3 Automated Coverage Column — RESOLVED
 
-In `traceability-matrix.csv`:
-- TC001: `Partial`
-- TC002: `Yes`
-- TC003: `No`
-
-The `test_search_api.py` file covers both TC001 and TC002 equivalently at the API layer. TC002 should be `Partial` (API validated, UI not automated).
+`traceability-matrix.csv` now reflects accurate coverage with an added `Automation Notes` column:
+- TC001: `Yes` — API tests (`TestArxivSearchAPI`, `test_search_valid.py`) + BDD (`search.feature`)
+- TC002: `Yes` — API tests (`test_search_empty.py`, `TestArxivSearchAPI`) + BDD (`search.feature`)
+- TC003: `Partial` — `TestFavoritesDataPersistence` validates the API data contract; UI toggle requires Appium + device
+- All other TCs: `No` with a specific reason explaining why automation is not feasible at the API layer
 
 ### 6.4 `coverage_summary.md` Bug Label — RESOLVED
 
@@ -234,6 +247,17 @@ The standalone `ruff.toml` has been removed and its configuration has been merge
 | 6 | Completed TESTING_CHECKLIST.md with real execution data | `TESTING_CHECKLIST.md` |
 | 7 | Updated evidence/README.md to reflect real file names and counts | `evidence/README.md` |
 | 8 | Removed markdownlint-cli2 from Python requirements | `automation/requirements.txt` |
+| 9 | Centralised HTTP utility with 429 retry + exponential backoff | `automation/tests/utils.py` |
+| 10 | Added 4 mock-based unit tests for retry logic (100% branch coverage) | `automation/tests/test_utils.py` |
+| 11 | Replaced real-HTTP SLA test with mock-based TestPerformanceBaseline | `automation/tests/test_search_api.py` |
+| 12 | Added TestFavoritesDataPersistence: 4 real API contract tests | `automation/tests/test_search_api.py` |
+| 13 | Renamed TestManualTestingSupport → TestSearchKeywordSanity with XML assertions | `automation/tests/test_search_api.py` |
+| 14 | Added BDD layer: Gherkin feature file + pytest-bdd step definitions | `automation/features/search.feature`, `automation/tests/bdd/test_search.py` |
+| 15 | Configured coverage to measure only library code; 100% enforced in CI | `pyproject.toml`, `.github/workflows/ci.yml` |
+| 16 | Added Codecov integration and badge | `.codecov.yml`, `README.md` |
+| 17 | Updated traceability-matrix.csv: TC001/TC002 → Yes, TC003 → Partial, added Automation Notes column | `manual-tests/traceability-matrix.csv` |
+| 18 | Updated TESTING_THEORY.md: fixed stale references, added §9 BDD | `docs/TESTING_THEORY.md` |
+| 19 | Re-recorded pytest demo GIF to show 43 tests | `docs/pytest-ci-demo.gif` |
 
 ### Remaining to Do
 
@@ -277,10 +301,12 @@ The standalone `ruff.toml` has been removed and its configuration has been merge
 | Test cases with GIF/screenshot evidence | 10 / 11 (TC010 pending dedicated evidence) |
 | Formal defect reports | 7 / 7 (BUG001–BUG007 — all execution issues documented) |
 | iOS-specific test cases | 1 (TC006) |
-| Automation tests using correct framework | Appium + API (Selenium replaced) |
+| Automation tests using correct framework | 43 — Appium + API + BDD (Selenium replaced) |
 | Selenium-based tests (wrong framework) | 0 |
 | Config fragmentation (ruff) | Resolved — consolidated in `pyproject.toml` |
-| CI quality gates functional | Partial — `pytest` and `mypy` now fail the build; style/lint steps still non-blocking |
+| Code coverage (library code) | 100% — enforced via `--cov-fail-under=100` in GitHub Actions |
+| CI quality gates functional (GitHub Actions) | Full — lint + type check + pytest + coverage gate; all blocking |
+| CI quality gates functional (Azure Pipelines) | Partial — `pytest` and `mypy` blocking; style/lint non-blocking; no coverage gate |
 | CI stages covering macOS / Xcode | 0 |
 | ADO pipeline tasks using correct syntax | Yes — `checkout: self` and `PublishBuildArtifacts@1` in all stages |
 | Feature coverage (US001 Search) | 100% executed |
@@ -299,19 +325,23 @@ The standalone `ruff.toml` has been removed and its configuration has been merge
 | `manual-tests/test-execution/execution-summary.md` | Sprint summary | Complete — real results, performance data, 7 issues noted |
 | `manual-tests/test-execution/traceability-with-evidence.md` | Evidence links | Complete — real file paths for all 28 evidence files |
 | `manual-tests/test-execution/evidence/` (28 files) | GIFs + screenshots | Complete for TC001-TC009, TC011; TC010 pending dedicated evidence |
-| `manual-tests/traceability-matrix.csv` | Requirements map | TC002 `Automated Coverage` should be `Partial`, not `Yes` |
+| `manual-tests/traceability-matrix.csv` | Requirements map | Complete — TC001/TC002: Yes, TC003: Partial; Automation Notes column added |
 | `manual-tests/wiki/coverage_summary.md` | Coverage metrics | Complete |
 | `manual-tests/testability_notes.md` | Live feedback | Complete — 3 real observations |
 | `manual-tests/testability-feedback/requirements_analysis.md` | QA feedback | Complete |
 | `manual-tests/ado-integration/workflow_guide.md` | ADO guide | Complete |
 | `manual-tests/defects/BUG001–BUG007` (7 files) | Defect reports | Complete — all 7 execution issues formally documented |
-| `automation/tests/test_search_api.py` | API tests | Functional |
-| `automation/tests/test_search_valid.py` | API test (valid queries) | Functional — replaced from Selenium |
-| `automation/tests/test_search_empty.py` | API test (empty/malformed) | Functional — replaced from Selenium |
+| `automation/tests/utils.py` | Shared HTTP helper with 429 retry | Complete — 100% branch coverage |
+| `automation/tests/test_utils.py` | Unit tests for retry logic | Complete — 4 mock-based tests |
+| `automation/tests/test_search_api.py` | API tests (search, performance, favorites, sanity) | Complete |
+| `automation/tests/test_search_valid.py` | API test (valid queries) | Complete — replaced from Selenium |
+| `automation/tests/test_search_empty.py` | API test (empty/malformed) | Complete — replaced from Selenium |
 | `automation/tests/test_data_validation.py` | Atom XML data validation | Complete |
-| `automation/tests/appium/test_search_smoke.py` | Appium UI test (search) | Functional |
-| `automation/tests/appium/test_favorites_smoke.py` | Appium UI test (favorites) | Functional |
-| `automation/ci/azure-pipelines.yml` | CI pipeline | Non-standard task syntax; quality gates disabled; no iOS stage |
+| `automation/features/search.feature` | BDD Gherkin scenarios (TC001, TC002, Outline × 3) | Complete |
+| `automation/tests/bdd/test_search.py` | pytest-bdd step definitions | Complete |
+| `automation/tests/appium/test_search_smoke.py` | Appium UI test (search) | Functional — requires device |
+| `automation/tests/appium/test_favorites_smoke.py` | Appium UI test (favorites) | Functional — requires device |
+| `automation/ci/azure-pipelines.yml` | CI pipeline | Standard ADO syntax; critical steps blocking; no iOS stage or coverage gate |
 | `.github/workflows/ci.yml` | GitHub Actions CI | Functional |
 | `pyproject.toml` | Project config + ruff config | Consolidated (ruff.toml removed) |
 | `Makefile` | Common task targets | Complete |
