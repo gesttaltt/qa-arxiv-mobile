@@ -50,15 +50,16 @@ class TestArxivSearchAPI:
         response = arxiv_get({"search_query": "", "start": "0", "max_results": "10"})
         assert response.status_code in (200, 400)
 
-    def test_network_timeout_handling(self) -> None:
+    def test_network_timeout_propagates(self) -> None:
         """
         TC004 Automation Support: Network resilience testing.
-        Validates timeout behaviour that manual testing observes.
+        Validates that arxiv_get() propagates Timeout to the caller
+        so the app can show an error state instead of hanging.
         """
-        with patch("requests.get") as mock_get:
+        with patch("automation.tests.utils.requests.get") as mock_get:
             mock_get.side_effect = requests.exceptions.Timeout()
             with pytest.raises(requests.exceptions.Timeout):
-                requests.get(ARXIV_BASE_URL, timeout=1)
+                arxiv_get({"search_query": "all:test", "max_results": "1"})
 
     @pytest.mark.parametrize(
         "search_term,expected_min_results",
