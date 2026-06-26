@@ -13,20 +13,21 @@ import re
 import xml.etree.ElementTree as ET
 
 import pytest
-import requests
 
-BASE_URL = "http://export.arxiv.org/api/query"
+from .utils import arxiv_get
+
 ATOM_NS = "http://www.w3.org/2005/Atom"
 ARXIV_NS = "http://arxiv.org/schemas/atom"
 
 
 def _fetch_entries(search_term: str, max_results: int = 5) -> list[ET.Element]:
-    params = {
-        "search_query": f"all:{search_term}",
-        "start": "0",
-        "max_results": str(max_results),
-    }
-    response = requests.get(BASE_URL, params=params, timeout=15)
+    response = arxiv_get(
+        {
+            "search_query": f"all:{search_term}",
+            "start": "0",
+            "max_results": str(max_results),
+        }
+    )
     assert response.status_code == 200
     root = ET.fromstring(response.content)
     return root.findall(f"{{{ATOM_NS}}}entry")
@@ -125,24 +126,18 @@ class TestResponseMetadata:
     """
 
     def test_total_results_is_a_positive_integer(self) -> None:
-        params = {
-            "search_query": "all:machine learning",
-            "start": "0",
-            "max_results": "5",
-        }
-        response = requests.get(BASE_URL, params=params, timeout=15)
+        response = arxiv_get(
+            {"search_query": "all:machine learning", "start": "0", "max_results": "5"}
+        )
         root = ET.fromstring(response.content)
         total = root.findtext("{http://a9.com/-/spec/opensearch/1.1/}totalResults")
         assert total is not None, "opensearch:totalResults element is missing"
         assert int(total) > 0, f"totalResults should be > 0, got '{total}'"
 
     def test_items_per_page_matches_max_results_param(self) -> None:
-        params = {
-            "search_query": "all:quantum",
-            "start": "0",
-            "max_results": "3",
-        }
-        response = requests.get(BASE_URL, params=params, timeout=15)
+        response = arxiv_get(
+            {"search_query": "all:quantum", "start": "0", "max_results": "3"}
+        )
         root = ET.fromstring(response.content)
         items_per_page = root.findtext(
             "{http://a9.com/-/spec/opensearch/1.1/}itemsPerPage"

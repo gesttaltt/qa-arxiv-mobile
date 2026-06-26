@@ -1,10 +1,11 @@
 import time
+import xml.etree.ElementTree as ET
 from unittest.mock import patch
 
 import pytest
 import requests
 
-BASE_URL = "http://export.arxiv.org/api/query"
+from .utils import ARXIV_BASE_URL, arxiv_get
 
 
 class TestArxivSearchAPI:
@@ -15,25 +16,16 @@ class TestArxivSearchAPI:
 
     def test_search_valid_keyword_api_response(self) -> None:
         """
-        TC001 Automation Support: Validates API response structure
-        Manual test focuses on UI behavior, this validates data layer
+        TC001 Automation Support: Validates API response structure.
+        Manual test focuses on UI behavior, this validates data layer.
         """
-        # Arrange
         search_term = "machine learning"
-        params = {
-            "search_query": f"all:{search_term}",
-            "start": "0",
-            "max_results": "10",
-        }
+        response = arxiv_get(
+            {"search_query": f"all:{search_term}", "start": "0", "max_results": "10"}
+        )
 
-        # Act
-        response = requests.get(BASE_URL, params=params)
-
-        # Assert
         assert response.status_code == 200
         assert "application/atom+xml" in response.headers.get("content-type", "")
-        import xml.etree.ElementTree as ET
-
         root = ET.fromstring(response.content)
         ns = {"atom": "http://www.w3.org/2005/Atom"}
         entries = root.findall("atom:entry", ns)
@@ -52,33 +44,21 @@ class TestArxivSearchAPI:
 
     def test_empty_search_api_validation(self) -> None:
         """
-        TC002 Automation Support: API-level validation of empty queries
-        Complements manual testing of UI validation behavior
+        TC002 Automation Support: API-level validation of empty queries.
+        Complements manual testing of UI validation behavior.
         """
-        # Arrange - Empty search query
-        params = {"search_query": "", "start": "0", "max_results": "10"}
-
-        # Act
-        response = requests.get(BASE_URL, params=params)
-
-        # Assert
-        # API should handle empty queries gracefully
-        assert response.status_code in [
-            200,
-            400,
-        ]  # Either no results or validation error
+        response = arxiv_get({"search_query": "", "start": "0", "max_results": "10"})
+        assert response.status_code in (200, 400)
 
     def test_network_timeout_handling(self) -> None:
         """
-        TC004 Automation Support: Network resilience testing
-        Validates timeout behavior that manual testing observes
+        TC004 Automation Support: Network resilience testing.
+        Validates timeout behaviour that manual testing observes.
         """
         with patch("requests.get") as mock_get:
-            # Simulate network timeout
             mock_get.side_effect = requests.exceptions.Timeout()
-
             with pytest.raises(requests.exceptions.Timeout):
-                requests.get(BASE_URL, timeout=1)
+                requests.get(ARXIV_BASE_URL, timeout=1)
 
     @pytest.mark.parametrize(
         "search_term,expected_min_results",
@@ -87,36 +67,22 @@ class TestArxivSearchAPI:
     def test_search_relevance_data_validation(
         self, search_term: str, expected_min_results: int
     ) -> None:
-        """
-        Data-driven testing to validate search relevance
-        Supports manual testing by ensuring consistent test data
-        """
-        params = {
-            "search_query": f"all:{search_term}",
-            "start": "0",
-            "max_results": "5",
-        }
-
-        response = requests.get(BASE_URL, params=params)
-
-        # Basic validation that results contain expected content
+        """Data-driven testing to validate search relevance."""
+        response = arxiv_get(
+            {"search_query": f"all:{search_term}", "start": "0", "max_results": "5"}
+        )
         assert response.status_code == 200
-        # Note: More sophisticated parsing would be needed for production
-        assert len(response.text) > 100  # Basic content length check
+        assert len(response.text) > 100
 
 
 class TestFavoritesDataPersistence:
     """
-    Automation support for TC003: Favorites functionality
-    Focuses on data persistence while manual testing validates UI interactions
+    Automation support for TC003: Favorites functionality.
+    Focuses on data persistence while manual testing validates UI interactions.
     """
 
     def test_favorite_data_structure(self) -> None:
-        """
-        Validates favorite paper data structure consistency
-        Supports manual testing by ensuring data integrity
-        """
-        # Mock favorite paper data structure
+        """Validates favorite paper data structure consistency."""
         favorite_paper = {
             "id": "arxiv:1234.5678",
             "title": "Sample Paper Title",
@@ -127,64 +93,38 @@ class TestFavoritesDataPersistence:
             "date_favorited": "2025-01-20T10:30:00Z",
         }
 
-        # Validate required fields exist
         required_fields = ["id", "title", "authors", "is_favorite"]
         for field in required_fields:
             assert field in favorite_paper
             assert favorite_paper[field] is not None
 
-        # Validate data types
         assert isinstance(favorite_paper["is_favorite"], bool)
         assert isinstance(favorite_paper["authors"], list)
         assert len(favorite_paper["authors"]) > 0
 
 
-# Integration with manual testing workflow
 class TestManualTestingSupport:
-    """
-    Utility tests that support manual testing execution
-    Provides data validation and environment verification
-    """
-
-    BASE_URL = "http://export.arxiv.org/api/query"
+    """Utility tests that verify the environment is ready for manual testing."""
 
     def test_test_environment_connectivity(self) -> None:
-        """
-        Validates test environment is ready for manual testing
-        Run before manual test execution sessions
-        """
-        # Verify API accessibility
-        response = requests.get(
-            self.BASE_URL,
-            params={"search_query": "all:test", "max_results": "1"},
-            timeout=10,
-        )
+        """Validates test environment is ready for manual testing."""
+        response = arxiv_get({"search_query": "all:test", "max_results": "1"})
         assert response.status_code == 200
 
-        # Basic API functionality check
-        params = {"search_query": "test", "max_results": "1"}
-        test_response = requests.get(self.BASE_URL, params=params, timeout=10)
-        assert test_response.status_code == 200
-
     def test_generate_test_data_for_manual_testing(self) -> None:
-        """
-        Generates consistent test data for manual test execution
-        Ensures manual testers have reliable test scenarios
-        """
+        """Ensures each standard test keyword returns results for manual testers."""
         test_search_terms = [
             "machine learning",
             "quantum computing",
             "artificial intelligence",
             "deep learning",
         ]
-
         for term in test_search_terms:
-            params = {"search_query": f"all:{term}", "start": "0", "max_results": "3"}
-            response = requests.get(self.BASE_URL, params=params)
-
-            # Ensure each test term returns results for manual testing
+            response = arxiv_get(
+                {"search_query": f"all:{term}", "start": "0", "max_results": "3"}
+            )
             assert response.status_code == 200
-            assert len(response.text) > 500  # Reasonable content for manual review
+            assert len(response.text) > 500
 
 
 class TestPerformanceBaseline:
@@ -205,7 +145,7 @@ class TestPerformanceBaseline:
             "max_results": "5",
         }
         start = time.monotonic()
-        response = requests.get(BASE_URL, params=params, timeout=15)
+        response = arxiv_get(params)
         elapsed = time.monotonic() - start
 
         assert response.status_code == 200
@@ -213,8 +153,3 @@ class TestPerformanceBaseline:
             f"Response time {elapsed:.2f}s exceeded SLA of "
             f"{self.RESPONSE_TIME_SLA_SECONDS}s for query '{search_term}'"
         )
-
-
-if __name__ == "__main__":
-    # Run basic environment validation
-    pytest.main([__file__, "-v"])

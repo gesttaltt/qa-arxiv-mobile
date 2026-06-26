@@ -13,14 +13,11 @@ See also:
   - automation/tests/appium/test_search_smoke.py (UI-layer smoke tests)
 """
 
-import time
+import xml.etree.ElementTree as ET
 
 import pytest
-import requests
 
-BASE_URL = "http://export.arxiv.org/api/query"
-
-_RATE_LIMIT_DELAY = 1.5  # seconds between requests to avoid arXiv 429s
+from .utils import arxiv_get
 
 
 @pytest.mark.integration
@@ -29,43 +26,37 @@ class TestValidSearchAPI:
 
     def test_valid_keyword_returns_results(self) -> None:
         """A standard academic keyword must return at least one result entry."""
-        params = {
-            "search_query": "all:quantum computing",
-            "start": "0",
-            "max_results": "5",
-        }
-        response = requests.get(BASE_URL, params=params, timeout=15)
+        response = arxiv_get(
+            {"search_query": "all:quantum computing", "start": "0", "max_results": "5"}
+        )
 
         assert response.status_code == 200
         assert "application/atom+xml" in response.headers.get("content-type", "")
-        # Rough check that the body has actual entry content
         assert "<entry>" in response.text
 
     def test_multi_word_query_accepted(self) -> None:
         """Multi-word queries with URL-unsafe characters must not error."""
-        params = {
-            "search_query": 'all:"machine learning"',
-            "start": "0",
-            "max_results": "3",
-        }
-        response = requests.get(BASE_URL, params=params, timeout=15)
+        response = arxiv_get(
+            {
+                "search_query": 'all:"machine learning"',
+                "start": "0",
+                "max_results": "3",
+            }
+        )
         assert response.status_code == 200
         assert "<entry>" in response.text
 
     def test_max_results_param_respected(self) -> None:
         """The max_results parameter must cap the number of entries returned."""
         for expected_count in (1, 3, 10):
-            params = {
-                "search_query": "all:test",
-                "start": "0",
-                "max_results": str(expected_count),
-            }
-            time.sleep(_RATE_LIMIT_DELAY)
-            response = requests.get(BASE_URL, params=params, timeout=15)
+            response = arxiv_get(
+                {
+                    "search_query": "all:test",
+                    "start": "0",
+                    "max_results": str(expected_count),
+                }
+            )
             assert response.status_code == 200
-            # Count <entry> elements
-            import xml.etree.ElementTree as ET
-
             root = ET.fromstring(response.content)
             ns = {"atom": "http://www.w3.org/2005/Atom"}
             entries = root.findall("atom:entry", ns)

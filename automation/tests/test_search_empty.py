@@ -11,9 +11,8 @@ for the UI smoke equivalent.
 """
 
 import pytest
-import requests
 
-BASE_URL = "http://export.arxiv.org/api/query"
+from .utils import arxiv_get
 
 
 @pytest.mark.integration
@@ -25,42 +24,27 @@ class TestEmptySearchAPI:
         An empty search_query parameter should not crash the API.
         The API returns either 200 with no results or a 400 validation error.
         """
-        params = {"search_query": "", "start": "0", "max_results": "10"}
-        response = requests.get(BASE_URL, params=params, timeout=15)
+        response = arxiv_get({"search_query": "", "start": "0", "max_results": "10"})
         assert response.status_code in (200, 400)
 
     def test_missing_query_param_returns_400(self) -> None:
-        """
-        Omitting the search_query parameter entirely should produce a
-        client-error status.
-        """
-        params = {"start": "0", "max_results": "10"}
-        response = requests.get(BASE_URL, params=params, timeout=15)
+        """Omitting search_query entirely should produce a client-error status."""
+        response = arxiv_get({"start": "0", "max_results": "10"})
         assert response.status_code == 400
 
     def test_whitespace_only_query(self) -> None:
-        """
-        A search query consisting only of whitespace characters.
-        The API should handle this without crashing (200 or 400).
-        """
-        params = {"search_query": "   ", "start": "0", "max_results": "10"}
-        response = requests.get(BASE_URL, params=params, timeout=15)
+        """A whitespace-only query should not crash the API (200 or 400)."""
+        response = arxiv_get({"search_query": "   ", "start": "0", "max_results": "10"})
         assert response.status_code in (200, 400)
 
     def test_special_characters_in_query(self) -> None:
         """
-        Special / control characters in the query should not cause a 500.
+        Control characters in the query should not cause a 500.
         Known upstream behaviour: arXiv API returns 500 for raw control bytes
-        (\x00–\x02) instead of a proper 400 — this is a server-side bug
-        (BUG-UPSTREAM-001). Asserting the response is any valid HTTP code
-        so we detect future regressions if the API starts returning other codes.
+        (\x00–\x02) instead of a proper 400 — server-side bug (BUG-UPSTREAM-001).
         """
-        params = {
-            "search_query": "all:\x00\x01\x02",
-            "start": "0",
-            "max_results": "5",
-        }
-        response = requests.get(BASE_URL, params=params, timeout=15)
-        # 500 is accepted here because arXiv returns it for control characters
-        # (upstream bug). Any 2xx/4xx would be preferable.
+        response = arxiv_get(
+            {"search_query": "all:\x00\x01\x02", "start": "0", "max_results": "5"}
+        )
+        # 500 accepted here because arXiv returns it for control characters (upstream bug).
         assert response.status_code in (200, 400, 500)
