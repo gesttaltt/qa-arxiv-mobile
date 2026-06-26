@@ -62,6 +62,25 @@ warn_unreachable = true
 strict_equality = true
 ignore_missing_imports = true
 
+[tool.coverage.run]
+# Measure library/utility code only — not the tests themselves.
+# Pages/ shows partial coverage because Appium methods need a real device.
+# utils.py shows partial coverage because the 429 retry path isn't exercised in CI.
+omit = [
+    "automation/tests/test_*.py",
+    "automation/tests/bdd/test_*.py",
+    "automation/tests/appium/test_*.py",
+    "automation/tests/conftest.py",
+    "automation/tests/appium/conftest.py",
+    "automation/tests/__init__.py",
+    "automation/tests/bdd/__init__.py",
+    "automation/tests/appium/__init__.py",
+    "automation/__init__.py",
+]
+
+[tool.coverage.report]
+show_missing = true
+
 [tool.pytest.ini_options]
 testpaths = ["automation/tests"]
 python_files = ["test_*.py", "*_test.py"]
