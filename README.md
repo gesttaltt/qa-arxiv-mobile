@@ -7,7 +7,7 @@
 ![Appium](https://img.shields.io/badge/Appium-mobile%20automation-662D91?logo=appium&logoColor=white)
 ![BDD](https://img.shields.io/badge/BDD-Gherkin%20%2B%20pytest--bdd-23D96C?logo=cucumber&logoColor=white)
 
-![pytest suite — 43 tests passing](docs/pytest-ci-demo.gif)
+![pytest suite — 45 tests passing](docs/pytest-ci-demo.gif)
 
 > Fully documented testing emphasizing **manual QA** and **ADO-style traceability** over a real mobile application.
 
