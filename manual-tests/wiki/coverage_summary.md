@@ -51,9 +51,9 @@ Comprehensive test coverage analysis for arxiv-papers-mobile application focusin
 ### Test Execution Summary
 
 - **Manual test cases**: 11 executed, 11 passed
-- **Automated API + unit tests**: 40 passing (pytest, runs in CI on every push)
+- **Automated API + unit tests**: 50 passing (pytest, runs in CI on every push)
 - **BDD scenarios**: 7 passing (pytest-bdd, Gherkin feature files: search + favorites)
-- **Total automated**: 51 (excludes 9 Appium/slow tests — require real device or excluded from CI)
+- **Total automated**: 57 (excludes 9 Appium/slow tests — require real device or excluded from CI)
 - **Code coverage**: 55% overall — `automation/tests/utils.py` 100% (fully unit-tested), page objects 37–71% (method bodies require a real Appium device to execute); gate set at `--cov-fail-under=55`
 - **CI pipeline**: GitHub Actions — green badge on `main`
 - **Average manual execution time**: ~15 minutes per test case
@@ -64,7 +64,7 @@ All test cases properly linked to user stories with bidirectional traceability.
 
 - Total User Stories: **4** (US001–US004)
 - Manual Test Cases: **11** (TC001–TC011)
-- Automated Test Cases: **45** (40 API/unit + 5 BDD, excludes 8 Appium — requires device)
+- Automated Test Cases: **57** (50 API/unit + 7 BDD, excludes 9 Appium/slow — requires device)
 - Traceability Matrix: ✅ Present (`manual-tests/traceability-matrix.csv`)
 - CI Pipeline: ✅ GitHub Actions (`.github/workflows/ci.yml` — active, green badge)
 - ADO Pipeline: ✅ Azure Pipelines config (`automation/ci/azure-pipelines.yml`)

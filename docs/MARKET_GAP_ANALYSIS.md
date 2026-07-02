@@ -40,7 +40,7 @@ on the same profile:
 | Testability feedback | `manual-tests/testability-feedback/` | Good |
 | ADO wiki documentation | `manual-tests/wiki/coverage_summary.md` | Good |
 | Defect reports | `manual-tests/defects/BUG001–BUG007` (7 reports) | Strong |
-| API test automation (Python/pytest) | `automation/tests/` — 51 tests, 55% coverage | Strong |
+| API test automation (Python/pytest) | `automation/tests/` — 57 tests, 55% coverage | Strong |
 | BDD / Gherkin automation | `automation/features/` (search + favorites) + `tests/bdd/` | Strong |
 | Mobile UI automation (Appium) | `automation/pages/` POM + `tests/appium/` smoke tests | Good |
 | ISTQB concepts reference | `docs/TESTING_THEORY.md` — STLC, EP, BVA, BDD, SQL, Defect lifecycle | Strong |
@@ -253,7 +253,7 @@ These areas are solid and should be maintained — they already match or exceed 
 - **ADO-style documentation** — 11 test cases, execution logs, wiki, traceability matrix with Automation Notes
 - **Azure DevOps CI/CD** — `azure-pipelines.yml` with standard syntax, critical steps blocking
 - **GitHub Actions CI/CD** — full quality gate pipeline, green badge on `main`
-- **Python automation with pytest** — parametrised, typed, BDD, mock-based, CI-integrated; 45 tests
+- **Python automation with pytest** — parametrised, typed, BDD, mock-based, CI-integrated; 57 tests
 - **BDD / Gherkin** — feature file + pytest-bdd step definitions; mapped to User Stories
 - **Appium / POM** — SearchPage, FavoritesPage with BasePage; screenshot-on-failure
 - **Testability feedback** — requirements analysis and feedback notes show QA mindset beyond execution
@@ -278,7 +278,7 @@ These areas are solid and should be maintained — they already match or exceed 
 | GitHub Actions | Moderate | `.github/workflows/ci.yml` | Present |
 | SQL | High | `TESTING_THEORY.md` §4 + `test_data_validation.py` | Present (conceptual) |
 | Java | High | Missing | Python compensates — note gap |
-| Python | Moderate-high | Yes (45 pytest tests) | Present |
+| Python | Moderate-high | Yes (57 pytest tests) | Present |
 | ISTQB | High (certification) | `docs/TESTING_THEORY.md` | Present (theory) |
 | Codecov | Low-Moderate | Yes — badge + `.codecov.yml` | Present |
 
