@@ -53,7 +53,7 @@ Comprehensive test coverage analysis for arxiv-papers-mobile application focusin
 - **Manual test cases**: 11 executed, 11 passed
 - **Automated API + unit tests**: 40 passing (pytest, runs in CI on every push)
 - **BDD scenarios**: 7 passing (pytest-bdd, Gherkin feature files: search + favorites)
-- **Total automated**: 47 (excludes 9 Appium/slow tests — require real device or excluded from CI)
+- **Total automated**: 51 (excludes 9 Appium/slow tests — require real device or excluded from CI)
 - **Code coverage**: 55% overall — `automation/tests/utils.py` 100% (fully unit-tested), page objects 37–71% (method bodies require a real Appium device to execute); gate set at `--cov-fail-under=55`
 - **CI pipeline**: GitHub Actions — green badge on `main`
 - **Average manual execution time**: ~15 minutes per test case

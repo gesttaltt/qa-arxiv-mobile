@@ -40,7 +40,7 @@ on the same profile:
 | Testability feedback | `manual-tests/testability-feedback/` | Good |
 | ADO wiki documentation | `manual-tests/wiki/coverage_summary.md` | Good |
 | Defect reports | `manual-tests/defects/BUG001–BUG007` (7 reports) | Strong |
-| API test automation (Python/pytest) | `automation/tests/` — 47 tests, 55% coverage | Strong |
+| API test automation (Python/pytest) | `automation/tests/` — 51 tests, 55% coverage | Strong |
 | BDD / Gherkin automation | `automation/features/` (search + favorites) + `tests/bdd/` | Strong |
 | Mobile UI automation (Appium) | `automation/pages/` POM + `tests/appium/` smoke tests | Good |
 | ISTQB concepts reference | `docs/TESTING_THEORY.md` — STLC, EP, BVA, BDD, SQL, Defect lifecycle | Strong |

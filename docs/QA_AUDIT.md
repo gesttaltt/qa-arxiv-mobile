@@ -15,7 +15,7 @@ This audit reviews the current state of the QA project for the `arxiv-papers-mob
 
 Issues identified in the April 2026 initial audit have been progressively resolved. As of June 2026, all 11 test cases have been executed on both Android and iOS, 28 evidence files (17 GIFs, 10 screenshots, 1 suite summary) have been collected, all execution logs contain real tester data, and the `TESTING_CHECKLIST.md` has been completed in full. All 7 issues found during execution are formally documented as BUG001–BUG007.
 
-The automation layer has been substantially expanded: 47 automated tests across API integration, BDD/Gherkin scenarios, and mock-based unit tests; 55% code coverage enforced as a CI quality gate (`--cov-fail-under=55`); GitHub Actions pipeline fully green with lint, type checking, and coverage gates. The Azure Pipelines configuration has been corrected to use standard ADO task syntax with `continueOnError: false` on critical steps.
+The automation layer has been substantially expanded: 51 automated tests across API integration, BDD/Gherkin scenarios, and mock-based unit tests; 55% code coverage enforced as a CI quality gate (`--cov-fail-under=55`); GitHub Actions pipeline fully green with lint, type checking, and coverage gates. The Azure Pipelines configuration has been corrected to use standard ADO task syntax with `continueOnError: false` on critical steps.
 
 Remaining gaps: TC010 dedicated evidence is still pending (TC004 GIFs partially cover the offline state); iOS-specific test coverage beyond TC006 remains zero; no macOS CI stage exists for iOS simulator execution.
 
