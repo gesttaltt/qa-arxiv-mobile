@@ -55,3 +55,6 @@ Thumbs.db
 .sisyphus/
 .vscode/
 .idea/
+
+# Tool installers
+*.tar.gz

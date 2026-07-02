@@ -8,33 +8,20 @@ Each scenario maps to a manual test case in manual-tests/test-cases/:
 
 Step definitions share state through the `result` fixture (a plain dict).
 Steps mutate it; Then-steps read from it.
+
+Shared fixtures (`result`, Given "I have access to the arXiv search API")
+are defined in conftest.py so they are available to all BDD test modules.
 """
 
 import xml.etree.ElementTree as ET
 
-import pytest
-from pytest_bdd import given, parsers, scenarios, then, when
+from pytest_bdd import parsers, scenarios, then, when
 
 from ..utils import arxiv_get
 
 scenarios("../../features/search.feature")
 
 _NS = {"atom": "http://www.w3.org/2005/Atom"}
-
-
-@pytest.fixture
-def result() -> dict:
-    return {}
-
-
-# ---------------------------------------------------------------------------
-# Given
-# ---------------------------------------------------------------------------
-
-
-@given("I have access to the arXiv search API")
-def api_access() -> None:
-    pass  # connectivity is verified implicitly when the When step runs
 
 
 # ---------------------------------------------------------------------------

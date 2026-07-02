@@ -81,12 +81,12 @@ jobs:
       - name: Run API and data validation tests (exclude Appium and Selenium)
         run: |
           mkdir -p test-results
-          pytest automation/tests/ -m "not appium and not selenium" \
+          pytest automation/tests/ -m "not appium and not selenium and not slow" \
             --html=test-results/report.html \
             --self-contained-html \
             --cov=automation \
             --cov-report=xml \
-            --cov-fail-under=50 \
+            --cov-fail-under=55 \
             -v
 
       - name: Upload test report

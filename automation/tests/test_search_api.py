@@ -82,6 +82,26 @@ class TestArxivSearchAPI:
         )
 
 
+@pytest.fixture(scope="class")
+def favorites_entry() -> ET.Element:
+    """Fetch one arXiv entry for the entire TestFavoritesDataPersistence class.
+
+    Using class scope avoids four separate API calls (one per test method)
+    while still giving each test an independent assertion point.
+    """
+    response = arxiv_get(
+        {"search_query": "all:deep learning", "start": "0", "max_results": "1"}
+    )
+    assert (
+        response.status_code == 200
+    ), "API unavailable — cannot validate favorites data"
+    root = ET.fromstring(response.content)
+    ns = {"atom": "http://www.w3.org/2005/Atom"}
+    entries = root.findall("atom:entry", ns)
+    assert entries, "No entries returned — cannot validate favorites data"
+    return entries[0]
+
+
 class TestFavoritesDataPersistence:
     """
     Automation support for TC003: Favorites functionality.
@@ -94,48 +114,38 @@ class TestFavoritesDataPersistence:
 
     NS = {"atom": "http://www.w3.org/2005/Atom"}
 
-    def _first_entry(self) -> ET.Element:
-        response = arxiv_get(
-            {"search_query": "all:deep learning", "start": "0", "max_results": "1"}
-        )
-        assert (
-            response.status_code == 200
-        ), "API unavailable — cannot validate favorites data"
-        root = ET.fromstring(response.content)
-        entries = root.findall("atom:entry", self.NS)
-        assert entries, "No entries returned — cannot validate favorites data"
-        return entries[0]
-
-    def test_entry_has_id_for_favorites_key(self) -> None:
+    def test_entry_has_id_for_favorites_key(self, favorites_entry: ET.Element) -> None:
         """Each paper must have a unique ID — used as the favorites storage key."""
-        entry = self._first_entry()
-        paper_id = entry.findtext("atom:id", namespaces=self.NS)
+        paper_id = favorites_entry.findtext("atom:id", namespaces=self.NS)
         assert (
             paper_id and paper_id.strip()
         ), "Entry is missing <id> — cannot key favorites"
 
-    def test_entry_has_title_for_favorites_display(self) -> None:
+    def test_entry_has_title_for_favorites_display(
+        self, favorites_entry: ET.Element
+    ) -> None:
         """Each paper must have a title — displayed in the Favorites list (TC003)."""
-        entry = self._first_entry()
-        title = entry.findtext("atom:title", namespaces=self.NS)
+        title = favorites_entry.findtext("atom:title", namespaces=self.NS)
         assert (
             title and title.strip()
         ), "Entry is missing <title> — Favorites list would be blank"
 
-    def test_entry_has_authors_for_favorites_display(self) -> None:
+    def test_entry_has_authors_for_favorites_display(
+        self, favorites_entry: ET.Element
+    ) -> None:
         """Each paper must have at least one author — shown below the title in TC003."""
-        entry = self._first_entry()
-        authors = entry.findall("atom:author", self.NS)
+        authors = favorites_entry.findall("atom:author", self.NS)
         assert (
             authors
         ), "Entry has no <author> elements — Favorites display would be incomplete"
         name = authors[0].findtext("atom:name", namespaces=self.NS)
         assert name and name.strip(), "First author has an empty <name>"
 
-    def test_entry_has_published_date_for_favorites_metadata(self) -> None:
+    def test_entry_has_published_date_for_favorites_metadata(
+        self, favorites_entry: ET.Element
+    ) -> None:
         """Each paper must have a published date — shown as metadata in TC003."""
-        entry = self._first_entry()
-        published = entry.findtext("atom:published", namespaces=self.NS)
+        published = favorites_entry.findtext("atom:published", namespaces=self.NS)
         assert published and published.strip(), "Entry is missing <published> date"
 
 
@@ -221,6 +231,7 @@ class TestPerformanceBaseline:
             elapsed < self.SLA_SECONDS
         ), f"Expected elapsed < {self.SLA_SECONDS}s but got {elapsed:.2f}s"
 
+    @pytest.mark.slow
     def test_slow_response_fails_sla(self) -> None:
         """A response arriving in 3.5 s must be caught by the SLA assertion."""
 

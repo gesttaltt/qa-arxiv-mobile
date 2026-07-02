@@ -40,8 +40,8 @@ on the same profile:
 | Testability feedback | `manual-tests/testability-feedback/` | Good |
 | ADO wiki documentation | `manual-tests/wiki/coverage_summary.md` | Good |
 | Defect reports | `manual-tests/defects/BUG001–BUG007` (7 reports) | Strong |
-| API test automation (Python/pytest) | `automation/tests/` — 45 tests, 52% coverage | Strong |
-| BDD / Gherkin automation | `automation/features/search.feature` + `tests/bdd/` | Strong |
+| API test automation (Python/pytest) | `automation/tests/` — 47 tests, 55% coverage | Strong |
+| BDD / Gherkin automation | `automation/features/` (search + favorites) + `tests/bdd/` | Strong |
 | Mobile UI automation (Appium) | `automation/pages/` POM + `tests/appium/` smoke tests | Good |
 | ISTQB concepts reference | `docs/TESTING_THEORY.md` — STLC, EP, BVA, BDD, SQL, Defect lifecycle | Strong |
 | XML / data validation | `automation/tests/test_data_validation.py` | Good |
@@ -51,7 +51,7 @@ on the same profile:
 | Azure Pipelines CI/CD | `automation/ci/azure-pipelines.yml` | Good |
 | GitHub Actions CI/CD | `.github/workflows/ci.yml` — full quality gates, green badge | Strong |
 | Code quality tooling | Black, Ruff, mypy, yamllint, markdownlint — all in CI | Strong |
-| Coverage reporting | Codecov badge; `--cov-fail-under=50` gate; 52% honest coverage | Good |
+| Coverage reporting | Codecov badge; `--cov-fail-under=55` gate; 55% honest coverage | Good |
 
 ---
 
@@ -173,7 +173,7 @@ many postings also list GitHub Actions, GitLab CI, or Jenkins. Showing CI/CD awa
 across more than one platform strengthens the portfolio.
 
 **Resolution (June 2026):** `.github/workflows/ci.yml` runs on every push — Black formatting,
-Ruff linting, mypy type checking, yamllint, markdownlint, pytest with `--cov-fail-under=50`,
+Ruff linting, mypy type checking, yamllint, markdownlint, pytest with `--cov-fail-under=55`,
 and Codecov upload. CI badge is green on `main`. Node.js 24 used (20 was deprecated).
 
 ---
@@ -234,7 +234,7 @@ scenarios (TC001 valid search, TC002 empty query, Scenario Outline × 3 academic
 | 8 | Response time / SLA assertion (mock-based) | ✅ Done (`TestPerformanceBaseline`) |
 | 9 | Accessibility TC (TalkBack) + defect | ✅ Done (TC011, BUG007) |
 | 10 | BDD / Gherkin scenarios (pytest-bdd) | ✅ Done (added beyond original scope) |
-| 11 | Honest coverage reporting (52%, no pragma gaming) | ✅ Done (Codecov badge) |
+| 11 | Honest coverage reporting (55%, no pragma gaming) | ✅ Done (Codecov badge) |
 | 12 | Postman collection (6 requests + pm.test() assertions) | ✅ Done (`automation/postman/`) |
 
 ### Remaining
@@ -258,7 +258,7 @@ These areas are solid and should be maintained — they already match or exceed 
 - **Appium / POM** — SearchPage, FavoritesPage with BasePage; screenshot-on-failure
 - **Testability feedback** — requirements analysis and feedback notes show QA mindset beyond execution
 - **Code quality gates** — Black, Ruff, mypy, yamllint, markdownlint all blocking in CI
-- **Coverage tooling** — Codecov integration, honest 52% (not gamed with pragmas)
+- **Coverage tooling** — Codecov integration, honest 55% (not gamed with pragmas)
 - **ISTQB theory** — TESTING_THEORY.md maps every TC to Foundation Level concepts
 
 ---

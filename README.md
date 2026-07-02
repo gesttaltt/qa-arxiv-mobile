@@ -7,7 +7,7 @@
 ![Appium](https://img.shields.io/badge/Appium-mobile%20automation-662D91?logo=appium&logoColor=white)
 ![BDD](https://img.shields.io/badge/BDD-Gherkin%20%2B%20pytest--bdd-23D96C?logo=cucumber&logoColor=white)
 
-![pytest suite — 45 tests passing](docs/pytest-ci-demo.gif)
+![pytest suite — 47 tests passing](docs/pytest-ci-demo.gif)
 
 > Fully documented testing emphasizing **manual QA** and **ADO-style traceability** over a real mobile application.
 
@@ -25,7 +25,7 @@ This repository contains a complete QA portfolio applied to the open-source [arx
 | **Defect Reporting** | 7 structured defect reports (BUG001–BUG007) with reproduction steps, severity, and fix suggestions |
 | **CI/CD** | GitHub Actions pipeline with linting (Black, Ruff, mypy, markdownlint), pytest quality gates, and green badge; Azure Pipelines config included for ADO environments |
 | **Accessibility** | TC011 TalkBack navigation; WCAG 2.1 AA gap identified in BUG007 (`accessibilityRole` missing) |
-| **Test Automation** | pytest API layer (45 tests, 52% coverage); BDD scenarios in Gherkin (pytest-bdd); Page Object Model (Appium); mock-based SLA tests; API contract validation |
+| **Test Automation** | pytest API layer (47 tests, 55% coverage); BDD scenarios in Gherkin (pytest-bdd); Page Object Model (Appium); mock-based SLA tests; API contract validation |
 | **Documentation** | ADO-style wiki, traceability matrix, execution logs, testability feedback notes |
 
 ---
@@ -185,7 +185,8 @@ Also includes:
 - `.github/workflows/ci.yml`: GitHub Actions pipeline (lint + test, runs on every push — see badge above)
 - `automation/ci/azure-pipelines.yml`: Equivalent Azure DevOps pipeline for ADO environments
 - `automation/features/search.feature`: Gherkin scenarios (TC001, TC002) with Scenario Outline for parametrised runs
-- `automation/tests/bdd/test_search.py`: pytest-bdd step definitions wiring Gherkin to Python
+- `automation/features/favorites.feature`: Gherkin scenarios (TC003, TC008) validating API data requirements for favorites persistence and bulk operations
+- `automation/tests/bdd/test_search.py`, `test_favorites.py`: pytest-bdd step definitions; shared Given step and `result` fixture extracted to `bdd/conftest.py`
 - `automation/pages/`: Page Object Model layer (SearchPage, FavoritesPage) for Appium tests
 - `automation/postman/arXiv_API.postman_collection.json`: Postman collection — 6 requests covering TC001, TC002, EP (author field), BVA (max\_results boundary, pagination offset), and Error Guessing (special characters); run with Newman CLI or Postman Collection Runner
 - Modern Python tooling: ruff, black, mypy, pytest-cov, pytest-html, pytest-bdd
@@ -275,14 +276,14 @@ This demonstrates **genuine QA work** with verifiable evidence on a real React N
 - Designed and executed 11 manual test cases for a React Native mobile app following ADO enterprise standards: bi-directional traceability (User Stories → Test Cases → Evidence → Defects), structured execution logs, and defect reports with severity classification and remediation suggestions
 - Configured an Android emulator testing environment from scratch (Android SDK CLI, KVM acceleration, API 28 Google Play image) and captured all test evidence with `adb screenrecord` — no Android Studio required
 - Filed 7 defect reports (BUG001–BUG007) covering functional gaps, UX improvements, and a WCAG 2.1 AA accessibility violation (`accessibilityRole` missing on result cards, identified via TalkBack navigation)
-- Built API test coverage at two layers: a Postman collection (6 requests, `pm.test()` assertions) covering TC001, TC002, Equivalence Partitioning (author field), Boundary Value Analysis (max\_results, pagination offset), and Error Guessing (XSS injection); and 45 pytest tests for CI — API integration, mock-based SLA validation, API contract tests for Favorites, and retry-logic unit tests with 100% branch coverage on the HTTP utility layer
-- Authored a GitHub Actions CI pipeline running on every push — Python linting (Black, Ruff, mypy), pytest with `--cov-fail-under=50` quality gate, Codecov coverage reporting (52% honest coverage, no pragma gaming), and Markdown/YAML validation; mirrored as Azure Pipelines config for ADO environments
-- Implemented BDD scenarios in Gherkin using pytest-bdd: feature file covers TC001 and TC002 with a Scenario Outline that parametrises the happy path across three academic domains; step definitions share state via fixture injection
+- Built API test coverage at two layers: a Postman collection (6 requests, `pm.test()` assertions) covering TC001, TC002, Equivalence Partitioning (author field), Boundary Value Analysis (max\_results, pagination offset), and Error Guessing (XSS injection); and 47 pytest tests for CI — API integration, mock-based SLA validation, API contract tests for Favorites, and retry-logic unit tests with 100% branch coverage on the HTTP utility layer
+- Authored a GitHub Actions CI pipeline running on every push — Python linting (Black, Ruff, mypy), pytest with `--cov-fail-under=55` quality gate, Codecov coverage reporting (55% honest coverage, no pragma gaming), and Markdown/YAML validation; mirrored as Azure Pipelines config for ADO environments
+- Implemented BDD scenarios in Gherkin using pytest-bdd: two feature files — `search.feature` (TC001, TC002, Scenario Outline across three academic domains) and `favorites.feature` (TC003, TC008, validating API field completeness for favorites persistence and bulk uniqueness); shared Given step and `result` fixture extracted to `bdd/conftest.py` to eliminate duplication across modules
 - Maintained full test traceability linking 4 user stories to 11 test cases, screen recordings, screenshots, and defect tickets in a single auditable repository
 
 ### LinkedIn one-liner
 
-> Built an end-to-end QA portfolio on a real React Native app — 11 manual test cases, 45 automated tests (API, BDD/Gherkin, Appium POM), Postman collection, 7 defect reports, ADO traceability, and a GitHub Actions CI pipeline with Codecov coverage gate.
+> Built an end-to-end QA portfolio on a real React Native app — 11 manual test cases, 47 automated tests (API, BDD/Gherkin, Appium POM), Postman collection, 7 defect reports, ADO traceability, and a GitHub Actions CI pipeline with Codecov coverage gate.
 
 ### Platform coverage — how to frame it
 

@@ -44,7 +44,7 @@ Manual test cases are in [`manual-tests/test-cases/`](https://github.com/gesttal
 
 ## Automation
 
-45 automated tests (40 API/unit + 5 BDD) — 52% coverage, enforced in CI.
+47 automated tests (40 API/unit + 7 BDD) — 55% coverage, enforced in CI.
 
 - **API + unit tests** — `automation/tests/` (45 tests: integration, SLA, contract, retry logic)
 - **BDD / Gherkin** — `automation/features/search.feature` + `automation/tests/bdd/`
