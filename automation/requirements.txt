@@ -5,7 +5,7 @@ pytest==8.3.4
 requests==2.32.3
 # pytest-trx==0.3.2 (Not on PyPI, used in Azure Pipelines only)
 pytest-cov==6.0.0
-pytest-html==4.1.1
+pytest-html==4.2.0
 pytest-xdist==3.5.0
 
 # Linting and code quality
