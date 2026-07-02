@@ -197,6 +197,110 @@
       }
     },
     {
+      "name": "EP – Pagination: second page returns entries at offset",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('opensearch:startIndex reflects start=5 offset', function () {",
+              "    pm.expect(pm.response.text()).to.include('<opensearch:startIndex>5</opensearch:startIndex>');",
+              "});",
+              "",
+              "pm.test('Page 2 still contains entries (pagination does not overshoot)', function () {",
+              "    pm.expect(pm.response.text()).to.include('<entry>');",
+              "});",
+              "",
+              "pm.test('totalResults is larger than the page offset (more results exist)', function () {",
+              "    const match = pm.response.text().match(/<opensearch:totalResults>(\\d+)<\\/opensearch:totalResults>/);",
+              "    pm.expect(match).to.not.be.null;",
+              "    pm.expect(parseInt(match[1])).to.be.above(5);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}?search_query=all:machine+learning&start=5&max_results=5",
+          "host": ["{{baseUrl}}"],
+          "query": [
+            { "key": "search_query", "value": "all:machine+learning" },
+            { "key": "start",        "value": "5" },
+            { "key": "max_results",  "value": "5" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "EP – au: field prefix is more specific than all: (cross-request comparison)",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "// Fetch all:bengio total first, store it for comparison in the test script.",
+              "pm.sendRequest({",
+              "    url: 'http://export.arxiv.org/api/query?search_query=all:bengio&start=0&max_results=1',",
+              "    method: 'GET'",
+              "}, function (err, res) {",
+              "    const match = res.text().match(/<opensearch:totalResults>(\\d+)<\\/opensearch:totalResults>/);",
+              "    if (match) {",
+              "        pm.collectionVariables.set('all_bengio_total', parseInt(match[1]));",
+              "    }",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('au: prefix returns fewer total results than all: (EP — narrower partition)', function () {",
+              "    const match = pm.response.text().match(/<opensearch:totalResults>(\\d+)<\\/opensearch:totalResults>/);",
+              "    pm.expect(match).to.not.be.null;",
+              "    const auTotal = parseInt(match[1]);",
+              "    const allTotal = pm.collectionVariables.get('all_bengio_total');",
+              "    pm.expect(auTotal).to.be.below(allTotal);",
+              "});",
+              "",
+              "pm.test('Response contains author element', function () {",
+              "    pm.expect(pm.response.text()).to.include('<author>');",
+              "});",
+              "",
+              "pm.test('Response contains the queried author name', function () {",
+              "    pm.expect(pm.response.text().toLowerCase()).to.include('bengio');",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}?search_query=au:bengio&start=0&max_results=5",
+          "host": ["{{baseUrl}}"],
+          "query": [
+            { "key": "search_query", "value": "au:bengio" },
+            { "key": "start",        "value": "0" },
+            { "key": "max_results",  "value": "5" }
+          ]
+        }
+      }
+    },
+    {
       "name": "Error Guessing – Special characters in query",
       "event": [
         {

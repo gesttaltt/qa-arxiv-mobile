@@ -104,7 +104,7 @@ date format assertion) with commentary.
 postings reviewed. Even Tietoevry's junior posting expects "good API and API testing notions."
 
 **Resolution (June 2026):** `automation/postman/arXiv_API.postman_collection.json` contains
-6 requests with `pm.test()` assertions covering TC001 (valid search — status, Content-Type,
+8 requests with `pm.test()` assertions covering TC001 (valid search — status, Content-Type,
 body, response time), TC002 (empty query — no 5xx, response time), Equivalence Partitioning
 (author field query), BVA (max\_results=1 boundary, start=1 pagination offset), and Error
 Guessing (XSS special characters — server must not crash). Uses a `{{baseUrl}}` collection
@@ -235,7 +235,7 @@ scenarios (TC001 valid search, TC002 empty query, Scenario Outline × 3 academic
 | 9 | Accessibility TC (TalkBack) + defect | ✅ Done (TC011, BUG007) |
 | 10 | BDD / Gherkin scenarios (pytest-bdd) | ✅ Done (added beyond original scope) |
 | 11 | 100% coverage via mock-based POM unit tests | ✅ Done (Codecov badge) |
-| 12 | Postman collection (6 requests + pm.test() assertions) | ✅ Done (`automation/postman/`) |
+| 12 | Postman collection (8 requests + pm.test() assertions) | ✅ Done (`automation/postman/`) |
 
 ### Remaining
 
