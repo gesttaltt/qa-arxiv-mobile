@@ -74,7 +74,7 @@ All test cases properly linked to user stories with bidirectional traceability.
 
 | User Story | Manual Test Case | API Automated | BDD Automated | Notes |
 |------------|-----------------|---------------|---------------|-------|
-| US001 – Search valid | TC001 | ✅ Yes | ✅ Yes | `test_search_api.py`, `features/search.feature` |
+| US001 – Search valid | TC001 | ✅ Yes | ✅ Yes | `test_search_api.py`, `test_search_valid.py`, `test_advanced_search.py` (pagination + author EP), `features/search.feature` |
 | US001 – Empty query | TC002 | ✅ Yes | ✅ Yes | `test_search_empty.py`, `features/search.feature` |
 | US001 – Offline search | TC004 | ❌ No | ❌ No | Manual only |
 | US001 – Accessibility | TC011 | ❌ No | ❌ No | Manual only (TalkBack) |
