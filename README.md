@@ -25,7 +25,7 @@ This repository contains a complete QA portfolio applied to the open-source [arx
 | **Defect Reporting** | 7 structured defect reports (BUG001–BUG007) with reproduction steps, severity, and fix suggestions |
 | **CI/CD** | GitHub Actions pipeline with linting (Black, Ruff, mypy, markdownlint), pytest quality gates, and green badge; Azure Pipelines config included for ADO environments |
 | **Accessibility** | TC011 TalkBack navigation; WCAG 2.1 AA gap identified in BUG007 (`accessibilityRole` missing) |
-| **Test Automation** | pytest API layer (57 tests, 55% coverage); BDD scenarios in Gherkin (pytest-bdd); Page Object Model (Appium); mock-based SLA tests; API contract validation |
+| **Test Automation** | pytest API layer (74 tests, 100% coverage); BDD scenarios in Gherkin (pytest-bdd); Page Object Model (Appium + mock-based unit tests); mock-based SLA tests; API contract validation |
 | **Documentation** | ADO-style wiki, traceability matrix, execution logs, testability feedback notes |
 
 ---
@@ -276,14 +276,14 @@ This demonstrates **genuine QA work** with verifiable evidence on a real React N
 - Designed and executed 11 manual test cases for a React Native mobile app following ADO enterprise standards: bi-directional traceability (User Stories → Test Cases → Evidence → Defects), structured execution logs, and defect reports with severity classification and remediation suggestions
 - Configured an Android emulator testing environment from scratch (Android SDK CLI, KVM acceleration, API 28 Google Play image) and captured all test evidence with `adb screenrecord` — no Android Studio required
 - Filed 7 defect reports (BUG001–BUG007) covering functional gaps, UX improvements, and a WCAG 2.1 AA accessibility violation (`accessibilityRole` missing on result cards, identified via TalkBack navigation)
-- Built API test coverage at two layers: a Postman collection (6 requests, `pm.test()` assertions) covering TC001, TC002, Equivalence Partitioning (author field), Boundary Value Analysis (max\_results, pagination offset), and Error Guessing (XSS injection); and 57 pytest tests for CI — API integration, mock-based SLA validation, API contract tests for Favorites and PDF links (TC005–TC007), and retry-logic unit tests with 100% branch coverage on the HTTP utility layer
-- Authored a GitHub Actions CI pipeline running on every push — Python linting (Black, Ruff, mypy), pytest with `--cov-fail-under=55` quality gate, Codecov coverage reporting (55% honest coverage, no pragma gaming), and Markdown/YAML validation; mirrored as Azure Pipelines config for ADO environments
+- Built API test coverage at two layers: a Postman collection (6 requests, `pm.test()` assertions) covering TC001, TC002, Equivalence Partitioning (author field), Boundary Value Analysis (max\_results, pagination offset), and Error Guessing (XSS injection); and 74 pytest tests for CI — API integration, mock-based SLA validation, API contract tests for Favorites and PDF links (TC005–TC007), retry-logic unit tests, and mock-based POM unit tests covering all page object methods (100% statement coverage)
+- Authored a GitHub Actions CI pipeline running on every push — Python linting (Black, Ruff, mypy), pytest with `--cov-fail-under=100` quality gate, Codecov coverage reporting (100% coverage via mock-based POM unit tests), and Markdown/YAML validation; mirrored as Azure Pipelines config for ADO environments
 - Implemented BDD scenarios in Gherkin using pytest-bdd: two feature files — `search.feature` (TC001, TC002, Scenario Outline across three academic domains) and `favorites.feature` (TC003, TC008, validating API field completeness for favorites persistence and bulk uniqueness); shared Given step and `result` fixture extracted to `bdd/conftest.py` to eliminate duplication across modules
 - Maintained full test traceability linking 4 user stories to 11 test cases, screen recordings, screenshots, and defect tickets in a single auditable repository
 
 ### LinkedIn one-liner
 
-> Built an end-to-end QA portfolio on a real React Native app — 11 manual test cases, 57 automated tests (API, BDD/Gherkin, Appium POM), Postman collection, 7 defect reports, ADO traceability, and a GitHub Actions CI pipeline with Codecov coverage gate.
+> Built an end-to-end QA portfolio on a real React Native app — 11 manual test cases, 74 automated tests (API, BDD/Gherkin, Appium POM + mock unit tests, 100% coverage), Postman collection, 7 defect reports, ADO traceability, and a GitHub Actions CI pipeline with Codecov coverage gate.
 
 ### Platform coverage — how to frame it
 

@@ -15,7 +15,7 @@ This audit reviews the current state of the QA project for the `arxiv-papers-mob
 
 Issues identified in the April 2026 initial audit have been progressively resolved. As of June 2026, all 11 test cases have been executed on both Android and iOS, 28 evidence files (17 GIFs, 10 screenshots, 1 suite summary) have been collected, all execution logs contain real tester data, and the `TESTING_CHECKLIST.md` has been completed in full. All 7 issues found during execution are formally documented as BUG001–BUG007.
 
-The automation layer has been substantially expanded: 57 automated tests across API integration, BDD/Gherkin scenarios, and mock-based unit tests; 55% code coverage enforced as a CI quality gate (`--cov-fail-under=55`); GitHub Actions pipeline fully green with lint, type checking, and coverage gates. The Azure Pipelines configuration has been corrected to use standard ADO task syntax with `continueOnError: false` on critical steps.
+The automation layer has been substantially expanded: 74 automated tests across API integration, BDD/Gherkin scenarios, and mock-based unit tests (including POM unit tests for all page objects); 100% code coverage enforced as a CI quality gate (`--cov-fail-under=100`); GitHub Actions pipeline fully green with lint, type checking, and coverage gates. The Azure Pipelines configuration has been corrected to use standard ADO task syntax with `continueOnError: false` on critical steps.
 
 Remaining gaps: TC010 dedicated evidence is still pending (TC004 GIFs partially cover the offline state); iOS-specific test coverage beyond TC006 remains zero; no macOS CI stage exists for iOS simulator execution.
 
@@ -134,8 +134,8 @@ The following improvements have been made since the initial audit:
 - **`TestPerformanceBaseline`**: replaced the real-HTTP SLA test with mock-based tests that simulate 0.5 s (passes) and 3.5 s (fails) responses, validating the assertion logic rather than third-party API latency.
 - **`TestFavoritesDataPersistence`**: replaced the old hardcoded dict assertion with 4 real API contract tests (`id`, `title`, `authors`, `published`) that would catch API schema changes before the UI is even involved.
 - **BDD / Gherkin**: `automation/features/search.feature` (5 scenarios including Scenario Outline) and `automation/tests/bdd/test_search.py` (step definitions via pytest-bdd 7.3.0).
-- **Honest coverage (55%)**: `# pragma: no cover` removed from all Page Object methods; coverage now reflects the real state — `utils.py` 100%, page objects 37–71% (method bodies require Appium device). `--cov-fail-under=55` enforces a meaningful gate without gaming metrics.
-- **Codecov**: `.codecov.yml` added; coverage badge reflects the live 55% figure.
+- **Honest coverage (100%)**: All 103 measured statements covered — `utils.py` 100% via retry-logic unit tests; page objects (`BasePage`, `SearchPage`, `FavoritesPage`) 100% via 17 mock-based unit tests in `test_pom_unit.py` that exercise both accessibility-ID and XPath fallback paths without requiring a real device. `--cov-fail-under=100` enforces this gate in CI.
+- **Codecov**: `.codecov.yml` added; coverage badge reflects the live 100% figure.
 
 ---
 
@@ -175,7 +175,7 @@ None of the test cases include a step to verify VoiceOver announces the result (
 
 ### 5.3 Quality Gates — RESOLVED
 
-The Azure Pipelines `pytest` and `mypy` steps now use `continueOnError: false`, meaning test failures and type errors correctly fail the build. Style and lint steps remain non-blocking by design (developer aid, not gates). Both pipelines now enforce equivalent quality gates: the GitHub Actions pipeline has Black, Ruff, mypy, yamllint, markdownlint, and `pytest --cov-fail-under=55` as blocking steps; the Azure Pipelines Testing stage mirrors this with `-m "not appium and not selenium and not slow"` and `--cov-fail-under=55` on the same pytest invocation.
+The Azure Pipelines `pytest` and `mypy` steps now use `continueOnError: false`, meaning test failures and type errors correctly fail the build. Style and lint steps remain non-blocking by design (developer aid, not gates). Both pipelines now enforce equivalent quality gates: the GitHub Actions pipeline has Black, Ruff, mypy, yamllint, markdownlint, and `pytest --cov-fail-under=100` as blocking steps; the Azure Pipelines Testing stage mirrors this with `-m "not appium and not selenium and not slow"` and `--cov-fail-under=100` on the same pytest invocation.
 
 ### 5.4 No iOS Build or Test Stage
 
@@ -304,9 +304,9 @@ The standalone `ruff.toml` has been removed and its configuration has been merge
 | Automation tests using correct framework | 43 — Appium + API + BDD (Selenium replaced) |
 | Selenium-based tests (wrong framework) | 0 |
 | Config fragmentation (ruff) | Resolved — consolidated in `pyproject.toml` |
-| Code coverage | 55% overall — `utils.py` 100%, page objects 37–71%; gate at `--cov-fail-under=55` |
-| CI quality gates functional (GitHub Actions) | Full — lint + type check + pytest + `--cov-fail-under=55`; all blocking |
-| CI quality gates functional (Azure Pipelines) | Full — `pytest` and `mypy` blocking; `--cov-fail-under=55` and marker filter match GitHub Actions; style/lint non-blocking |
+| Code coverage | 100% overall — all 103 statements covered; page objects fully tested with mock-based unit tests; gate at `--cov-fail-under=100` |
+| CI quality gates functional (GitHub Actions) | Full — lint + type check + pytest + `--cov-fail-under=100`; all blocking |
+| CI quality gates functional (Azure Pipelines) | Full — `pytest` and `mypy` blocking; `--cov-fail-under=100` and marker filter match GitHub Actions; style/lint non-blocking |
 | CI stages covering macOS / Xcode | 0 |
 | ADO pipeline tasks using correct syntax | Yes — `checkout: self` and `PublishBuildArtifacts@1` in all stages |
 | Feature coverage (US001 Search) | 100% executed |

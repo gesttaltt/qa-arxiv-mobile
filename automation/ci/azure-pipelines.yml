@@ -115,7 +115,7 @@ stages:
                 --html=test-results/report.html \
                 --cov=automation \
                 --cov-report=xml \
-                --cov-fail-under=55
+                --cov-fail-under=100
             displayName: 'Execute QA Test Suite'
             continueOnError: false
 

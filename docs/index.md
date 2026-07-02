@@ -44,9 +44,9 @@ Manual test cases are in [`manual-tests/test-cases/`](https://github.com/gesttal
 
 ## Automation
 
-57 automated tests (50 API/unit + 7 BDD) — 55% coverage, enforced in CI.
+74 automated tests (67 API/unit/POM + 7 BDD) — 100% coverage, enforced in CI.
 
-- **API + unit tests** — `automation/tests/` (50 tests: integration, SLA, contract, retry logic, pagination, author search)
+- **API + unit tests** — `automation/tests/` (67 tests: integration, SLA, contract, retry logic, pagination, author search, POM unit)
 - **BDD / Gherkin** — `automation/features/` (`search.feature` + `favorites.feature`) + `automation/tests/bdd/`
 - **Mobile UI (Appium)** — `automation/tests/appium/` (Page Object Model, 8 tests, require device)
 - **Postman collection** — `automation/postman/arXiv_API.postman_collection.json` (6 requests, Newman CLI)

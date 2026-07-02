@@ -86,7 +86,7 @@ jobs:
             --self-contained-html \
             --cov=automation \
             --cov-report=xml \
-            --cov-fail-under=55 \
+            --cov-fail-under=100 \
             -v
 
       - name: Upload test report
