@@ -53,3 +53,11 @@ returns the list to a clean empty state.
 **Notes:**  
 - If the app allows a "Remove all favorites" bulk action, add a step to test it with 3 items
   and verify the list empties in one action.
+
+---
+
+**Automation Coverage:**
+
+| Layer | File | What it validates |
+|---|---|---|
+| BDD / Gherkin | `automation/features/favorites.feature` — scenario 2 | Fetches 5 results and asserts every paper has a unique ID, non-empty title, and no duplicate IDs — data-layer equivalent of the bulk uniqueness check in steps 3 and 5 |

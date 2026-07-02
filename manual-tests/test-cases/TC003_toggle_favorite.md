@@ -36,3 +36,12 @@ Verify that the user can mark and unmark a paper as favorite.
 | Android | Favorite persists after pressing the Android back button and returning to the tab |
 | iOS | Favorite persists after swiping back via navigation gesture; no duplicate entries after fast taps |
 | Both | Force-close and reopen the app — favourite state must survive (local persistence check) |
+
+---
+
+**Automation Coverage:**
+
+| Layer | File | What it validates |
+|---|---|---|
+| API contract | `automation/tests/test_search_api.py` — `TestFavoritesDataPersistence` | arXiv API returns all 4 fields required to persist a favorite (`id`, `title`, `authors`, `published`) |
+| BDD / Gherkin | `automation/features/favorites.feature` — scenario 1 | Same contract expressed as a Gherkin scenario; mapped to this TC |
