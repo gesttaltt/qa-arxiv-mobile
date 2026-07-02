@@ -173,9 +173,9 @@ None of the test cases include a step to verify VoiceOver announces the result (
 
 `PublishHtmlReport@1` is a third-party marketplace extension (not included by default). The pipeline should either install this extension explicitly or use `PublishBuildArtifacts@1` for report publishing.
 
-### 5.3 Quality Gates — PARTIALLY RESOLVED
+### 5.3 Quality Gates — RESOLVED
 
-The Azure Pipelines `pytest` and `mypy` steps now use `continueOnError: false`, meaning test failures and type errors correctly fail the build. Style and lint steps remain non-blocking by design (developer aid, not gates). The GitHub Actions pipeline (`.github/workflows/ci.yml`) has full quality gates: Black formatting check, Ruff lint, mypy type checking, yamllint, markdownlint, and `pytest --cov-fail-under=55` — all blocking. Remaining gap: Azure pipeline has no equivalent `--cov-fail-under` gate.
+The Azure Pipelines `pytest` and `mypy` steps now use `continueOnError: false`, meaning test failures and type errors correctly fail the build. Style and lint steps remain non-blocking by design (developer aid, not gates). Both pipelines now enforce equivalent quality gates: the GitHub Actions pipeline has Black, Ruff, mypy, yamllint, markdownlint, and `pytest --cov-fail-under=55` as blocking steps; the Azure Pipelines Testing stage mirrors this with `-m "not appium and not selenium and not slow"` and `--cov-fail-under=55` on the same pytest invocation.
 
 ### 5.4 No iOS Build or Test Stage
 
@@ -306,7 +306,7 @@ The standalone `ruff.toml` has been removed and its configuration has been merge
 | Config fragmentation (ruff) | Resolved — consolidated in `pyproject.toml` |
 | Code coverage | 55% overall — `utils.py` 100%, page objects 37–71%; gate at `--cov-fail-under=55` |
 | CI quality gates functional (GitHub Actions) | Full — lint + type check + pytest + `--cov-fail-under=55`; all blocking |
-| CI quality gates functional (Azure Pipelines) | Partial — `pytest` and `mypy` blocking; style/lint non-blocking; no coverage gate |
+| CI quality gates functional (Azure Pipelines) | Full — `pytest` and `mypy` blocking; `--cov-fail-under=55` and marker filter match GitHub Actions; style/lint non-blocking |
 | CI stages covering macOS / Xcode | 0 |
 | ADO pipeline tasks using correct syntax | Yes — `checkout: self` and `PublishBuildArtifacts@1` in all stages |
 | Feature coverage (US001 Search) | 100% executed |

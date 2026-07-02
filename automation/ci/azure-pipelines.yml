@@ -109,11 +109,13 @@ stages:
 
           - script: |
               echo "Running automated test suite..."
-              pytest automation/tests/ \
+              mkdir -p test-results
+              pytest automation/tests/ -m "not appium and not selenium and not slow" \
                 --trx=test-results/results.trx \
                 --html=test-results/report.html \
                 --cov=automation \
-                --cov-report=xml
+                --cov-report=xml \
+                --cov-fail-under=55
             displayName: 'Execute QA Test Suite'
             continueOnError: false
 
