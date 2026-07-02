@@ -29,7 +29,9 @@ Test one value per partition rather than every possible input.
 | TC001 – Valid search | **Valid partition:** keyword that returns results |
 | TC002 – Empty query | **Invalid partition:** empty input |
 | TC005 – PDF download | Valid PDF / no PDF available / network drop mid-download |
-| Postman – Author field | Author field query vs full-text query |
+| Postman – Author field | `au:lecun` author query vs `all:lecun` full-text query |
+| `TestPagination` | `start=0` (page 1) vs `start=5` (page 2) — distinct result page partitions |
+| `TestAuthorSearch` | `au:bengio` (author field only) vs `all:bengio` (all fields) — quantitative EP: `au:` must return a strict subset |
 
 ---
 
@@ -181,7 +183,7 @@ See `manual-tests/test-cases/TC011_accessibility_talkback.md`.
 
 | Level | Definition | Examples in this project |
 |---|---|---|
-| **Unit** | Smallest testable unit in isolation | `TestArxivGetRetry` in `test_utils.py` — mocks HTTP and `time.sleep` to test retry logic in isolation |
+| **Unit** | Smallest testable unit in isolation | `TestArxivGetRetry` in `test_utils.py` — mocks HTTP and `time.sleep` to test retry logic in isolation; `test_pom_unit.py` — mocks Appium `WebDriver` to test all POM methods (accessibility-ID and XPath fallback paths) without a real device |
 | **Integration** | Interaction between components | `test_search_valid_keyword_api_response` (app ↔ arXiv API); `TestFavoritesDataPersistence` (API contract) |
 | **System** | End-to-end behaviour of the full system | All Appium smoke tests in `automation/tests/appium/` |
 | **Acceptance** | Business requirements met | BDD scenarios in `automation/features/search.feature`; manual TCs against real app build |
@@ -271,3 +273,74 @@ generating three independent pytest functions automatically.
 | US001 (TC001 ×3) | Popular academic topics — quantum physics | `test_popular_academic_topics_all_return_results[quantum physics]` |
 | US001 (TC001 ×3) | Popular academic topics — neural networks | `test_popular_academic_topics_all_return_results[neural networks]` |
 | US001 (TC001 ×3) | Popular academic topics — computer science | `test_popular_academic_topics_all_return_results[computer science]` |
+| US002 (TC003) | A search result contains all fields needed to save a favorite | `test_a_search_result_contains_all_fields_needed_to_save_a_favorite` |
+| US002 (TC008) | Multiple results all provide complete favorite data | `test_multiple_results_all_provide_complete_favorite_data` |
+
+---
+
+## 10. Mock-Based Unit Testing
+
+A **unit test** exercises a single unit of code in complete isolation — no network, no
+database, no device. Dependencies are replaced with **test doubles** (mocks, stubs, fakes)
+that the test controls entirely.
+
+### The Testing Pyramid
+
+```
+        ┌──────────────────────┐
+        │   E2E / Appium       │  Few, slow — require real device
+        ├──────────────────────┤
+        │   Integration (API)  │  Real HTTP calls, no device
+        ├──────────────────────┤
+        │   Unit / Mock        │  Many, fast — no network, no device
+        └──────────────────────┘
+```
+
+| Layer | Files in this project | Speed | Device needed |
+|---|---|---|---|
+| **Unit** | `test_utils.py`, `test_pom_unit.py` | < 15 s | No |
+| **Integration** | `test_search_*.py`, `test_data_validation.py`, `test_pdf_contract.py`, `test_advanced_search.py` | ~80 s | No |
+| **E2E** | `tests/appium/test_search_smoke.py`, `test_favorites_smoke.py` | Minutes | Yes |
+
+### Why unit-test Page Object Model classes?
+
+Appium tests require a running emulator or physical device — they cannot run in CI without
+significant infrastructure. Mock-based unit tests replace the Appium `WebDriver` with a
+`MagicMock`, letting CI verify that POM methods call the correct Selenium/Appium APIs at
+every code path, without a device:
+
+```python
+from unittest.mock import MagicMock
+from automation.pages.search_page import SearchPage
+
+driver = MagicMock()
+page = SearchPage(driver)
+page._wait = MagicMock(return_value=MagicMock())  # type: ignore[method-assign]
+
+# Test the XPath fallback branch:
+page._wait.return_value.until.side_effect = [Exception("timeout"), MagicMock()]
+driver.find_elements.return_value = []
+
+page.search("quantum")
+
+driver.execute_script.assert_called_once()  # fallback path executed
+```
+
+### What mock tests prove — and what they do not
+
+| Validates | Does not validate |
+|---|---|
+| POM calls the correct Appium locator strategy | That the locator finds an element in a real app |
+| XPath fallback executes when accessibility ID times out | That the XPath matches the actual app layout |
+| `field.clear()` and `field.send_keys()` are called in order | That the real keyboard accepts the input |
+| Fallback `execute_script` fires when no button is found | That the script works on the actual device |
+
+This is an intentional tradeoff: mock tests give fast, stable CI coverage for **code logic**
+while Appium tests (run on demand against a device) validate **real behaviour**.
+
+### Coverage impact
+
+Without `test_pom_unit.py`: **55% coverage** (page object method bodies were unreachable in CI).
+After: **100%** — all 103 statements covered, including both branches of every
+accessibility-ID → XPath fallback in `SearchPage` and `FavoritesPage`.
+The `--cov-fail-under=100` gate in CI enforces this is never regressed.
