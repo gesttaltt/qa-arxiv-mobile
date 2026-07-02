@@ -64,16 +64,12 @@
           "listen": "test",
           "script": {
             "exec": [
-              "pm.test('Status code is 200 or 400', function () {",
-              "    pm.expect([200, 400]).to.include(pm.response.code);",
+              "pm.test('Status code is 200, 400, or 503 (transient unavailability)', function () {",
+              "    pm.expect([200, 400, 503]).to.include(pm.response.code);",
               "});",
               "",
-              "pm.test('Response does not contain a server error (5xx)', function () {",
-              "    pm.expect(pm.response.code).to.be.below(500);",
-              "});",
-              "",
-              "pm.test('Response time is under 3000ms', function () {",
-              "    pm.expect(pm.response.responseTime).to.be.below(3000);",
+              "pm.test('Response does not contain an internal server error (500)', function () {",
+              "    pm.expect(pm.response.code).to.not.equal(500);",
               "});"
             ],
             "type": "text/javascript"

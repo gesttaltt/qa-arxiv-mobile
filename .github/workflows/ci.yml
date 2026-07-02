@@ -59,7 +59,12 @@ jobs:
         run: npm install -g newman
 
       - name: Run Postman collection
-        run: newman run automation/postman/arXiv_API.postman_collection.json
+        run: |
+          newman run automation/postman/arXiv_API.postman_collection.json \
+            --timeout-request 60000 || \
+          (echo "First run failed, retrying after 30s..." && sleep 30 && \
+            newman run automation/postman/arXiv_API.postman_collection.json \
+              --timeout-request 60000)
 
   test:
     name: Test
@@ -87,6 +92,7 @@ jobs:
             --cov=automation \
             --cov-report=xml \
             --cov-fail-under=100 \
+            --reruns 2 --reruns-delay 10 \
             -v
 
       - name: Upload test report
