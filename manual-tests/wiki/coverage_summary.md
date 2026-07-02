@@ -26,16 +26,16 @@ Comprehensive test coverage analysis for arxiv-papers-mobile application focusin
 
 ### Test Type Distribution
 
-| Test Type | Count | Percentage |
-|-----------|-------|------------|
-| Functional (manual) | 11 | 26% |
-| API integration (pytest) | 36 | 80% |
-| Retry / unit (mock-based) | 4 | 9% |
-| BDD / Gherkin (pytest-bdd) | 5 | 11% |
+| Test Type | Count | % of 57 automated |
+|-----------|-------|-------------------|
+| Functional (manual) | 11 | 19% |
+| API integration (pytest) | 44 | 77% |
+| Retry / unit (mock-based) | 4 | 7% |
+| BDD / Gherkin (pytest-bdd) | 7 | 12% |
 | Performance / SLA (mock-based) | 2 | 4% |
 
-> Totals exceed 100% because API and BDD tests overlap in scope with manual test cases.
-> Performance / SLA (2) is a subset of API integration (34), shown separately for emphasis.
+> Totals exceed 100% because BDD and SLA tests overlap in scope with API integration and manual test cases.
+> Performance / SLA (2) is a subset of API integration (44), shown separately for emphasis.
 
 ## Quality Metrics
 
@@ -78,11 +78,11 @@ All test cases properly linked to user stories with bidirectional traceability.
 | US001 – Empty query | TC002 | ✅ Yes | ✅ Yes | `test_search_empty.py`, `features/search.feature` |
 | US001 – Offline search | TC004 | ❌ No | ❌ No | Manual only |
 | US001 – Accessibility | TC011 | ❌ No | ❌ No | Manual only (TalkBack) |
-| US002 – Toggle fav | TC003 | ✅ Partial | ❌ No | API contract validated; UI via Appium (requires device) |
-| US002 – Bulk favorites | TC008 | ❌ No | ❌ No | Manual only |
-| US003 – PDF download | TC005 | ❌ No | ❌ No | Manual only |
-| US003 – iOS Safari | TC006 | ❌ No | ❌ No | Manual only |
-| US003 – Android intent | TC007 | ❌ No | ❌ No | Manual only |
+| US002 – Toggle fav | TC003 | ✅ Partial | ✅ Partial | API: `test_search_api.py` (field contract); BDD: `favorites.feature` scenario 1 |
+| US002 – Bulk favorites | TC008 | ✅ Partial | ✅ Partial | API: `test_search_api.py`; BDD: `favorites.feature` scenario 2 (bulk uniqueness) |
+| US003 – PDF download | TC005 | ✅ Partial | ❌ No | API contract: `test_pdf_contract.py` (PDF link presence + URL pattern) |
+| US003 – iOS Safari | TC006 | ✅ Partial | ❌ No | API contract: `test_pdf_contract.py` (abstract link presence + URL pattern) |
+| US003 – Android intent | TC007 | ✅ Partial | ❌ No | API contract: `test_pdf_contract.py` (PDF link href that Android intent consumes) |
 | US004 – WiFi to cell | TC009 | ❌ No | ❌ No | Manual only |
 | US004 – Offline persist | TC010 | ❌ No | ❌ No | Manual only |
 
