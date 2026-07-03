@@ -69,6 +69,7 @@ ignore_missing_imports = true
 omit = [
     "automation/tests/test_*.py",
     "automation/tests/bdd/test_*.py",
+    "automation/tests/bdd/conftest.py",
     "automation/tests/appium/test_*.py",
     "automation/tests/conftest.py",
     "automation/tests/appium/conftest.py",
