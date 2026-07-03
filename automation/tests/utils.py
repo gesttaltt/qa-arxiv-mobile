@@ -9,7 +9,7 @@ ARXIV_BASE_URL = "http://export.arxiv.org/api/query"
 
 def arxiv_get(
     params: dict,
-    timeout: int = 15,
+    timeout: int = 30,
     retries: int = 3,
     backoff: float = 5.0,
 ) -> requests.Response:
