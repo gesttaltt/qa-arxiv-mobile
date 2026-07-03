@@ -4,7 +4,7 @@ import time
 
 import pytest
 
-_INTER_TEST_DELAY = 0.8
+_INTER_TEST_DELAY = 1.5
 
 
 @pytest.fixture(autouse=True)

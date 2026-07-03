@@ -92,7 +92,7 @@ jobs:
             --cov=automation \
             --cov-report=xml \
             --cov-fail-under=100 \
-            --reruns 2 --reruns-delay 10 \
+            --reruns 2 --reruns-delay 60 \
             -v
 
       - name: Upload test report
