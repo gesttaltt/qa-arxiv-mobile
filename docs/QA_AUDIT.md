@@ -15,7 +15,7 @@ This audit reviews the current state of the QA project for the `arxiv-papers-mob
 
 Issues identified in the April 2026 initial audit have been progressively resolved. As of June 2026, all 11 test cases have been executed on both Android and iOS, 28 evidence files (17 GIFs, 10 screenshots, 1 suite summary) have been collected, all execution logs contain real tester data, and the `TESTING_CHECKLIST.md` has been completed in full. All 7 issues found during execution are formally documented as BUG001–BUG007.
 
-The automation layer has been substantially expanded: 74 automated tests across API integration, BDD/Gherkin scenarios, and mock-based unit tests (including POM unit tests for all page objects); 100% code coverage enforced as a CI quality gate (`--cov-fail-under=100`); GitHub Actions pipeline fully green with lint, type checking, and coverage gates. The Azure Pipelines configuration has been corrected to use standard ADO task syntax with `continueOnError: false` on critical steps.
+The automation layer has been substantially expanded: 57 automated tests across API integration and BDD/Gherkin scenarios, plus 7 Appium tests running on BrowserStack App Automate (Samsung Galaxy S22); 100% coverage on `utils.py` enforced as a CI gate (`--cov-fail-under=100`); page objects excluded from coverage (require real device — validated by Appium tests in CI); GitHub Actions pipeline fully green with lint, type checking, and coverage gates.
 
 Remaining gaps: TC010 dedicated evidence is still pending (TC004 GIFs partially cover the offline state); iOS-specific test coverage beyond TC006 remains zero; no macOS CI stage exists for iOS simulator execution.
 
@@ -134,7 +134,7 @@ The following improvements have been made since the initial audit:
 - **`TestPerformanceBaseline`**: replaced the real-HTTP SLA test with mock-based tests that simulate 0.5 s (passes) and 3.5 s (fails) responses, validating the assertion logic rather than third-party API latency.
 - **`TestFavoritesDataPersistence`**: replaced the old hardcoded dict assertion with 4 real API contract tests (`id`, `title`, `authors`, `published`) that would catch API schema changes before the UI is even involved.
 - **BDD / Gherkin**: `automation/features/search.feature` (5 scenarios including Scenario Outline) and `automation/tests/bdd/test_search.py` (step definitions via pytest-bdd 7.3.0).
-- **Honest coverage (100%)**: All 103 measured statements covered — `utils.py` 100% via retry-logic unit tests; page objects (`BasePage`, `SearchPage`, `FavoritesPage`) 100% via 17 mock-based unit tests in `test_pom_unit.py` that exercise both accessibility-ID and XPath fallback paths without requiring a real device. `--cov-fail-under=100` enforces this gate in CI.
+- **Honest coverage (100%)**: `utils.py` 100% covered by 4 retry-logic unit tests — no mocks inflating the figure. Page objects (`BasePage`, `SearchPage`, `DownloadedPage`) are excluded from coverage measurement; they are verified by Appium tests on BrowserStack. `--cov-fail-under=100` enforces the gate on measurable code.
 - **Codecov**: `.codecov.yml` added; coverage badge reflects the live 100% figure.
 
 ---
@@ -304,7 +304,7 @@ The standalone `ruff.toml` has been removed and its configuration has been merge
 | Automation tests using correct framework | 43 — Appium + API + BDD (Selenium replaced) |
 | Selenium-based tests (wrong framework) | 0 |
 | Config fragmentation (ruff) | Resolved — consolidated in `pyproject.toml` |
-| Code coverage | 100% overall — all 103 statements covered; page objects fully tested with mock-based unit tests; gate at `--cov-fail-under=100` |
+| Code coverage | 100% on `utils.py` (10 statements) — page objects excluded (require real device); gate at `--cov-fail-under=100` |
 | CI quality gates functional (GitHub Actions) | Full — lint + type check + pytest + `--cov-fail-under=100`; all blocking |
 | CI quality gates functional (Azure Pipelines) | Full — `pytest` and `mypy` blocking; `--cov-fail-under=100` and marker filter match GitHub Actions; style/lint non-blocking |
 | CI stages covering macOS / Xcode | 0 |
@@ -339,8 +339,8 @@ The standalone `ruff.toml` has been removed and its configuration has been merge
 | `automation/tests/test_data_validation.py` | Atom XML data validation | Complete |
 | `automation/features/search.feature` | BDD Gherkin scenarios (TC001, TC002, Outline × 3) | Complete |
 | `automation/tests/bdd/test_search.py` | pytest-bdd step definitions | Complete |
-| `automation/tests/appium/test_search_smoke.py` | Appium UI test (search) | Functional — requires device |
-| `automation/tests/appium/test_favorites_smoke.py` | Appium UI test (favorites) | Functional — requires device |
+| `automation/tests/appium/test_search_smoke.py` | Appium UI test (search) | Runs in CI via BrowserStack |
+| `automation/tests/appium/test_downloaded_smoke.py` | Appium UI test (DOWNLOADED tab) | Runs in CI via BrowserStack |
 | `automation/ci/azure-pipelines.yml` | CI pipeline | Standard ADO syntax; critical steps blocking; no iOS stage or coverage gate |
 | `.github/workflows/ci.yml` | GitHub Actions CI | Functional |
 | `pyproject.toml` | Project config + ruff config | Consolidated (ruff.toml removed) |

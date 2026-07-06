@@ -115,15 +115,15 @@ Key elements to verify:
 
 | Element | Expected locator strategy | Expected value |
 |---|---|---|
-| Search text input | `accessibility id` | `search-input` |
-| Search submit button | `accessibility id` | `search-button` |
+| Search text input (Home screen) | `accessibility id` | `homeSearchInput` |
+| Search submit | keyboard action | `mobile: performEditorAction` (no button) |
 | Result cards | `xpath` | `//android.view.ViewGroup[@clickable='true']` |
-| Favorite/star button | `accessibility id` | `favorite-button` |
-| Favorites tab | `accessibility id` | `favorites-tab` |
+| Downloaded article items | `accessibility id` | `downloadedArticle` |
+| DOWNLOADED tab | `xpath` | `//android.widget.TextView[@text='DOWNLOADED']` |
 
-If the app does not expose `accessibilityLabel` on these elements, the tests fall back to
-XPath automatically. Alternatively, add `testID` / `accessibilityLabel` props to the React
-Native source to make locators stable.
+Locators were verified against the app source code (`github.com/lopespm/arxiv-papers-mobile`).
+`homeSearchInput` and `downloadedArticle` are real `testID` props in the React Native source.
+Result cards use XPath fallback — `ListItemCard` has no `testID` in the source.
 
 ---
 

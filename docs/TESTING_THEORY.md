@@ -183,8 +183,8 @@ See `manual-tests/test-cases/TC011_accessibility_talkback.md`.
 
 | Level | Definition | Examples in this project |
 |---|---|---|
-| **Unit** | Smallest testable unit in isolation | `TestArxivGetRetry` in `test_utils.py` — mocks HTTP and `time.sleep` to test retry logic in isolation; `test_pom_unit.py` — mocks Appium `WebDriver` to test all POM methods (accessibility-ID and XPath fallback paths) without a real device |
-| **Integration** | Interaction between components | `test_search_valid_keyword_api_response` (app ↔ arXiv API); `TestFavoritesDataPersistence` (API contract) |
+| **Unit** | Smallest testable unit in isolation | `TestArxivGetRetry` in `test_utils.py` — mocks HTTP and `time.sleep` to test retry logic in isolation |
+| **Integration** | Interaction between components | `test_search_valid_keyword_api_response` (app ↔ arXiv API); `TestSearchDataPersistence` (API contract) |
 | **System** | End-to-end behaviour of the full system | All Appium smoke tests in `automation/tests/appium/` |
 | **Acceptance** | Business requirements met | BDD scenarios in `automation/features/search.feature`; manual TCs against real app build |
 
@@ -298,49 +298,35 @@ that the test controls entirely.
 
 | Layer | Files in this project | Speed | Device needed |
 |---|---|---|---|
-| **Unit** | `test_utils.py`, `test_pom_unit.py` | < 15 s | No |
+| **Unit** | `test_utils.py` | < 15 s | No |
 | **Integration** | `test_search_*.py`, `test_data_validation.py`, `test_pdf_contract.py`, `test_advanced_search.py` | ~80 s | No |
-| **E2E** | `tests/appium/test_search_smoke.py`, `test_favorites_smoke.py` | Minutes | Yes |
+| **E2E** | `tests/appium/test_search_smoke.py`, `test_downloaded_smoke.py` | Minutes | Yes (BrowserStack) |
 
-### Why unit-test Page Object Model classes?
+### Coverage scope — honest over inflated
 
-Appium tests require a running emulator or physical device — they cannot run in CI without
-significant infrastructure. Mock-based unit tests replace the Appium `WebDriver` with a
-`MagicMock`, letting CI verify that POM methods call the correct Selenium/Appium APIs at
-every code path, without a device:
+Page objects (`SearchPage`, `DownloadedPage`, `BasePage`) require a live Appium session to
+execute their method bodies. Rather than replacing the driver with `MagicMock` to hit an
+artificial 100% figure, the project excludes `automation/pages/` from coverage measurement.
+
+Coverage is reported only for `automation/tests/utils.py` — the retry logic that runs without
+any external dependency. 4 unit tests cover all branches:
 
 ```python
-from unittest.mock import MagicMock
-from automation.pages.search_page import SearchPage
-
-driver = MagicMock()
-page = SearchPage(driver)
-page._wait = MagicMock(return_value=MagicMock())  # type: ignore[method-assign]
-
-# Test the XPath fallback branch:
-page._wait.return_value.until.side_effect = [Exception("timeout"), MagicMock()]
-driver.find_elements.return_value = []
-
-page.search("quantum")
-
-driver.execute_script.assert_called_once()  # fallback path executed
+# test_utils.py — real behaviour, no device needed
+def test_retries_once_on_429_then_succeeds(mock_sleep, mock_get):
+    mock_get.side_effect = [Mock(status_code=429), Mock(status_code=200)]
+    result = arxiv_get({"search_query": "q"})
+    assert result.status_code == 200
+    assert mock_get.call_count == 2
 ```
 
-### What mock tests prove — and what they do not
+### What this means for the project
 
-| Validates | Does not validate |
-|---|---|
-| POM calls the correct Appium locator strategy | That the locator finds an element in a real app |
-| XPath fallback executes when accessibility ID times out | That the XPath matches the actual app layout |
-| `field.clear()` and `field.send_keys()` are called in order | That the real keyboard accepts the input |
-| Fallback `execute_script` fires when no button is found | That the script works on the actual device |
+| Scope | Coverage | Gate |
+|---|---|---|
+| `automation/tests/utils.py` (retry logic) | **100%** | `--cov-fail-under=100` in CI |
+| `automation/pages/` (POM) | excluded | verified by Appium tests on BrowserStack |
 
-This is an intentional tradeoff: mock tests give fast, stable CI coverage for **code logic**
-while Appium tests (run on demand against a device) validate **real behaviour**.
-
-### Coverage impact
-
-Without `test_pom_unit.py`: **55% coverage** (page object method bodies were unreachable in CI).
-After: **100%** — all 103 statements covered, including both branches of every
-accessibility-ID → XPath fallback in `SearchPage` and `FavoritesPage`.
-The `--cov-fail-under=100` gate in CI enforces this is never regressed.
+The `--cov-fail-under=100` gate is preserved — it applies to the measurable, device-independent
+code. Page objects are validated by real Appium tests running against a Samsung Galaxy S22 on
+BrowserStack App Automate, not by mocks.

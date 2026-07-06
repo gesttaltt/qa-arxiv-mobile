@@ -40,7 +40,7 @@ on the same profile:
 | Testability feedback | `manual-tests/testability-feedback/` | Good |
 | ADO wiki documentation | `manual-tests/wiki/coverage_summary.md` | Good |
 | Defect reports | `manual-tests/defects/BUG001–BUG007` (7 reports) | Strong |
-| API test automation (Python/pytest) | `automation/tests/` — 74 tests, 100% coverage | Strong |
+| API test automation (Python/pytest) | `automation/tests/` — 57 tests, 100% coverage on utils.py | Strong |
 | BDD / Gherkin automation | `automation/features/` (search + favorites) + `tests/bdd/` | Strong |
 | Mobile UI automation (Appium) | `automation/pages/` POM + `tests/appium/` smoke tests | Good |
 | ISTQB concepts reference | `docs/TESTING_THEORY.md` — STLC, EP, BVA, BDD, SQL, Defect lifecycle | Strong |
@@ -51,7 +51,7 @@ on the same profile:
 | Azure Pipelines CI/CD | `automation/ci/azure-pipelines.yml` | Good |
 | GitHub Actions CI/CD | `.github/workflows/ci.yml` — full quality gates, green badge | Strong |
 | Code quality tooling | Black, Ruff, mypy, yamllint, markdownlint — all in CI | Strong |
-| Coverage reporting | Codecov badge; `--cov-fail-under=100` gate; 100% coverage via mock-based POM unit tests | Strong |
+| Coverage reporting | Codecov badge; `--cov-fail-under=100` gate; 100% on utils.py (page objects excluded — require real device) | Strong |
 
 ---
 
@@ -64,9 +64,11 @@ mobile application testing for Android and iOS." Tietoevry Junior QE posting req
 test automation tools. Appium is the standard for mobile automation.
 
 **Resolution (June 2026):** Page Object Model implemented with `BasePage`, `SearchPage`, and
-`FavoritesPage` in `automation/pages/`. Two Appium smoke tests cover search and favorites flows
-(`automation/tests/appium/`). `conftest.py` configures the Android emulator capabilities and
-provides a screenshot-on-failure hook. `docs/APPIUM_SETUP.md` documents prerequisites.
+`DownloadedPage` in `automation/pages/`. Locators verified against the app source code —
+`homeSearchInput` and `downloadedArticle` are real `testID` props. Two Appium smoke test files
+cover search and the DOWNLOADED tab (`automation/tests/appium/`). `conftest.py` configures
+Android capabilities for both local Appium and BrowserStack. `docs/APPIUM_SETUP.md` documents
+prerequisites.
 
 ---
 
@@ -79,7 +81,7 @@ TestNG, JUnit, Cypress, and Playwright as expected tools.
 **Resolution (June 2026):** Appium serves as the UI automation layer for the React Native mobile
 app. Selenium/Cypress/Playwright were not added because the target app has no browser interface —
 Appium is the correct and expected tool for mobile UI automation. The POM pattern (`BasePage` →
-`SearchPage`/`FavoritesPage`) demonstrates the same structural thinking as a Selenium Page Object
+`SearchPage`/`DownloadedPage`) demonstrates the same structural thinking as a Selenium Page Object
 framework.
 
 **BrowserStack CI integration (July 2026):** The `test-appium` CI job runs Appium smoke tests
@@ -241,7 +243,7 @@ scenarios (TC001 valid search, TC002 empty query, Scenario Outline × 3 academic
 | 8 | Response time / SLA assertion (mock-based) | ✅ Done (`TestPerformanceBaseline`) |
 | 9 | Accessibility TC (TalkBack) + defect | ✅ Done (TC011, BUG007) |
 | 10 | BDD / Gherkin scenarios (pytest-bdd) | ✅ Done (added beyond original scope) |
-| 11 | 100% coverage via mock-based POM unit tests | ✅ Done (Codecov badge) |
+| 11 | 100% coverage on utils.py; pages excluded (real device coverage via BrowserStack) | ✅ Done (Codecov badge) |
 | 12 | Postman collection (8 requests + pm.test() assertions) | ✅ Done (`automation/postman/`) |
 
 ### Remaining
@@ -260,12 +262,12 @@ These areas are solid and should be maintained — they already match or exceed 
 - **ADO-style documentation** — 11 test cases, execution logs, wiki, traceability matrix with Automation Notes
 - **Azure DevOps CI/CD** — `azure-pipelines.yml` with standard syntax, critical steps blocking
 - **GitHub Actions CI/CD** — full quality gate pipeline, green badge on `main`
-- **Python automation with pytest** — parametrised, typed, BDD, mock-based, CI-integrated; 74 tests
+- **Python automation with pytest** — parametrised, typed, BDD, CI-integrated; 57 tests
 - **BDD / Gherkin** — feature file + pytest-bdd step definitions; mapped to User Stories
-- **Appium / POM** — SearchPage, FavoritesPage with BasePage; screenshot-on-failure
+- **Appium / POM** — SearchPage, DownloadedPage with BasePage; locators verified from source; screenshot-on-failure; BrowserStack CI
 - **Testability feedback** — requirements analysis and feedback notes show QA mindset beyond execution
 - **Code quality gates** — Black, Ruff, mypy, yamllint, markdownlint all blocking in CI
-- **Coverage tooling** — Codecov integration, 100% coverage via mock-based POM unit tests; `--cov-fail-under=100` gate
+- **Coverage tooling** — Codecov integration; 100% on utils.py (honest — pages excluded, verified by Appium on BrowserStack); `--cov-fail-under=100` gate
 - **ISTQB theory** — TESTING_THEORY.md maps every TC to Foundation Level concepts
 
 ---
@@ -285,7 +287,7 @@ These areas are solid and should be maintained — they already match or exceed 
 | GitHub Actions | Moderate | `.github/workflows/ci.yml` | Present |
 | SQL | High | `TESTING_THEORY.md` §4 + `test_data_validation.py` | Present (conceptual) |
 | Java | High | Missing | Python compensates — note gap |
-| Python | Moderate-high | Yes (74 pytest tests) | Present |
+| Python | Moderate-high | Yes (57 pytest tests) | Present |
 | ISTQB | High (certification) | `docs/TESTING_THEORY.md` | Present (theory) |
 | Codecov | Low-Moderate | Yes — badge + `.codecov.yml` | Present |
 
