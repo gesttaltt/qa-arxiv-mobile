@@ -48,6 +48,6 @@ Manual test cases are in [`manual-tests/test-cases/`](https://github.com/gesttal
 
 - **API + unit tests** — `automation/tests/` (67 tests: integration, SLA, contract, retry logic, pagination, author search, POM unit)
 - **BDD / Gherkin** — `automation/features/` (`search.feature` + `favorites.feature`) + `automation/tests/bdd/`
-- **Mobile UI (Appium)** — `automation/tests/appium/` (Page Object Model, 8 tests, require device)
+- **Mobile UI (Appium)** — `automation/tests/appium/` (Page Object Model, 8 tests; runs in CI via BrowserStack App Automate — Samsung Galaxy S22, Android 12)
 - **Postman collection** — `automation/postman/arXiv_API.postman_collection.json` (8 requests, Newman CLI)
 - **CI/CD** — GitHub Actions (`.github/workflows/ci.yml`) + Azure Pipelines (`automation/ci/azure-pipelines.yml`)
