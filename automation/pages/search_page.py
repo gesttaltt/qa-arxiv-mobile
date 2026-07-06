@@ -7,7 +7,7 @@ from .base_page import BasePage
 class SearchPage(BasePage):
     """Page object for the Search screen."""
 
-    _SEARCH_INPUT = (AppiumBy.ACCESSIBILITY_ID, "search-input")
+    _SEARCH_INPUT = (AppiumBy.ACCESSIBILITY_ID, "homeSearchInput")
     _SEARCH_INPUT_XPATH = (AppiumBy.XPATH, "//android.widget.EditText")
     _SEARCH_BUTTON = (AppiumBy.ACCESSIBILITY_ID, "search-button")
     _RESULT_ITEM = (
@@ -15,13 +15,6 @@ class SearchPage(BasePage):
         "//android.view.ViewGroup[@clickable='true' and @focusable='true']",
     )
     _RESULT_TITLE = (AppiumBy.XPATH, "//android.widget.TextView[@text]")
-    _FAVORITE_BUTTON = (AppiumBy.ACCESSIBILITY_ID, "favorite-button")
-    _FAVORITE_BUTTON_XPATH = (
-        AppiumBy.XPATH,
-        "(//android.view.ViewGroup[@clickable='true' and @focusable='true'])[1]"
-        "//android.widget.ImageView",
-    )
-
     def search(self, keyword: str) -> None:
         """Type keyword into the search field and submit."""
         wait = self._wait()
@@ -63,13 +56,3 @@ class SearchPage(BasePage):
             field = wait.until(EC.presence_of_element_located(self._SEARCH_INPUT_XPATH))
         return field.is_displayed()
 
-    def tap_favorite_on_first_result(self) -> None:
-        """Tap the favorite/star button on the first result card."""
-        self._wait().until(EC.presence_of_all_elements_located(self._RESULT_ITEM))
-        buttons = self.driver.find_elements(*self._FAVORITE_BUTTON)
-        if buttons:
-            buttons[0].click()
-            return
-        buttons = self.driver.find_elements(*self._FAVORITE_BUTTON_XPATH)
-        assert buttons, "Could not locate favorite/star button on first result"
-        buttons[0].click()

@@ -1,4 +1,4 @@
-from .favorites_page import FavoritesPage
+from .downloaded_page import DownloadedPage
 from .search_page import SearchPage
 
-__all__ = ["FavoritesPage", "SearchPage"]
+__all__ = ["DownloadedPage", "SearchPage"]
