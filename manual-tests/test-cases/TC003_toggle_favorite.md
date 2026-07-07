@@ -43,5 +43,5 @@ Verify that the user can mark and unmark a paper as favorite.
 
 | Layer | File | What it validates |
 |---|---|---|
-| API contract | `automation/tests/test_search_api.py` — `TestFavoritesDataPersistence` | arXiv API returns all 4 fields required to persist a favorite (`id`, `title`, `authors`, `published`) |
-| BDD / Gherkin | `automation/features/favorites.feature` — scenario 1 | Same contract expressed as a Gherkin scenario; mapped to this TC |
+| API contract | `automation/tests/test_search_api.py` — `TestArticleDataContract` | arXiv API returns all 4 fields required to display an article (`id`, `title`, `authors`, `published`) |
+| BDD / Gherkin | `automation/features/article_data_contract.feature` — scenario 1 | Same contract expressed as a Gherkin scenario; mapped to this TC |

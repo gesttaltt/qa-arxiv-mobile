@@ -132,7 +132,7 @@ The following improvements have been made since the initial audit:
 - **`automation/tests/utils.py`**: centralised `arxiv_get()` helper with automatic 429 retry (exponential backoff, configurable retries). Used by all test classes.
 - **`automation/tests/test_utils.py`**: 4 mock-based unit tests covering the retry logic — success path, 1-retry, 2-retry backoff, and exhausted-retries branches. All branches covered without real network calls.
 - **`TestPerformanceBaseline`**: replaced the real-HTTP SLA test with mock-based tests that simulate 0.5 s (passes) and 3.5 s (fails) responses, validating the assertion logic rather than third-party API latency.
-- **`TestFavoritesDataPersistence`**: replaced the old hardcoded dict assertion with 4 real API contract tests (`id`, `title`, `authors`, `published`) that would catch API schema changes before the UI is even involved.
+- **`TestArticleDataContract`**: replaced the old hardcoded dict assertion with 4 real API contract tests (`id`, `title`, `authors`, `published`) that would catch API schema changes before the UI is even involved.
 - **BDD / Gherkin**: `automation/features/search.feature` (5 scenarios including Scenario Outline) and `automation/tests/bdd/test_search.py` (step definitions via pytest-bdd 7.3.0).
 - **Honest coverage (100%)**: `utils.py` 100% covered by 4 retry-logic unit tests — no mocks inflating the figure. Page objects (`BasePage`, `SearchPage`, `DownloadedPage`) are excluded from coverage measurement; they are verified by Appium tests on BrowserStack. `--cov-fail-under=100` enforces the gate on measurable code.
 - **Codecov**: `.codecov.yml` added; coverage badge reflects the live 100% figure.
@@ -202,7 +202,7 @@ The traceability matrix references `US004 — Network Connectivity` with TC009 a
 `traceability-matrix.csv` now reflects accurate coverage with an added `Automation Notes` column:
 - TC001: `Yes` — API tests (`TestArxivSearchAPI`, `test_search_valid.py`) + BDD (`search.feature`)
 - TC002: `Yes` — API tests (`test_search_empty.py`, `TestArxivSearchAPI`) + BDD (`search.feature`)
-- TC003: `Partial` — `TestFavoritesDataPersistence` validates the API data contract; UI toggle requires Appium + device
+- TC003: `Partial` — `TestArticleDataContract` validates the API data contract; UI toggle requires Appium + device
 - All other TCs: `No` with a specific reason explaining why automation is not feasible at the API layer
 
 ### 6.4 `coverage_summary.md` Bug Label — RESOLVED
@@ -250,7 +250,7 @@ The standalone `ruff.toml` has been removed and its configuration has been merge
 | 9 | Centralised HTTP utility with 429 retry + exponential backoff | `automation/tests/utils.py` |
 | 10 | Added 4 mock-based unit tests for retry logic (100% branch coverage) | `automation/tests/test_utils.py` |
 | 11 | Replaced real-HTTP SLA test with mock-based TestPerformanceBaseline | `automation/tests/test_search_api.py` |
-| 12 | Added TestFavoritesDataPersistence: 4 real API contract tests | `automation/tests/test_search_api.py` |
+| 12 | Added TestArticleDataContract: 4 real API contract tests | `automation/tests/test_search_api.py` |
 | 13 | Renamed TestManualTestingSupport → TestSearchKeywordSanity with XML assertions | `automation/tests/test_search_api.py` |
 | 14 | Added BDD layer: Gherkin feature file + pytest-bdd step definitions | `automation/features/search.feature`, `automation/tests/bdd/test_search.py` |
 | 15 | Configured coverage to measure only library code; 100% enforced in CI | `pyproject.toml`, `.github/workflows/ci.yml` |

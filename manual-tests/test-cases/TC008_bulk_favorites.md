@@ -60,4 +60,4 @@ returns the list to a clean empty state.
 
 | Layer | File | What it validates |
 |---|---|---|
-| BDD / Gherkin | `automation/features/favorites.feature` — scenario 2 | Fetches 5 results and asserts every paper has a unique ID, non-empty title, and no duplicate IDs — data-layer equivalent of the bulk uniqueness check in steps 3 and 5 |
+| BDD / Gherkin | `automation/features/article_data_contract.feature` — scenario 2 | Fetches 5 results and asserts every paper has a unique ID, non-empty title, and no duplicate IDs — data-layer equivalent of the bulk uniqueness check in steps 3 and 5 |

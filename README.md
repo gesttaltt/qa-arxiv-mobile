@@ -186,7 +186,7 @@ Also includes:
 - `.github/workflows/ci.yml`: GitHub Actions pipeline (lint + test, runs on every push — see badge above)
 - `automation/ci/azure-pipelines.yml`: Equivalent Azure DevOps pipeline for ADO environments
 - `automation/features/search.feature`: Gherkin scenarios (TC001, TC002) with Scenario Outline for parametrised runs
-- `automation/features/favorites.feature`: Gherkin scenarios (TC003, TC008) validating API data requirements for favorites persistence and bulk operations
+- `automation/features/article_data_contract.feature`: Gherkin scenarios (TC003, TC008) validating API data requirements for article display and bulk uniqueness
 - `automation/tests/bdd/test_search.py`, `test_article_data.py`: pytest-bdd step definitions; shared Given step and `result` fixture extracted to `bdd/conftest.py`
 - `automation/pages/`: Page Object Model layer (SearchPage, DownloadedPage) for Appium tests on BrowserStack
 - `automation/postman/arXiv_API.postman_collection.json`: Postman collection — 8 requests covering TC001, TC002, EP (author field, pagination offset, cross-request `au:` vs `all:` comparison via `pm.collectionVariables`), BVA (max\_results boundary, pagination edge), and Error Guessing (special characters); run with Newman CLI or Postman Collection Runner
