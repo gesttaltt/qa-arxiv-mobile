@@ -52,7 +52,7 @@ Comprehensive test coverage analysis for arxiv-papers-mobile application focusin
 
 - **Manual test cases**: 11 executed, 11 passed
 - **Automated API + unit tests**: 50 passing (pytest, runs in CI on every push)
-- **BDD scenarios**: 7 passing (pytest-bdd, Gherkin feature files: search + favorites)
+- **BDD scenarios**: 7 passing (pytest-bdd, Gherkin feature files: search + article_data_contract)
 - **Total automated**: 57 (excludes 7 Appium tests — run in CI via BrowserStack; 1 @slow excluded from regular CI runs)
 - **Code coverage**: 100% on `automation/tests/utils.py` (10 statements, retry logic); page objects excluded — require real device, verified by Appium tests on BrowserStack; gate at `--cov-fail-under=100`
 - **CI pipeline**: GitHub Actions — green badge on `main`
@@ -78,8 +78,8 @@ All test cases properly linked to user stories with bidirectional traceability.
 | US001 – Empty query | TC002 | ✅ Yes | ✅ Yes | `test_search_empty.py`, `features/search.feature` |
 | US001 – Offline search | TC004 | ❌ No | ❌ No | Manual only |
 | US001 – Accessibility | TC011 | ❌ No | ❌ No | Manual only (TalkBack) |
-| US002 – Toggle fav | TC003 | ✅ Partial | ✅ Partial | API: `test_search_api.py` (field contract); BDD: `favorites.feature` scenario 1 |
-| US002 – Bulk favorites | TC008 | ✅ Partial | ✅ Partial | API: `test_search_api.py`; BDD: `favorites.feature` scenario 2 (bulk uniqueness) |
+| US002 – Toggle fav | TC003 | ✅ Partial | ✅ Partial | API: `test_search_api.py` (field contract); BDD: `article_data_contract.feature` scenario 1 |
+| US002 – Bulk favorites | TC008 | ✅ Partial | ✅ Partial | API: `test_search_api.py`; BDD: `article_data_contract.feature` scenario 2 (bulk uniqueness) |
 | US003 – PDF download | TC005 | ✅ Partial | ❌ No | API contract: `test_pdf_contract.py` (PDF link presence + URL pattern) |
 | US003 – iOS Safari | TC006 | ✅ Partial | ❌ No | API contract: `test_pdf_contract.py` (abstract link presence + URL pattern) |
 | US003 – Android intent | TC007 | ✅ Partial | ❌ No | API contract: `test_pdf_contract.py` (PDF link href that Android intent consumes) |
@@ -89,7 +89,7 @@ All test cases properly linked to user stories with bidirectional traceability.
 ## Observations
 
 - Manual QA coverage is complete across all 11 test cases with real Android GIF evidence
-- API automation covers the data layer for Search (TC001, TC002) and Favorites API contract (TC003)
+- API automation covers the data layer for Search (TC001, TC002) and article data contract (TC003)
 - BDD scenarios in `automation/features/search.feature` bridge TC001/TC002 to Gherkin, readable by non-technical stakeholders
 - SLA logic tested deterministically via mocks — not subject to network variability
 - Retry logic (`arxiv_get()` 429 backoff) covered by 4 dedicated mock-based unit tests in `automation/tests/test_utils.py`

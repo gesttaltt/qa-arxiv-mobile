@@ -9,7 +9,6 @@ class SearchPage(BasePage):
 
     _SEARCH_INPUT = (AppiumBy.ACCESSIBILITY_ID, "homeSearchInput")
     _SEARCH_INPUT_XPATH = (AppiumBy.XPATH, "//android.widget.EditText")
-    _SEARCH_BUTTON = (AppiumBy.ACCESSIBILITY_ID, "search-button")
     _RESULT_ITEM = (
         AppiumBy.XPATH,
         "//android.view.ViewGroup[@clickable='true' and @focusable='true']",
@@ -25,13 +24,8 @@ class SearchPage(BasePage):
             field = wait.until(EC.presence_of_element_located(self._SEARCH_INPUT_XPATH))
         field.clear()
         field.send_keys(keyword)
-        buttons = self.driver.find_elements(*self._SEARCH_BUTTON)
-        if buttons:
-            buttons[0].click()
-        else:
-            self.driver.execute_script(
-                "mobile: performEditorAction", {"action": "search"}
-            )
+        # No search button in the app — submit via keyboard action
+        self.driver.execute_script("mobile: performEditorAction", {"action": "search"})
 
     def get_results(self) -> list:
         """Wait for and return all visible result card elements."""

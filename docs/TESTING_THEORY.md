@@ -186,7 +186,7 @@ See `manual-tests/test-cases/TC011_accessibility_talkback.md`.
 | **Unit** | Smallest testable unit in isolation | `TestArxivGetRetry` in `test_utils.py` — mocks HTTP and `time.sleep` to test retry logic in isolation |
 | **Integration** | Interaction between components | `test_search_valid_keyword_api_response` (app ↔ arXiv API); `TestSearchDataPersistence` (API contract) |
 | **System** | End-to-end behaviour of the full system | All Appium smoke tests in `automation/tests/appium/` |
-| **Acceptance** | Business requirements met | BDD scenarios in `automation/features/search.feature`; manual TCs against real app build |
+| **Acceptance** | Business requirements met | BDD scenarios in `search.feature` + `article_data_contract.feature`; manual TCs against real app build |
 
 ---
 
