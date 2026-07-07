@@ -40,8 +40,9 @@ class TestDownloadedSmoke:
           2. Assert the empty-state label is displayed
           3. Assert no downloaded article items are present
         """
-        android_driver.reset()
-
+        # driver.reset() removed — deprecated in Appium 2.x.
+        # Session is fresh per CI run and no test downloads any article,
+        # so the DOWNLOADED tab is always empty without an explicit reset.
         page = DownloadedPage(android_driver)
         page.open()
 
