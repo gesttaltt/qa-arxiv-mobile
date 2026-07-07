@@ -301,7 +301,7 @@ The standalone `ruff.toml` has been removed and its configuration has been merge
 | Test cases with GIF/screenshot evidence | 10 / 11 (TC010 pending dedicated evidence) |
 | Formal defect reports | 7 / 7 (BUG001–BUG007 — all execution issues documented) |
 | iOS-specific test cases | 1 (TC006) |
-| Automation tests using correct framework | 43 — Appium + API + BDD (Selenium replaced) |
+| Automation tests using correct framework | 64 — 57 API/unit/BDD + 7 Appium (Selenium replaced) |
 | Selenium-based tests (wrong framework) | 0 |
 | Config fragmentation (ruff) | Resolved — consolidated in `pyproject.toml` |
 | Code coverage | 100% on `utils.py` (10 statements) — page objects excluded (require real device); gate at `--cov-fail-under=100` |
@@ -339,9 +339,9 @@ The standalone `ruff.toml` has been removed and its configuration has been merge
 | `automation/tests/test_data_validation.py` | Atom XML data validation | Complete |
 | `automation/features/search.feature` | BDD Gherkin scenarios (TC001, TC002, Outline × 3) | Complete |
 | `automation/tests/bdd/test_search.py` | pytest-bdd step definitions | Complete |
-| `automation/tests/appium/test_search_smoke.py` | Appium UI test (search) | Runs in CI via BrowserStack |
-| `automation/tests/appium/test_downloaded_smoke.py` | Appium UI test (DOWNLOADED tab) | Runs in CI via BrowserStack |
-| `automation/ci/azure-pipelines.yml` | CI pipeline | Standard ADO syntax; critical steps blocking; no iOS stage or coverage gate |
+| `automation/tests/appium/test_search_smoke.py` | Appium UI test (search) | 5/5 passing — BrowserStack (Samsung Galaxy S22, Android 12) |
+| `automation/tests/appium/test_downloaded_smoke.py` | Appium UI test (DOWNLOADED tab) | 2/2 passing — BrowserStack (Samsung Galaxy S22, Android 12) |
+| `automation/ci/azure-pipelines.yml` | CI pipeline | Standard ADO syntax; UnitTests + IntegrationTests jobs; `--cov-fail-under=100` gate; no iOS stage |
 | `.github/workflows/ci.yml` | GitHub Actions CI | Functional |
 | `pyproject.toml` | Project config + ruff config | Consolidated (ruff.toml removed) |
 | `Makefile` | Common task targets | Complete |
