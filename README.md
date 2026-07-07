@@ -60,7 +60,7 @@ manual-tests/
 └── traceability-matrix.csv # Requirements-to-tests mapping
 automation/
 ├── features/               # Gherkin feature files (pytest-bdd)
-├── pages/                  # Page Object Model (SearchPage, FavoritesPage)
+├── pages/                  # Page Object Model (SearchPage, DownloadedPage)
 ├── tests/                  # pytest API + BDD + Appium smoke tests
 └── ci/                     # Azure Pipelines config (ADO environments)
 .github/workflows/          # GitHub Actions CI (active pipeline)
@@ -187,7 +187,7 @@ Also includes:
 - `automation/ci/azure-pipelines.yml`: Equivalent Azure DevOps pipeline for ADO environments
 - `automation/features/search.feature`: Gherkin scenarios (TC001, TC002) with Scenario Outline for parametrised runs
 - `automation/features/favorites.feature`: Gherkin scenarios (TC003, TC008) validating API data requirements for favorites persistence and bulk operations
-- `automation/tests/bdd/test_search.py`, `test_favorites.py`: pytest-bdd step definitions; shared Given step and `result` fixture extracted to `bdd/conftest.py`
+- `automation/tests/bdd/test_search.py`, `test_article_data.py`: pytest-bdd step definitions; shared Given step and `result` fixture extracted to `bdd/conftest.py`
 - `automation/pages/`: Page Object Model layer (SearchPage, DownloadedPage) for Appium tests on BrowserStack
 - `automation/postman/arXiv_API.postman_collection.json`: Postman collection — 8 requests covering TC001, TC002, EP (author field, pagination offset, cross-request `au:` vs `all:` comparison via `pm.collectionVariables`), BVA (max\_results boundary, pagination edge), and Error Guessing (special characters); run with Newman CLI or Postman Collection Runner
 - Modern Python tooling: ruff, black, mypy, pytest-cov, pytest-html, pytest-bdd

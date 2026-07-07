@@ -15,6 +15,7 @@ class SearchPage(BasePage):
         "//android.view.ViewGroup[@clickable='true' and @focusable='true']",
     )
     _RESULT_TITLE = (AppiumBy.XPATH, "//android.widget.TextView[@text]")
+
     def search(self, keyword: str) -> None:
         """Type keyword into the search field and submit."""
         wait = self._wait()
@@ -55,4 +56,3 @@ class SearchPage(BasePage):
         except Exception:
             field = wait.until(EC.presence_of_element_located(self._SEARCH_INPUT_XPATH))
         return field.is_displayed()
-

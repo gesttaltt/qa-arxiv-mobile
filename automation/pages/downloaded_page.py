@@ -24,9 +24,7 @@ class DownloadedPage(BasePage):
 
     def get_items(self) -> list:
         """Wait for and return all downloaded article list items."""
-        return self._wait().until(
-            EC.presence_of_all_elements_located(self._LIST_ITEM)
-        )
+        return self._wait().until(EC.presence_of_all_elements_located(self._LIST_ITEM))
 
     def get_current_items(self) -> list:
         """Return currently visible downloaded items without waiting."""

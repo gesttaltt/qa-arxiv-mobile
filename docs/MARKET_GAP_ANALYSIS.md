@@ -41,7 +41,7 @@ on the same profile:
 | ADO wiki documentation | `manual-tests/wiki/coverage_summary.md` | Good |
 | Defect reports | `manual-tests/defects/BUG001–BUG007` (7 reports) | Strong |
 | API test automation (Python/pytest) | `automation/tests/` — 57 tests, 100% coverage on utils.py | Strong |
-| BDD / Gherkin automation | `automation/features/` (search + favorites) + `tests/bdd/` | Strong |
+| BDD / Gherkin automation | `automation/features/` (search + article_data_contract) + `tests/bdd/` | Strong |
 | Mobile UI automation (Appium) | `automation/pages/` POM + `tests/appium/` smoke tests | Good |
 | ISTQB concepts reference | `docs/TESTING_THEORY.md` — STLC, EP, BVA, BDD, SQL, Defect lifecycle | Strong |
 | XML / data validation | `automation/tests/test_data_validation.py` | Good |

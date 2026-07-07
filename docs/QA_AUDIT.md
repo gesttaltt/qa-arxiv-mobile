@@ -333,7 +333,7 @@ The standalone `ruff.toml` has been removed and its configuration has been merge
 | `manual-tests/defects/BUG001–BUG007` (7 files) | Defect reports | Complete — all 7 execution issues formally documented |
 | `automation/tests/utils.py` | Shared HTTP helper with 429 retry | Complete — 100% branch coverage |
 | `automation/tests/test_utils.py` | Unit tests for retry logic | Complete — 4 mock-based tests |
-| `automation/tests/test_search_api.py` | API tests (search, performance, favorites, sanity) | Complete |
+| `automation/tests/test_search_api.py` | API tests (search, performance, article data contract, sanity) | Complete |
 | `automation/tests/test_search_valid.py` | API test (valid queries) | Complete — replaced from Selenium |
 | `automation/tests/test_search_empty.py` | API test (empty/malformed) | Complete — replaced from Selenium |
 | `automation/tests/test_data_validation.py` | Atom XML data validation | Complete |

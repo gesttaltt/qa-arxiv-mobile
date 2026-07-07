@@ -26,9 +26,9 @@ class TestDownloadedSmoke:
         """
         page = DownloadedPage(android_driver)
         page.open()
-        assert page.is_empty_label_displayed() or len(page.get_current_items()) >= 0, (
-            "TC004 FAIL: DOWNLOADED tab unreachable after tap — possible crash"
-        )
+        assert (
+            page.is_empty_label_displayed() or len(page.get_current_items()) >= 0
+        ), "TC004 FAIL: DOWNLOADED tab unreachable after tap — possible crash"
 
     def test_downloaded_tab_is_empty_on_fresh_install(self, android_driver) -> None:
         """
@@ -45,10 +45,10 @@ class TestDownloadedSmoke:
         page = DownloadedPage(android_driver)
         page.open()
 
-        assert page.is_empty_label_displayed(), (
-            "TC004 FAIL: Empty-state label not visible on fresh install"
-        )
+        assert (
+            page.is_empty_label_displayed()
+        ), "TC004 FAIL: Empty-state label not visible on fresh install"
         items = page.get_current_items()
-        assert len(items) == 0, (
-            f"TC004 FAIL: Expected no downloaded items on fresh install, got {len(items)}"
-        )
+        assert (
+            len(items) == 0
+        ), f"TC004 FAIL: Expected no downloaded items on fresh install, got {len(items)}"
