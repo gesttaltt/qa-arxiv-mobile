@@ -14,13 +14,12 @@ class SearchPage(BasePage):
     _SEARCH_INPUT = (AppiumBy.ACCESSIBILITY_ID, "homeSearchInput")
     _SEARCH_INPUT_XPATH = (AppiumBy.XPATH, "//android.widget.EditText")
 
-    # After submitting a search the app navigates to SearchScreen.
-    # Result cards are ListItemCard (NativeBase Card + TouchableNativeFeedback).
-    # Locator TBD — pending page_source analysis from BrowserStack diagnostic run.
-    # Current best guess: clickable ViewGroup inside the results ScrollView.
+    # Result cards confirmed via page_source on BrowserStack (Samsung S22 / Android 12).
+    # Structure: ScrollView > ViewGroup (FlatList) > ViewGroup (Card) > ViewGroup (CardItem) > TextView
+    # TouchableNativeFeedback does NOT set clickable=true on Android 12 — locate by structure.
     _RESULT_ITEM = (
         AppiumBy.XPATH,
-        "//android.widget.ScrollView//android.view.ViewGroup[@clickable='true']",
+        "//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[.//android.widget.TextView]",
     )
     _RESULT_TITLE = (AppiumBy.XPATH, ".//android.widget.TextView")
 
