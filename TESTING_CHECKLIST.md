@@ -96,7 +96,7 @@
 ### TC010 - Offline Data Persistence (PLANNED)
 - [x] Verified favorites accessible offline
 - [x] Verified paper details from cache
-- [ ] Create dedicated evidence video
+- [x] Create dedicated evidence video
 - [x] **Result:** [x] Pass [ ] Fail
 - [x] **Issues found:** New searches show error, not cached results
 
@@ -144,7 +144,7 @@
 
 ## Phase 4: Repository Update ⏱️ (15 min)
 - [x] All files saved and reviewed
-- [ ] Changes committed to git (pending final review)
+- [x] Changes committed to git
 - [x] README.md reflects completed testing (all 11 TC in both tables)
 - [x] Repository demonstrates real testing evidence (28 evidence files)
 

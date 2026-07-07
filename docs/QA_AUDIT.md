@@ -99,7 +99,7 @@ Evidence for TC010 (offline data persistence) remains pending — TC004 GIFs par
 
 ### 2.4 TESTING_CHECKLIST.md — RESOLVED
 
-All phases completed and checked: setup (2026-05-21), all 11 TC execution steps, evidence collection (28 files), execution logs, traceability updates, and final summary. One checkbox remains open: the git commit entry was left pending final review.
+All phases completed and checked: setup (2026-05-21), all 11 TC execution steps, evidence collection (28 files), execution logs, traceability updates, and final summary. All checkboxes closed.
 
 ---
 
@@ -347,5 +347,5 @@ The standalone `ruff.toml` has been removed and its configuration has been merge
 | `Makefile` | Common task targets | Complete |
 | `.env.example` | Environment template | Complete |
 | `TESTING_WORKFLOW.md` | Workflow guide | Complete |
-| `TESTING_CHECKLIST.md` | Run checklist | Complete (2026-05-21) — git commit entry still pending |
+| `TESTING_CHECKLIST.md` | Run checklist | Complete (2026-05-21) — all checkboxes closed |
 | `setup-app.sh` | Environment setup | Complete — `set -euo pipefail` added |
