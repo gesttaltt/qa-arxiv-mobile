@@ -240,7 +240,9 @@ Feature: arXiv paper search
 | File | Role |
 |---|---|
 | `automation/features/search.feature` | Gherkin scenarios covering TC001, TC002, and a Scenario Outline × 3 keywords |
-| `automation/tests/bdd/test_search.py` | pytest-bdd step definitions; `scenarios()` auto-collects all scenarios |
+| `automation/features/article_data_contract.feature` | Gherkin scenarios covering TC003 (field contract) and TC008 (bulk uniqueness) |
+| `automation/tests/bdd/test_search.py` | pytest-bdd step definitions for search scenarios |
+| `automation/tests/bdd/test_article_data.py` | pytest-bdd step definitions for article data contract scenarios |
 
 Step definitions use a shared `result` dict fixture to pass state between
 Given/When/Then steps without global variables:
@@ -273,8 +275,8 @@ generating three independent pytest functions automatically.
 | US001 (TC001 ×3) | Popular academic topics — quantum physics | `test_popular_academic_topics_all_return_results[quantum physics]` |
 | US001 (TC001 ×3) | Popular academic topics — neural networks | `test_popular_academic_topics_all_return_results[neural networks]` |
 | US001 (TC001 ×3) | Popular academic topics — computer science | `test_popular_academic_topics_all_return_results[computer science]` |
-| US002 (TC003) | A search result contains all fields needed to save a favorite | `test_a_search_result_contains_all_fields_needed_to_save_a_favorite` |
-| US002 (TC008) | Multiple results all provide complete favorite data | `test_multiple_results_all_provide_complete_favorite_data` |
+| US002 (TC003) | A search result contains all fields needed to display an article | `test_a_search_result_contains_all_fields_needed_to_display_an_article` |
+| US002 (TC008) | Multiple results all provide complete article data | `test_multiple_results_all_provide_complete_article_data` |
 
 ---
 
