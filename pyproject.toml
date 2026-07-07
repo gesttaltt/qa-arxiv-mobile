@@ -96,5 +96,4 @@ markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
     "integration: marks tests as integration tests",
     "appium: marks tests that require a running Appium server and device/emulator (deselect with '-m \"not appium\"')",
-    "selenium: marks tests that require a running web browser and local app (deselect with '-m \"not selenium\"')",
 ]

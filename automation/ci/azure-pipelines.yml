@@ -133,7 +133,7 @@ stages:
           - script: |
               mkdir -p test-results
               pytest automation/tests/ \
-                -m "not appium and not selenium and not slow" \
+                -m "not appium and not slow" \
                 --ignore=automation/tests/test_utils.py \
                 --html=test-results/integration-report.html \
                 --self-contained-html \

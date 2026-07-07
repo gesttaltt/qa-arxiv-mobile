@@ -165,7 +165,7 @@ jobs:
         run: |
           mkdir -p test-results
           pytest automation/tests/ \
-            -m "not appium and not selenium and not slow" \
+            -m "not appium and not slow" \
             --ignore=automation/tests/test_pom_unit.py \
             --ignore=automation/tests/test_utils.py \
             --html=test-results/report.html \
