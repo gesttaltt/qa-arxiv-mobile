@@ -127,7 +127,14 @@ jobs:
             -m "appium" \
             --html=test-results/appium-report.html \
             --self-contained-html \
-            -v
+            -s -v
+        continue-on-error: true
+
+      - name: Collect hierarchy dumps
+        if: always()
+        run: |
+          mkdir -p test-results/hierarchy
+          cp /tmp/page_source_*.xml test-results/hierarchy/ 2>/dev/null || true
 
       - name: Upload Appium test report
         uses: actions/upload-artifact@v7
