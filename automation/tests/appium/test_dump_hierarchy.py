@@ -12,13 +12,13 @@ Output: /tmp/page_source_home.xml and /tmp/page_source_results.xml
 These are uploaded as CI artifacts so they can be downloaded and inspected.
 """
 
-import time
 import os
+import time
 
 import pytest
 from appium.webdriver.common.appiumby import AppiumBy
-from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.wait import WebDriverWait
 
 
 @pytest.mark.appium
