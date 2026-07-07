@@ -4,10 +4,11 @@
 [![codecov](https://codecov.io/gh/gesttaltt/qa-arxiv-mobile/graph/badge.svg)](https://codecov.io/gh/gesttaltt/qa-arxiv-mobile)
 ![Python](https://img.shields.io/badge/python-3.12-3776AB?logo=python&logoColor=white)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-![Appium](https://img.shields.io/badge/Appium-mobile%20automation-662D91?logo=appium&logoColor=white)
+![Appium](https://img.shields.io/badge/Appium-BrowserStack%20CI-662D91?logo=appium&logoColor=white)
 ![BDD](https://img.shields.io/badge/BDD-Gherkin%20%2B%20pytest--bdd-23D96C?logo=cucumber&logoColor=white)
+![Tests](https://img.shields.io/badge/tests-57%20passing-4CAF50?logo=pytest&logoColor=white)
 
-![pytest suite — 73 tests passing in CI](docs/pytest-ci-demo.gif)
+![pytest suite — 56 tests passing in CI](docs/pytest-ci-demo.gif)
 
 > Fully documented testing emphasizing **manual QA** and **ADO-style traceability** over a real mobile application.
 
@@ -25,7 +26,7 @@ This repository contains a complete QA portfolio applied to the open-source [arx
 | **Defect Reporting** | 7 structured defect reports (BUG001–BUG007) with reproduction steps, severity, and fix suggestions |
 | **CI/CD** | GitHub Actions pipeline with linting (Black, Ruff, mypy, markdownlint), pytest quality gates, and green badge; Azure Pipelines config included for ADO environments |
 | **Accessibility** | TC011 TalkBack navigation; WCAG 2.1 AA gap identified in BUG007 (`accessibilityRole` missing) |
-| **Test Automation** | pytest API layer (74 tests, 100% coverage); BDD scenarios in Gherkin (pytest-bdd); Page Object Model (Appium + mock-based unit tests); mock-based SLA tests; API contract validation |
+| **Test Automation** | pytest API layer (57 tests, 100% coverage on utils.py); BDD scenarios in Gherkin (pytest-bdd); Page Object Model (Appium on BrowserStack); mock-based SLA tests; API contract validation |
 | **Documentation** | ADO-style wiki, traceability matrix, execution logs, testability feedback notes |
 
 ---
@@ -187,11 +188,11 @@ Also includes:
 - `automation/features/search.feature`: Gherkin scenarios (TC001, TC002) with Scenario Outline for parametrised runs
 - `automation/features/favorites.feature`: Gherkin scenarios (TC003, TC008) validating API data requirements for favorites persistence and bulk operations
 - `automation/tests/bdd/test_search.py`, `test_favorites.py`: pytest-bdd step definitions; shared Given step and `result` fixture extracted to `bdd/conftest.py`
-- `automation/pages/`: Page Object Model layer (SearchPage, FavoritesPage) for Appium tests
+- `automation/pages/`: Page Object Model layer (SearchPage, DownloadedPage) for Appium tests on BrowserStack
 - `automation/postman/arXiv_API.postman_collection.json`: Postman collection — 8 requests covering TC001, TC002, EP (author field, pagination offset, cross-request `au:` vs `all:` comparison via `pm.collectionVariables`), BVA (max\_results boundary, pagination edge), and Error Guessing (special characters); run with Newman CLI or Postman Collection Runner
 - Modern Python tooling: ruff, black, mypy, pytest-cov, pytest-html, pytest-bdd
 - Markdown and YAML linting integration
-- Mock-based SLA tests and API contract validation for the Favorites feature
+- Mock-based SLA tests and API contract validation for the Search and data validation features
 
 ## Documentation and Testability Feedback
 
