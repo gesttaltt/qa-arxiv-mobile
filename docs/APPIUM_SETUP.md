@@ -116,14 +116,15 @@ Key elements to verify:
 | Element | Expected locator strategy | Expected value |
 |---|---|---|
 | Search text input (Home screen) | `accessibility id` | `homeSearchInput` |
-| Search submit | keyboard action | `mobile: performEditorAction` (no button) |
-| Result cards | `xpath` | `//android.view.ViewGroup[@clickable='true']` |
+| Search submit | Android keycode | `driver.press_keycode(66)` (Enter — fires `onSubmitEditing`) |
+| Result cards | `xpath` | `//android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup[.//android.widget.TextView]` |
 | Downloaded article items | `accessibility id` | `downloadedArticle` |
 | DOWNLOADED tab | `xpath` | `//android.widget.TextView[@text='DOWNLOADED']` |
 
-Locators were verified against the app source code (`github.com/lopespm/arxiv-papers-mobile`).
-`homeSearchInput` and `downloadedArticle` are real `testID` props in the React Native source.
-Result cards use XPath fallback — `ListItemCard` has no `testID` in the source.
+Locators confirmed via two methods:
+
+1. **App source code** (`github.com/lopespm/arxiv-papers-mobile`) — `homeSearchInput` and `downloadedArticle` are real `testID` props in the React Native source.
+2. **BrowserStack `page_source` analysis** — `driver.page_source` dumped on Samsung Galaxy S22 / Android 12 confirmed that `TouchableNativeFeedback` (NativeBase 2.x) does **not** expose `clickable="true"` on Android 12. Result cards are located by DOM position: second-level `ViewGroup` children of the `ScrollView` that contain at least one `TextView`.
 
 ---
 
@@ -148,17 +149,39 @@ pytest automation/tests/ -m "not appium" -v
 
 ---
 
-## 7. CI/CD Integration (Azure Pipelines)
+## 7. CI/CD Integration (GitHub Actions + Azure Pipelines)
 
-The `AppiumSmoke` stage in `automation/ci/azure-pipelines.yml` is **opt-in**. It only
-executes when the pipeline variable `APPIUM_ENABLED` is set to `true`. This prevents Appium
-tests from blocking the standard API/unit test run on every commit.
+### GitHub Actions (`.github/workflows/ci.yml`)
 
-To trigger with Appium enabled:
+The `test-appium` job runs automatically on every push to `main` or `develop`.
+It requires three repository secrets:
+
+| Secret | Description |
+|---|---|
+| `BROWSERSTACK_USERNAME` | BrowserStack account username |
+| `BROWSERSTACK_ACCESS_KEY` | BrowserStack access key |
+| `BROWSERSTACK_APP_ID` | `bs://` app ID returned after uploading the APK |
+
+Upload the APK to BrowserStack once and store the returned `bs://` ID as the secret:
 
 ```bash
-az pipelines run --name <pipeline-name> --variables APPIUM_ENABLED=true \
-  ARXIV_APK_PATH=/path/to/app.apk ANDROID_DEVICE_NAME=emulator-5554
+curl -u "USER:KEY" \
+  -X POST "https://api-cloud.browserstack.com/app-automate/upload" \
+  -F "file=@automation/appium/arxiv-papers-v1.0.apk"
+```
+
+### Azure Pipelines (`automation/ci/azure-pipelines.yml`)
+
+The `AppiumSmoke` stage is **opt-in** — it only runs when the pipeline variable
+`BROWSERSTACK_ENABLED` is set to `true`. Set the same three values as pipeline variables:
+`BROWSERSTACK_USERNAME`, `BROWSERSTACK_ACCESS_KEY`, `BROWSERSTACK_APP_ID`.
+
+```bash
+az pipelines run --name <pipeline-name> \
+  --variables BROWSERSTACK_ENABLED=true \
+              BROWSERSTACK_USERNAME=<user> \
+              BROWSERSTACK_ACCESS_KEY=<key> \
+              BROWSERSTACK_APP_ID=bs://<id>
 ```
 
 ---
