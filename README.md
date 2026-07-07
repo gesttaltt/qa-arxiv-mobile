@@ -4,7 +4,7 @@
 [![codecov](https://codecov.io/gh/gesttaltt/qa-arxiv-mobile/graph/badge.svg)](https://codecov.io/gh/gesttaltt/qa-arxiv-mobile)
 ![Python](https://img.shields.io/badge/python-3.12-3776AB?logo=python&logoColor=white)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-![Appium](https://img.shields.io/badge/Appium-BrowserStack%20CI-662D91?logo=appium&logoColor=white)
+![Appium](https://img.shields.io/badge/Appium-7%2F7%20passing%20%7C%20BrowserStack-662D91?logo=appium&logoColor=white)
 ![BDD](https://img.shields.io/badge/BDD-Gherkin%20%2B%20pytest--bdd-23D96C?logo=cucumber&logoColor=white)
 ![Tests](https://img.shields.io/badge/tests-57%20passing-4CAF50?logo=pytest&logoColor=white)
 
