@@ -3,33 +3,44 @@ from selenium.webdriver.support import expected_conditions as EC
 
 from .base_page import BasePage
 
+# Android keycode 66 = Enter / search action key — more reliable than
+# performEditorAction on BrowserStack (confirmed from page_source analysis).
+_KEYCODE_ENTER = 66
+
 
 class SearchPage(BasePage):
     """Page object for the Search screen."""
 
     _SEARCH_INPUT = (AppiumBy.ACCESSIBILITY_ID, "homeSearchInput")
     _SEARCH_INPUT_XPATH = (AppiumBy.XPATH, "//android.widget.EditText")
+
+    # After submitting a search the app navigates to SearchScreen.
+    # Result cards are ListItemCard (NativeBase Card + TouchableNativeFeedback).
+    # Locator TBD — pending page_source analysis from BrowserStack diagnostic run.
+    # Current best guess: clickable ViewGroup inside the results ScrollView.
     _RESULT_ITEM = (
         AppiumBy.XPATH,
-        "//android.view.ViewGroup[@clickable='true' and @focusable='true']",
+        "//android.widget.ScrollView//android.view.ViewGroup[@clickable='true']",
     )
-    _RESULT_TITLE = (AppiumBy.XPATH, "//android.widget.TextView[@text]")
+    _RESULT_TITLE = (AppiumBy.XPATH, ".//android.widget.TextView")
 
     def search(self, keyword: str) -> None:
-        """Type keyword into the search field and submit."""
+        """Tap the search field, type keyword, and submit via Enter keycode."""
         wait = self._wait()
         try:
-            field = wait.until(EC.presence_of_element_located(self._SEARCH_INPUT))
+            field = wait.until(EC.element_to_be_clickable(self._SEARCH_INPUT))
         except Exception:
-            field = wait.until(EC.presence_of_element_located(self._SEARCH_INPUT_XPATH))
+            field = wait.until(EC.element_to_be_clickable(self._SEARCH_INPUT_XPATH))
+        field.click()
         field.clear()
         field.send_keys(keyword)
-        # No search button in the app — submit via keyboard action
-        self.driver.execute_script("mobile: performEditorAction", {"action": "search"})
+        # press_keycode(66) fires the native Android Enter/Search action and
+        # reliably triggers onSubmitEditing in React Native on BrowserStack.
+        self.driver.press_keycode(_KEYCODE_ENTER)
 
     def get_results(self) -> list:
         """Wait for and return all visible result card elements."""
-        return self._wait().until(
+        return self._wait(30).until(
             EC.presence_of_all_elements_located(self._RESULT_ITEM)
         )
 

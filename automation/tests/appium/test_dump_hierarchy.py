@@ -38,22 +38,20 @@ def test_dump_view_hierarchy(android_driver) -> None:
     wait = WebDriverWait(driver, 20)
     try:
         field = wait.until(
-            EC.presence_of_element_located(
-                (AppiumBy.ACCESSIBILITY_ID, "homeSearchInput")
-            )
+            EC.element_to_be_clickable((AppiumBy.ACCESSIBILITY_ID, "homeSearchInput"))
         )
     except Exception:
         field = wait.until(
-            EC.presence_of_element_located(
-                (AppiumBy.XPATH, "//android.widget.EditText")
-            )
+            EC.element_to_be_clickable((AppiumBy.XPATH, "//android.widget.EditText"))
         )
+    field.click()
     field.clear()
     field.send_keys("quantum")
-    driver.execute_script("mobile: performEditorAction", {"action": "search"})
+    # press_keycode(66) = Enter — triggers onSubmitEditing reliably on Android
+    driver.press_keycode(66)
 
     # --- Wait generously for navigation + API response ---
-    time.sleep(20)
+    time.sleep(25)
 
     # --- Search results screen: capture state ---
     results_source = driver.page_source
