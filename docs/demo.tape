@@ -1,16 +1,36 @@
-Output docs/pytest-ci-demo.gif
+#!/usr/bin/env bash
+# Regenerate docs/pytest-ci-demo.gif
+#
+# Requirements:
+#   pip install asciinema          # recorder
+#   cargo install agg              # GIF renderer (no Chrome needed)
+#
+# Usage:
+#   bash docs/demo.tape
+#
+# Previously used VHS (vhs docs/demo.tape), which requires a Chrome sandbox
+# unavailable in headless CI. asciinema + agg are fully headless alternatives.
 
-Require vhs
-Set FontSize 13
-Set Width 1200
-Set Height 600
-Set PlaybackSpeed 3
-Set Framerate 24
-Set Theme "Dracula"
+set -euo pipefail
 
-Sleep 500ms
-Type "python3 -m pytest automation/ -m 'not appium and not selenium and not slow' --tb=no -q"
-Sleep 800ms
-Enter
-Sleep 100s
-Sleep 3s
+CAST=$(mktemp /tmp/pytest-demo-XXXXXX.cast)
+trap 'rm -f "$CAST"' EXIT
+
+echo "Recording pytest run..."
+asciinema rec \
+  --overwrite \
+  --cols 110 \
+  --rows 32 \
+  -c "python3 -m pytest automation/ -m 'not appium and not selenium and not slow' --tb=no -q" \
+  "$CAST"
+
+echo "Rendering GIF..."
+agg \
+  --theme dracula \
+  --font-size 13 \
+  --speed 10 \
+  --idle-time-limit 1 \
+  "$CAST" \
+  docs/pytest-ci-demo.gif
+
+echo "Done → docs/pytest-ci-demo.gif"
