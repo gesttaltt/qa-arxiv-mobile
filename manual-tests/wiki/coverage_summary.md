@@ -11,7 +11,7 @@ Comprehensive test coverage analysis for arxiv-papers-mobile application focusin
 | Feature Area | Test Cases | Executed | Passed | Failed | Coverage % |
 |--------------|------------|----------|--------|--------|------------|
 | Search | 4 | 4 | 4 | 0 | 100% |
-| Favorites | 2 | 2 | 2 | 0 | 100% |
+| Article Data / Downloaded | 2 | 2 | 2 | 0 | 100% |
 | PDF Management | 3 | 3 | 3 | 0 | 100% |
 | Network Handling | 2 | 2 | 2 | 0 | 100% |
 | **Total** | **11** | **11** | **11** | **0** | **100%** |
