@@ -83,8 +83,8 @@ class TestArxivSearchAPI:
 
 
 @pytest.fixture(scope="class")
-def favorites_entry() -> ET.Element:
-    """Fetch one arXiv entry for the entire TestFavoritesDataPersistence class.
+def article_entry() -> ET.Element:
+    """Fetch one arXiv entry for the entire TestArticleDataContract class.
 
     Using class scope avoids four separate API calls (one per test method)
     while still giving each test an independent assertion point.
@@ -92,60 +92,46 @@ def favorites_entry() -> ET.Element:
     response = arxiv_get(
         {"search_query": "all:deep learning", "start": "0", "max_results": "1"}
     )
-    assert (
-        response.status_code == 200
-    ), "API unavailable — cannot validate favorites data"
+    assert response.status_code == 200, "API unavailable — cannot validate article data"
     root = ET.fromstring(response.content)
     ns = {"atom": "http://www.w3.org/2005/Atom"}
     entries = root.findall("atom:entry", ns)
-    assert entries, "No entries returned — cannot validate favorites data"
+    assert entries, "No entries returned — cannot validate article data"
     return entries[0]
 
 
-class TestFavoritesDataPersistence:
+class TestArticleDataContract:
     """
-    Automation support for TC003: Favorites functionality.
+    Automation support for TC003: Article data contract.
 
-    Verifies that the arXiv API returns the fields the app needs to save a
-    paper as a favorite (id, title, authors, published date, abstract).
-    If any of these fields disappear from the API response, TC003 would break
-    at the data layer before the UI is even involved.
+    Verifies that the arXiv API returns the fields the app needs to display
+    articles in search results and the DOWNLOADED tab (id, title, authors,
+    published date). If any of these fields disappear from the API response,
+    TC003 would break at the data layer before the UI is even involved.
     """
 
     NS = {"atom": "http://www.w3.org/2005/Atom"}
 
-    def test_entry_has_id_for_favorites_key(self, favorites_entry: ET.Element) -> None:
-        """Each paper must have a unique ID — used as the favorites storage key."""
-        paper_id = favorites_entry.findtext("atom:id", namespaces=self.NS)
-        assert (
-            paper_id and paper_id.strip()
-        ), "Entry is missing <id> — cannot key favorites"
+    def test_entry_has_id(self, article_entry: ET.Element) -> None:
+        """Each paper must have a unique ID — used as the article storage key."""
+        paper_id = article_entry.findtext("atom:id", namespaces=self.NS)
+        assert paper_id and paper_id.strip(), "Entry is missing <id>"
 
-    def test_entry_has_title_for_favorites_display(
-        self, favorites_entry: ET.Element
-    ) -> None:
-        """Each paper must have a title — displayed in the Favorites list (TC003)."""
-        title = favorites_entry.findtext("atom:title", namespaces=self.NS)
-        assert (
-            title and title.strip()
-        ), "Entry is missing <title> — Favorites list would be blank"
+    def test_entry_has_title(self, article_entry: ET.Element) -> None:
+        """Each paper must have a title — displayed in search results and DOWNLOADED tab."""
+        title = article_entry.findtext("atom:title", namespaces=self.NS)
+        assert title and title.strip(), "Entry is missing <title>"
 
-    def test_entry_has_authors_for_favorites_display(
-        self, favorites_entry: ET.Element
-    ) -> None:
-        """Each paper must have at least one author — shown below the title in TC003."""
-        authors = favorites_entry.findall("atom:author", self.NS)
-        assert (
-            authors
-        ), "Entry has no <author> elements — Favorites display would be incomplete"
+    def test_entry_has_authors(self, article_entry: ET.Element) -> None:
+        """Each paper must have at least one author — shown below the title."""
+        authors = article_entry.findall("atom:author", self.NS)
+        assert authors, "Entry has no <author> elements"
         name = authors[0].findtext("atom:name", namespaces=self.NS)
         assert name and name.strip(), "First author has an empty <name>"
 
-    def test_entry_has_published_date_for_favorites_metadata(
-        self, favorites_entry: ET.Element
-    ) -> None:
-        """Each paper must have a published date — shown as metadata in TC003."""
-        published = favorites_entry.findtext("atom:published", namespaces=self.NS)
+    def test_entry_has_published_date(self, article_entry: ET.Element) -> None:
+        """Each paper must have a published date — shown as metadata."""
+        published = article_entry.findtext("atom:published", namespaces=self.NS)
         assert published and published.strip(), "Entry is missing <published> date"
 
 

@@ -1,9 +1,10 @@
 """
-BDD tests for arXiv favorites data requirements — pytest-bdd implementation.
+BDD tests for arXiv article data contract — pytest-bdd implementation.
 
 Validates that the arXiv API returns all the fields the mobile app needs
-to persist a paper as a favorite (id, title, authors, published date) and
-that bulk operations receive well-formed, distinct results.
+to display articles in search results and the DOWNLOADED tab (id, title,
+authors, published date) and that bulk operations receive well-formed,
+distinct results.
 
 Each scenario maps to a manual test case in manual-tests/test-cases/:
   Scenario "A search result contains all fields..."    → TC003
@@ -19,7 +20,7 @@ from pytest_bdd import parsers, scenarios, then, when
 
 from ..utils import arxiv_get
 
-scenarios("../../features/favorites.feature")
+scenarios("../../features/article_data_contract.feature")
 
 _NS = {"atom": "http://www.w3.org/2005/Atom"}
 
@@ -37,7 +38,7 @@ def fetch_one_paper(result: dict, topic: str) -> None:
     assert response.status_code == 200, f"API returned {response.status_code}"
     root = ET.fromstring(response.content)
     entries = root.findall("atom:entry", _NS)
-    assert entries, "No entries returned — cannot validate favorites data"
+    assert entries, "No entries returned — cannot validate article data"
     result["entry"] = entries[0]
 
 
@@ -49,7 +50,7 @@ def fetch_five_papers(result: dict, topic: str) -> None:
     assert response.status_code == 200, f"API returned {response.status_code}"
     root = ET.fromstring(response.content)
     entries = root.findall("atom:entry", _NS)
-    assert entries, "No entries returned — cannot validate bulk favorites"
+    assert entries, "No entries returned — cannot validate bulk article data"
     result["entries"] = entries
 
 
@@ -61,23 +62,19 @@ def fetch_five_papers(result: dict, topic: str) -> None:
 @then("the paper has a unique identifier for storage")
 def has_unique_id(result: dict) -> None:
     paper_id = result["entry"].findtext("atom:id", namespaces=_NS)
-    assert paper_id and paper_id.strip(), "Entry is missing <id> — cannot key favorites"
+    assert paper_id and paper_id.strip(), "Entry is missing <id>"
 
 
 @then("the paper has a non-empty title for display")
 def has_title(result: dict) -> None:
     title = result["entry"].findtext("atom:title", namespaces=_NS)
-    assert (
-        title and title.strip()
-    ), "Entry is missing <title> — Favorites list would be blank"
+    assert title and title.strip(), "Entry is missing <title>"
 
 
 @then("the paper has at least one author for display")
 def has_author(result: dict) -> None:
     authors = result["entry"].findall("atom:author", _NS)
-    assert (
-        authors
-    ), "Entry has no <author> elements — Favorites display would be incomplete"
+    assert authors, "Entry has no <author> elements"
     name = authors[0].findtext("atom:name", namespaces=_NS)
     assert name and name.strip(), "First author has an empty <name>"
 
