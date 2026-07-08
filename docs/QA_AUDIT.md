@@ -133,7 +133,7 @@ The following improvements have been made since the initial audit:
 - **`automation/tests/test_utils.py`**: 4 mock-based unit tests covering the retry logic — success path, 1-retry, 2-retry backoff, and exhausted-retries branches. All branches covered without real network calls.
 - **`TestPerformanceBaseline`**: replaced the real-HTTP SLA test with mock-based tests that simulate 0.5 s (passes) and 3.5 s (fails) responses, validating the assertion logic rather than third-party API latency.
 - **`TestArticleDataContract`**: replaced the old hardcoded dict assertion with 4 real API contract tests (`id`, `title`, `authors`, `published`) that would catch API schema changes before the UI is even involved.
-- **BDD / Gherkin**: `automation/features/search.feature` (5 scenarios including Scenario Outline) and `automation/tests/bdd/test_search.py` (step definitions via pytest-bdd 7.3.0).
+- **BDD / Gherkin**: `automation/features/search.feature` (5 scenarios including Scenario Outline, `test_search.py`) and `automation/features/article_data_contract.feature` (2 scenarios, `test_article_data.py`) — 7 scenarios total via pytest-bdd 7.3.0.
 - **Honest coverage (100%)**: `utils.py` 100% covered by 4 retry-logic unit tests — no mocks inflating the figure. Page objects (`BasePage`, `SearchPage`, `DownloadedPage`) are excluded from coverage measurement; they are verified by Appium tests on BrowserStack. `--cov-fail-under=100` enforces the gate on measurable code.
 - **Codecov**: `.codecov.yml` added; coverage badge reflects the live 100% figure.
 
@@ -165,25 +165,25 @@ None of the test cases include a step to verify VoiceOver announces the result (
 
 ## 5. CI/CD Pipeline Issues
 
-### 5.1 Non-Standard ADO Task: `Checkout@1`
+### 5.1 Non-Standard ADO Task: `Checkout@1` — RESOLVED
 
-`azure-pipelines.yml` uses `Checkout@1` as a task step, but the standard ADO built-in checkout task does not use this format. The correct syntax is either `- checkout: self` or a marketplace extension.
+`azure-pipelines.yml` now uses `- checkout: self` (the standard ADO built-in checkout step) in every job, replacing the non-standard `Checkout@1` task.
 
-### 5.2 `PublishHtmlReport@1` Is Not a Standard ADO Task
+### 5.2 `PublishHtmlReport@1` Is Not a Standard ADO Task — RESOLVED
 
-`PublishHtmlReport@1` is a third-party marketplace extension (not included by default). The pipeline should either install this extension explicitly or use `PublishBuildArtifacts@1` for report publishing.
+The pipeline now uses `PublishBuildArtifacts@1` (a built-in ADO task) to publish the Integration Test and Appium Smoke HTML reports, instead of the third-party `PublishHtmlReport@1` marketplace extension.
 
 ### 5.3 Quality Gates — RESOLVED
 
-The Azure Pipelines `pytest` and `mypy` steps now use `continueOnError: false`, meaning test failures and type errors correctly fail the build. Style and lint steps remain non-blocking by design (developer aid, not gates). Both pipelines now enforce equivalent quality gates: the GitHub Actions pipeline has Black, Ruff, mypy, yamllint, markdownlint, and `pytest --cov-fail-under=100` as blocking steps; the Azure Pipelines Testing stage mirrors this with `-m "not appium and not selenium and not slow"` and `--cov-fail-under=100` on the same pytest invocation.
+The Azure Pipelines `pytest` and `mypy` steps now use `continueOnError: false`, meaning test failures and type errors correctly fail the build. Style and lint steps remain non-blocking by design (developer aid, not gates). Both pipelines now enforce equivalent quality gates: the GitHub Actions pipeline has Black, Ruff, mypy, yamllint, markdownlint, and `pytest --cov-fail-under=100` as blocking steps; the Azure Pipelines Testing stage mirrors this with `-m "not appium and not slow"` and `--cov-fail-under=100` on the same pytest invocation.
 
 ### 5.4 No iOS Build or Test Stage
 
 The pipeline runs on `ubuntu-latest` only. There is no macOS agent pool, Xcode build step, iOS simulator test step, or iOS-specific test results publishing.
 
-### 5.5 `pytest --trx` Flag Depends on Plugin Not Documented
+### 5.5 `pytest --trx` Flag Depends on Plugin Not Documented — RESOLVED
 
-The pipeline runs `pytest automation/tests/ --trx=test-results/results.trx`. The `--trx` flag requires `pytest-trx`, which is in `requirements.txt` but not called out in setup documentation.
+The pipeline now uses `--junitxml=test-results/*.xml` (pytest's built-in JUnit reporter, no extra plugin required) consumed by `PublishTestResults@2`, instead of the non-PyPI `pytest-trx` plugin. `requirements.txt` still lists `pytest-trx` commented out with a note that it isn't published to PyPI — kept for historical reference, not installed.
 
 ---
 
@@ -193,16 +193,16 @@ The pipeline runs `pytest automation/tests/ --trx=test-results/results.trx`. The
 
 The README now includes all 11 test cases (TC001–TC011) in the manual test case table, matching the traceability matrix.
 
-### 6.2 US004 Undocumented in README
+### 6.2 US004 Undocumented in README — RESOLVED
 
-The traceability matrix references `US004 — Network Connectivity` with TC009 and TC010, but US004 is never mentioned in the README's User Stories or QA Goals section.
+The README's User Stories table now includes `US004 — Network Connectivity`, linked to TC009 and TC010, matching the traceability matrix.
 
 ### 6.3 Automated Coverage Column — RESOLVED
 
 `traceability-matrix.csv` now reflects accurate coverage with an added `Automation Notes` column:
 - TC001: `Yes` — API tests (`TestArxivSearchAPI`, `test_search_valid.py`) + BDD (`search.feature`)
 - TC002: `Yes` — API tests (`test_search_empty.py`, `TestArxivSearchAPI`) + BDD (`search.feature`)
-- TC003: `Partial` — `TestArticleDataContract` validates the API data contract; UI toggle requires Appium + device
+- TC003: `Partial` — `TestArticleDataContract` validates the API data contract; UI download/remove requires Appium + device
 - All other TCs: `No` with a specific reason explaining why automation is not feasible at the API layer
 
 ### 6.4 `coverage_summary.md` Bug Label — RESOLVED

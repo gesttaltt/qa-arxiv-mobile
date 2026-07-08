@@ -10,7 +10,7 @@ QA portfolio applied to the open-source React Native app arxiv-papers-mobile, de
 **Why:** Portfolio project to showcase QA skills for job applications.
 **How to apply:** Frame all suggestions in terms of portfolio impact — what signals competence to a hiring manager or technical interviewer.
 
-## Current state (as of 2026-07-07)
+## Current state (as of 2026-07-08)
 
 ### Automation layer (`automation/`)
 - **57 pytest tests** across 8 files:
@@ -22,7 +22,7 @@ QA portfolio applied to the open-source React Native app arxiv-papers-mobile, de
   - `pages/search_page.py` — Search screen; testID `homeSearchInput`, submit via `performEditorAction`
   - `pages/downloaded_page.py` — DOWNLOADED tab; testID `downloadedArticle`
   - No `favorites_page.py` — app has no Favorites feature (verified from React Native source)
-- **Appium tests**: 7 tests in `tests/appium/` — `test_search_smoke.py` (TC001) + `test_downloaded_smoke.py` (TC004)
+- **Appium tests**: 7 tests in `tests/appium/` — `test_search_smoke.py` (TC001/TC002) + `test_downloaded_smoke.py` (TC003/TC008)
 - **Postman**: `arXiv_API.postman_collection.json` with 8 requests, run via Newman in CI
 - **Coverage**: 100% on `utils.py` (10 statements, retry logic); `pages/` excluded — require real device
 
@@ -34,7 +34,7 @@ QA portfolio applied to the open-source React Native app arxiv-papers-mobile, de
 ### Manual testing (`manual-tests/`)
 - 11 ADO-format test cases (TC001–TC011), all ✅ Passed
 - 7 defect reports (BUG001–BUG007)
-- Execution evidence: Android GIFs (10 TCs), iOS GIFs (8 TCs), screenshots (10)
+- Execution evidence: Android GIFs (10 TCs), iOS GIFs (8 TCs), screenshots (11)
 - Traceability: 4 user stories → 11 TCs → evidence → defects (CSV matrix)
 
 ### Documentation (`docs/`)
@@ -42,7 +42,6 @@ QA portfolio applied to the open-source React Native app arxiv-papers-mobile, de
 - GitHub Pages site at `docs/`
 - `pytest-ci-demo.gif` regenerated via `bash docs/demo.tape` (asciinema + agg; VHS dropped)
 
-## Known gaps (as of 2026-07-07)
-1. **Appium locators unverified on real device** — `_RESULT_ITEM` XPath in `search_page.py` is generic; BrowserStack connects but tests fail with `TimeoutException` on result cards. Needs BrowserStack session video to see real element hierarchy.
-2. **No iOS GIFs for TC010/TC011** — evidence gap for those two test cases.
-3. **`coverage_summary.md` feature row** — still labels manual TCs TC003/TC008 as "Favorites" (original TC names); app feature is actually "Downloaded".
+## Known gaps (as of 2026-07-08)
+1. **No dedicated iOS GIF for TC010** — Android has a dedicated recording (`TC010_OfflineDataPersistence_Android_Pass.gif`); iOS still shares TC004's GIF. (TC011 is Android-only by design — TalkBack has no iOS equivalent in scope — so it has no iOS gap.)
+2. **iOS Appium coverage** — requires macOS + Xcode + WebDriverAgent, documented as out of scope; no macOS CI stage exists.

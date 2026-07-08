@@ -27,11 +27,11 @@ format: ## Auto-format with Black
 typecheck: ## Run MyPy type checking
 	$(MYPY) automation/
 
-test: ## Run all tests (excluding Appium and Selenium)
-	$(PYTEST) automation/tests/ -m "not appium and not selenium" -v
+test: ## Run all tests (excluding Appium)
+	$(PYTEST) automation/tests/ -m "not appium" -v
 
 test-quick: ## Run fast unit/smoke tests only
-	$(PYTEST) automation/tests/ -m "not appium and not selenium and not integration" -v
+	$(PYTEST) automation/tests/ -m "not appium and not integration" -v
 
 test-api: ## Run arXiv API integration tests
 	$(PYTEST) automation/tests/ -m "integration" -v
@@ -40,7 +40,7 @@ test-appium: ## Run Appium UI smoke tests (requires device/emulator)
 	$(PYTEST) automation/tests/appium/ -m appium -v
 
 test-cov: ## Run tests with coverage report
-	$(PYTEST) automation/tests/ -m "not appium and not selenium" --cov=automation --cov-report=term-missing -v
+	$(PYTEST) automation/tests/ -m "not appium" --cov=automation --cov-report=term-missing -v
 
 clean: ## Remove caches and build artifacts
 	rm -rf .ruff_cache .mypy_cache .pytest_cache
