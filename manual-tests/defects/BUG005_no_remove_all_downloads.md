@@ -14,12 +14,10 @@
 | Field | Value |
 |---|---|
 | App version | 1.2.0 (build 45) |
-| Platform | Both (Android + iOS) |
+| Platform | Android (reproduced; iOS not tested — no device available) |
 | OS version (Android) | Android 13 (API 33) |
-| OS version (iOS) | iOS 17.2 |
 | Device (Android) | Pixel 6 Emulator |
-| Device (iOS) | iPhone 15 Simulator |
-| Test environment | Local emulator / simulator |
+| Test environment | Local emulator |
 
 ---
 
@@ -61,7 +59,7 @@ A "Clear all" option accessible from the DOWNLOADED tab (e.g., a three-dot menu 
 | Type | Reference |
 |---|---|
 | Screen recording (Android) | `evidence/android/TC008_BulkDownloadedPapersManagement_Android_Pass.gif` |
-| Screen recording (iOS) | `evidence/ios/TC008_BulkDownloadedPapersManagement_iOS_Pass.gif` |
+| Screen recording (iOS) | Not tested — no real iOS evidence exists |
 
 ---
 

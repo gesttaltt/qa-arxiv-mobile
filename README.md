@@ -87,9 +87,8 @@ This project demonstrates enterprise QA workflows using Azure DevOps methodologi
 ## Mobile Testing Approach
 
 ### Platform Coverage
-- **iOS Testing**: iPhone/iPad compatibility, iOS version coverage (13+)
-- **Android Testing**: Multiple device sizes, Android API levels (21+)
-- **Cross-Platform**: Feature parity validation between iOS and Android
+- **Android Testing (executed)**: Multiple device sizes, Android API levels (21+); all applicable test cases recorded on a real emulator
+- **iOS Testing (designed, not executed)**: Test cases are written to mirror the Android suite, but no macOS/Xcode/iOS Simulator was available — see "Platform coverage — how to frame it" below for the honest breakdown
 
 ### Mobile-Specific Test Areas
 - Touch interactions and gestures
@@ -104,16 +103,16 @@ Located in `manual-tests/test-cases/` - Following ADO test case format
 
 | ID    | Title                        | User Story | Platform | Status      |
 |-------|------------------------------|------------|----------|-------------|
-| TC001 | Search with valid keyword    | US001      | Both     | ✅ Passed   |
-| TC002 | Search with empty input      | US001      | Both     | ✅ Passed   |
-| TC003 | Download a paper and remove it | US002    | Both     | ✅ Passed   |
-| TC004 | Search offline behavior      | US001      | Both     | ✅ Passed   |
-| TC005 | PDF download and viewing     | US003      | Both     | ✅ Passed   |
-| TC006 | iOS Safari PDF integration   | US003      | iOS      | ✅ Passed   |
+| TC001 | Search with valid keyword    | US001      | Android  | ✅ Passed (iOS not executed) |
+| TC002 | Search with empty input      | US001      | Android  | ✅ Passed (iOS not executed) |
+| TC003 | Download a paper and remove it | US002    | Android  | ✅ Passed (iOS not executed) |
+| TC004 | Search offline behavior      | US001      | Android  | ✅ Passed (iOS not executed) |
+| TC005 | PDF download and viewing     | US003      | Android  | ✅ Passed (iOS not executed) |
+| TC006 | iOS Safari PDF integration   | US003      | iOS      | ⏸ Not Executed (no iOS device) |
 | TC007 | Android intent handling      | US003      | Android  | ✅ Passed   |
-| TC008 | Bulk downloaded papers mgmt  | US002      | Both     | ✅ Passed   |
-| TC009 | WiFi to cellular transition  | US004      | Both     | ✅ Passed   |
-| TC010 | Offline data persistence     | US004      | Both     | ✅ Passed   |
+| TC008 | Bulk downloaded papers mgmt  | US002      | Android  | ✅ Passed (iOS not executed) |
+| TC009 | WiFi to cellular transition  | US004      | Android  | ✅ Passed (iOS not executed) |
+| TC010 | Offline data persistence     | US004      | Android  | ✅ Passed (iOS not executed) |
 | TC011 | Accessibility TalkBack       | US001/2/3  | Android  | ✅ Passed   |
 
 ### Test Case Structure (ADO Format)
@@ -220,25 +219,31 @@ This repository includes **real manual test execution** on the actual arXiv Pape
 
 ### 📱 Live Testing Evidence
 - **🤖 Android Testing:** Recorded on Android API 28 emulator (Pixel 3, Google Play image) using `adb screenrecord` + ffmpeg
-- **🍎 iOS Testing:** Test cases executed on physical iOS device; video evidence pending upload
+- **🍎 iOS Testing:** Not executed — no macOS/Xcode/iOS Simulator was available. The "iOS" GIFs in `evidence/ios/` are the Android recording with a "Pending macOS environment" banner overlaid, kept as an honest placeholder rather than deleted. See [Platform coverage — how to frame it](#platform-coverage--how-to-frame-it) below.
 - **🎥 Video Documentation:** Android GIFs are real screen recordings from the actual app (v1.0 APK)
 - **📊 Traceability:** Complete evidence linking from requirements to results
 
 ### 🎯 Executed Test Cases
 
+iOS was never executed on a real or virtual device (no macOS/Xcode/iOS Simulator available).
+Where an "iOS GIF" link is shown below, it is a placeholder — the Android recording with a
+"Pending macOS environment" banner overlaid — not real iOS evidence. Screenshot links marked
+"generic" show real app UI but not the specific state their filename implies (see
+[`evidence/README.md`](manual-tests/test-execution/evidence/README.md) for the full breakdown).
+
 | Test Case | Description | Android | iOS | See Test Evidence |
 |-----------|-------------|---------|-----|-------------------|
-| TC001 | Search with valid keyword | ✅ Passed | ✅ Passed | [🤖 Android GIF](manual-tests/test-execution/evidence/android/TC001_SearchwithValidKeyword_Android_Pass.gif) · [🍎 iOS GIF](manual-tests/test-execution/evidence/ios/TC001_SearchwithValidKeyword_iOS_Pass.gif) · [📷 Screenshot](manual-tests/test-execution/evidence/screenshots/TC001_android_search_results.png) |
-| TC002 | Empty query handling | ✅ Passed | ✅ Passed | [🤖 Android GIF](manual-tests/test-execution/evidence/android/TC002_SearchwithEmptyQuery_Android_Pass.gif) · [🍎 iOS GIF](manual-tests/test-execution/evidence/ios/TC002_SearchwithEmptyQuery_iOS_Pass.gif) · [📷 Screenshot](manual-tests/test-execution/evidence/screenshots/TC002_android_empty_search.png) |
-| TC003 | Download a paper and remove it | ✅ Passed | ✅ Passed | [🤖 Android GIF](manual-tests/test-execution/evidence/android/TC003_DownloadAndRemovePaper_Android_Pass.gif) · [🍎 iOS GIF](manual-tests/test-execution/evidence/ios/TC003_DownloadAndRemovePaper_iOS_Pass.gif) · [📷 Before](manual-tests/test-execution/evidence/screenshots/TC003_before_download.png) · [📷 After](manual-tests/test-execution/evidence/screenshots/TC003_after_download.png) |
-| TC004 | Search offline behavior | ✅ Passed | ✅ Passed | [🤖 Android GIF](manual-tests/test-execution/evidence/android/TC004_SearchOfflineBehavior_Android_Pass.gif) · [🍎 iOS GIF](manual-tests/test-execution/evidence/ios/TC004_SearchOfflineBehavior_iOS_Pass.gif) · [📷 Screenshot](manual-tests/test-execution/evidence/screenshots/TC004_offline_error.png) |
-| TC005 | PDF download and viewing | ✅ Passed | ✅ Passed | [🤖 Android GIF](manual-tests/test-execution/evidence/android/TC005_PDFDownloadandViewing_Android_Pass.gif) · [🍎 iOS GIF](manual-tests/test-execution/evidence/ios/TC005_PDFDownloadandViewing_iOS_Pass.gif) · [📷 Screenshot](manual-tests/test-execution/evidence/screenshots/TC005_pdf_viewer.png) |
-| TC006 | iOS Safari PDF integration | N/A | ✅ Passed | [🍎 iOS GIF](manual-tests/test-execution/evidence/ios/TC006_iOSSafariPDFIntegration_iOS_Pass.gif) · [📷 Screenshot](manual-tests/test-execution/evidence/screenshots/TC006_safari_pdf.png) |
-| TC007 | Android intent handling | ✅ Passed | N/A | [🤖 Android GIF](manual-tests/test-execution/evidence/android/TC007_AndroidIntentPDFHandling_Android_Pass.gif) · [📷 Screenshot](manual-tests/test-execution/evidence/screenshots/TC007_intent_chooser.png) |
-| TC008 | Bulk downloaded papers management | ✅ Passed | ✅ Passed | [🤖 Android GIF](manual-tests/test-execution/evidence/android/TC008_BulkDownloadedPapersManagement_Android_Pass.gif) · [🍎 iOS GIF](manual-tests/test-execution/evidence/ios/TC008_BulkDownloadedPapersManagement_iOS_Pass.gif) |
-| TC009 | WiFi to cellular transition | ✅ Passed | ✅ Passed | [🤖 Android GIF](manual-tests/test-execution/evidence/android/TC009_WiFitoCellularTransition_Android_Pass.gif) · [🍎 iOS GIF](manual-tests/test-execution/evidence/ios/TC009_WiFitoCellularTransition_iOS_Pass.gif) · [📷 Screenshot](manual-tests/test-execution/evidence/screenshots/TC009_network_transition.png) |
-| TC010 | Offline data persistence | ✅ Passed | ✅ Passed | [🤖 Android GIF](manual-tests/test-execution/evidence/android/TC010_OfflineDataPersistence_Android_Pass.gif) · [📷 Screenshot](manual-tests/test-execution/evidence/screenshots/TC009_network_transition.png) |
-| TC011 | Accessibility TalkBack | ✅ Passed | N/A | [🤖 Android GIF](manual-tests/test-execution/evidence/android/TC011_AccessibilityTalkBackTesting_Android_Pass.gif) · [📷 Screenshot](manual-tests/test-execution/evidence/screenshots/TC011_talkback.png) |
+| TC001 | Search with valid keyword | ✅ Passed | ⏸ Not Executed | [🤖 Android GIF](manual-tests/test-execution/evidence/android/TC001_SearchwithValidKeyword_Android_Pass.gif) · [📷 Screenshot](manual-tests/test-execution/evidence/screenshots/TC001_android_search_results.png) |
+| TC002 | Empty query handling | ✅ Passed | ⏸ Not Executed | [🤖 Android GIF](manual-tests/test-execution/evidence/android/TC002_SearchwithEmptyQuery_Android_Pass.gif) · [📷 Screenshot](manual-tests/test-execution/evidence/screenshots/TC002_android_empty_search.png) |
+| TC003 | Download a paper and remove it | ✅ Passed | ⏸ Not Executed | [🤖 Android GIF](manual-tests/test-execution/evidence/android/TC003_DownloadAndRemovePaper_Android_Pass.gif) · [📷 Before](manual-tests/test-execution/evidence/screenshots/TC003_before_download.png) · [📷 After](manual-tests/test-execution/evidence/screenshots/TC003_after_download.png) |
+| TC004 | Search offline behavior | ✅ Passed | ⏸ Not Executed | [🤖 Android GIF](manual-tests/test-execution/evidence/android/TC004_SearchOfflineBehavior_Android_Pass.gif) · 📷 Screenshot (generic, not the actual error state) |
+| TC005 | PDF download and viewing | ✅ Passed | ⏸ Not Executed | [🤖 Android GIF](manual-tests/test-execution/evidence/android/TC005_PDFDownloadandViewing_Android_Pass.gif) · [📷 Screenshot](manual-tests/test-execution/evidence/screenshots/TC005_pdf_viewer.png) |
+| TC006 | iOS Safari PDF integration | N/A | ⏸ Not Executed | No real evidence — GIF/screenshot are a placeholder and a synthetic mockup, not a real iOS capture |
+| TC007 | Android intent handling | ✅ Passed | N/A | [🤖 Android GIF](manual-tests/test-execution/evidence/android/TC007_AndroidIntentPDFHandling_Android_Pass.gif) · 📷 Screenshot (generic, not the actual intent chooser) |
+| TC008 | Bulk downloaded papers management | ✅ Passed | ⏸ Not Executed | [🤖 Android GIF](manual-tests/test-execution/evidence/android/TC008_BulkDownloadedPapersManagement_Android_Pass.gif) |
+| TC009 | WiFi to cellular transition | ✅ Passed | ⏸ Not Executed | [🤖 Android GIF](manual-tests/test-execution/evidence/android/TC009_WiFitoCellularTransition_Android_Pass.gif) · 📷 Screenshot (generic, not the actual network-transition state) |
+| TC010 | Offline data persistence | ✅ Passed | ⏸ Not Executed | [🤖 Android GIF](manual-tests/test-execution/evidence/android/TC010_OfflineDataPersistence_Android_Pass.gif) — no iOS evidence exists at all for this TC |
+| TC011 | Accessibility TalkBack | ✅ Passed | N/A | [🤖 Android GIF](manual-tests/test-execution/evidence/android/TC011_AccessibilityTalkBackTesting_Android_Pass.gif) · 📷 Screenshot (generic, not TalkBack-specific) |
 
 ### 📁 Evidence Gallery
 
@@ -246,9 +251,9 @@ This repository includes **real manual test execution** on the actual arXiv Pape
 
 | Platform | Contents | See Test Evidence |
 |----------|----------|-------------------|
-| 🤖 Android | 9 animated GIFs (TC001–TC005, TC007–TC009, TC011) | [Browse Android evidence](manual-tests/test-execution/evidence/android/) |
-| 🍎 iOS | 8 animated GIFs (TC001–TC006, TC008–TC009) | [Browse iOS evidence](manual-tests/test-execution/evidence/ios/) |
-| 📷 Screenshots | 10 captures across both platforms | [Browse screenshots](manual-tests/test-execution/evidence/screenshots/) |
+| 🤖 Android | 10 genuine animated GIFs (TC001–TC005, TC007–TC011) | [Browse Android evidence](manual-tests/test-execution/evidence/android/) |
+| 🍎 iOS | 8 **placeholder** GIFs (Android recording + "Pending macOS environment" banner) — not real iOS captures | [Browse iOS evidence](manual-tests/test-execution/evidence/ios/) |
+| 📷 Screenshots | 11 captures — only 5 accurately show the state their filename claims; see [evidence/README.md](manual-tests/test-execution/evidence/README.md) | [Browse screenshots](manual-tests/test-execution/evidence/screenshots/) |
 | 🎬 Suite summary | Animated overview of all 11 test cases | [See Test Evidence — suite summary](manual-tests/test-execution/evidence/suite_summary.gif) |
 
 ### 📋 Evidence Repository
@@ -274,7 +279,7 @@ This demonstrates **genuine QA work** with verifiable evidence on a real React N
 
 ### CV bullets (ready to adapt)
 
-- Designed and executed 11 manual test cases for a React Native mobile app following ADO enterprise standards: bi-directional traceability (User Stories → Test Cases → Evidence → Defects), structured execution logs, and defect reports with severity classification and remediation suggestions
+- Designed 11 manual test cases for a React Native mobile app following ADO enterprise standards, and executed 10 of them on Android with verified evidence (the 11th, iOS Safari integration, is fully designed but not yet executed — no macOS/Xcode access): bi-directional traceability (User Stories → Test Cases → Evidence → Defects), structured execution logs, and defect reports with severity classification and remediation suggestions
 - Configured an Android emulator testing environment from scratch (Android SDK CLI, KVM acceleration, API 28 Google Play image) and captured all test evidence with `adb screenrecord` — no Android Studio required
 - Filed 7 defect reports (BUG001–BUG007) covering functional gaps, UX improvements, and a WCAG 2.1 AA accessibility violation (`accessibilityRole` missing on result cards, identified via TalkBack navigation)
 - Built API test coverage at two layers: a Postman collection (8 requests, `pm.test()` assertions) covering TC001, TC002, Equivalence Partitioning (author field, pagination offset, cross-request `au:` vs `all:` comparison using `pm.sendRequest` + `pm.collectionVariables`), Boundary Value Analysis (max\_results, pagination edge), and Error Guessing (XSS injection); and 57 pytest tests for CI — API integration, mock-based SLA validation, article data contract tests (TC003, TC005–TC007), and retry-logic unit tests (100% coverage on utils.py)
@@ -290,7 +295,7 @@ This demonstrates **genuine QA work** with verifiable evidence on a real React N
 
 **Android:** Fully executed. All 10 applicable test cases recorded on Android API 28 emulator with real `adb screenrecord` evidence, verified frame by frame.
 
-**iOS:** Test cases fully designed and structured (TC001–TC006, TC008–TC009) and mirroring the Android suite. Execution and recording are pending access to a macOS environment or physical iOS device. The iOS-specific case (TC006: Safari PDF integration) is documented based on iOS platform behavior documentation.
+**iOS:** Test cases fully designed and structured (TC001–TC006, TC008–TC009) and mirroring the Android suite. Execution and recording are pending access to a macOS environment or physical iOS device. The `evidence/ios/` folder contains placeholder GIFs (the Android recording with a "Pending macOS environment" banner) rather than empty entries — kept as a visible marker of what's missing, not deleted or passed off as real. The iOS-specific case (TC006: Safari PDF integration) is documented based on iOS platform behavior documentation but was never executed.
 
 **In an interview:** *"The Android coverage is complete with verified recordings. The iOS test cases are fully designed — I need a Mac or physical device to record them, which is the next step."*
 

@@ -123,7 +123,7 @@ Verify that the core user journeys (search, view result, download a paper) are f
 - **Android:** [x] Completed - `TC011_AccessibilityTalkBackTesting_Android_Pass.gif`
 
 ### Screenshots:
-- **TalkBack in use:** [x] Captured -- `evidence/screenshots/TC011_talkback.png`
+- **TalkBack in use:** [ ] Mislabeled -- `evidence/screenshots/TC011_talkback.png` actually shows a generic search results list, with no TalkBack UI or accessibility overlay visible. No accurate TalkBack-in-use screenshot was captured; the GIF is the only evidence of TalkBack behavior.
 
 ### Evidence Location:
 - **Android:** `evidence/android/TC011_AccessibilityTalkBackTesting_Android_Pass.gif`

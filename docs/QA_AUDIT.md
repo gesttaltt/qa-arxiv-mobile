@@ -13,11 +13,11 @@
 
 This audit reviews the current state of the QA project for the `arxiv-papers-mobile` React Native application. The project demonstrates solid foundational intent — ADO-style traceability, structured manual test cases, and CI/CD pipeline integration.
 
-Issues identified in the April 2026 initial audit have been progressively resolved. As of July 2026, all 11 test cases have been executed on both Android and iOS, 30 evidence files (18 GIFs, 11 screenshots, 1 suite summary) have been collected, all execution logs contain real tester data, and the `TESTING_CHECKLIST.md` has been completed in full. All 7 issues found during execution are formally documented as BUG001–BUG007.
+Issues identified in the April 2026 initial audit have been progressively resolved. As of July 2026, 10 of 11 test cases have been executed on Android (TC006 is iOS-only and was never executed — no macOS/Xcode/iOS Simulator was available). iOS execution across all test cases remains outstanding; the "iOS" evidence files in `evidence/ios/` are disclosed placeholders (the Android recording with a "Pending macOS environment" banner), not real captures. 30 evidence files exist in total (10 genuine Android GIFs, 8 iOS placeholder GIFs, 11 screenshots — 5 genuine, 6 mislabeled/synthetic — 1 suite summary); all Android execution logs contain real tester data, and the `TESTING_CHECKLIST.md` has been completed in full and corrected to reflect the iOS gap honestly. All 7 issues found during Android execution are formally documented as BUG001–BUG007.
 
 The automation layer has been substantially expanded: 57 automated tests across API integration and BDD/Gherkin scenarios, plus 7 Appium tests running on BrowserStack App Automate (Samsung Galaxy S22); 100% coverage on `utils.py` enforced as a CI gate (`--cov-fail-under=100`); page objects excluded from coverage (require real device — validated by Appium tests in CI); GitHub Actions pipeline fully green with lint, type checking, and coverage gates.
 
-Remaining gaps: TC010 dedicated evidence exists for Android only (iOS still shares TC004's GIF); iOS-specific test coverage beyond TC006 remains zero; no macOS CI stage exists for iOS simulator execution.
+Remaining gaps: iOS execution is zero across all 11 test cases — no macOS/Xcode/iOS Simulator was available, and this is disclosed rather than papered over with fabricated evidence; TC010 in particular has no iOS file at all, not even a placeholder; no macOS CI stage exists for iOS simulator execution.
 
 ---
 
@@ -60,13 +60,13 @@ Only TC006 is designated iOS-only. No existing test case covers any of the follo
 
 ### 1.3 PDF Management — Executed
 
-TC005 (PDF download and viewing), TC006 (iOS Safari PDF integration), and TC007 (Android intent handling) have all been executed and passed with GIF and screenshot evidence collected.
+TC005 (PDF download and viewing) and TC007 (Android intent handling) have been executed on Android and passed with genuine GIF and screenshot evidence. TC006 (iOS Safari PDF integration) has **not** been executed — no macOS/Xcode/iOS Simulator was available, and its "evidence" is a disclosed placeholder (unrelated Android recording) and a synthetic mockup screenshot, not real captures.
 
-Remaining gap: no test case covers cancellation of an in-progress download or behavior when the device storage is full.
+Remaining gap: no test case covers cancellation of an in-progress download or behavior when the device storage is full. TC006 needs a real execution pass once iOS hardware access exists.
 
 ### 1.4 Network and Offline Scenarios — Executed
 
-TC004 (offline search), TC009 (WiFi-to-cellular transition), and TC010 (offline data persistence) have all been executed and passed — downloaded papers and cached detail views were verified offline. TC010 has a dedicated Android GIF; the iOS recording still shares TC004's evidence.
+TC004 (offline search), TC009 (WiFi-to-cellular transition), and TC010 (offline data persistence) have all been executed on Android and passed — downloaded papers and cached detail views were verified offline. TC010 has a dedicated, genuine Android GIF; it has no iOS evidence at all, placeholder or otherwise. None of these three were executed on iOS.
 
 The following scenarios remain unaddressed by any test case:
 
@@ -78,20 +78,20 @@ The following scenarios remain unaddressed by any test case:
 
 ## 2. Execution Evidence Integrity
 
-### 2.1 Execution Logs — RESOLVED
+### 2.1 Execution Logs — RESOLVED (Android); iOS honestly marked Not Executed
 
-All 11 files in `manual-tests/test-execution/execution-logs/` contain real execution data: date (2026-05-21), tester, device/simulator details (Pixel 6 Emulator Android 13 / iPhone 15 Simulator iOS 17.2), per-step pass/fail verdicts, observed values (e.g., result counts, response times), and issue notes. No placeholder text remains.
+All 11 files in `manual-tests/test-execution/execution-logs/` contain real execution data for Android: date (2026-05-21), tester, device details (Pixel 6 Emulator Android 13), per-step pass/fail verdicts, observed values (e.g., result counts, response times), and issue notes. No placeholder text remains for Android. iOS rows in every log are marked "N/A — Not Executed"; no iOS device/simulator session ever ran, so no iOS-specific observations are claimed anywhere in these logs.
 
-### 2.2 Evidence Files — RESOLVED
+### 2.2 Evidence Files — RESOLVED (counts accurate); iOS evidence is disclosed as placeholder
 
 30 evidence files have been committed to `manual-tests/test-execution/evidence/`:
 
-- 10 Android GIFs (TC001–TC005, TC007–TC011)
-- 8 iOS GIFs (TC001–TC006, TC008–TC009)
-- 11 screenshots covering search results, offline errors, PDF viewer, Safari integration, intent chooser, download before/after, network transition, and TalkBack
+- 10 genuine Android GIFs (TC001–TC005, TC007–TC011)
+- 8 iOS **placeholder** GIFs (TC001–TC006, TC008–TC009) — each is the Android recording with a "Pending macOS environment" banner overlaid, not a real iOS capture
+- 11 screenshots — only 5 accurately show the state their filename claims (TC001/TC002 Android, TC003 before/after, TC005 PDF viewer); the other 6 are either generic Android screens mislabeled as a specific state, or (for the two "iOS" screenshots) synthetic mockups
 - 1 animated suite summary GIF
 
-Evidence for TC010 (offline data persistence) has a dedicated Android recording — iOS still shares TC004's GIF, which partially covers the offline state.
+Evidence for TC010 (offline data persistence) has a dedicated, genuine Android recording — it has **no iOS evidence at all**, not even a placeholder.
 
 ### 2.3 Execution Summary — RESOLVED
 
@@ -283,7 +283,7 @@ The standalone `ruff.toml` has been removed and its configuration has been merge
 
 | # | Action | File(s) |
 |---|--------|---------|
-| 9 | Create dedicated iOS evidence for TC010 (offline downloaded-papers persistence) — Android has a dedicated recording; iOS still borrows the TC004 GIF | New GIF in `evidence/ios/` |
+| 9 | Execute all iOS test cases for the first time (currently 0/11) once macOS/Xcode/iOS Simulator access exists; TC010 needs an iOS file created from scratch (none exists, not even a placeholder) | `evidence/ios/`, all execution logs |
 | 10 | Create iOS-specific test cases: VoiceOver, Dynamic Type, Dark Mode, Safe Area/Notch | New test case files |
 | 11 | Add iOS-specific preconditions (simulator version, Xcode) to all cross-platform test cases | `TC001–TC005`, `TC008–TC010` |
 | 12 | Add performance threshold (≤ 5 s search response) as explicit acceptance criterion in TC001 | `TC001_search_valid.md` |
@@ -298,9 +298,10 @@ The standalone `ruff.toml` has been removed and its configuration has been merge
 |-----------|-------|
 | Test cases with specification files | 11 / 11 (100%) |
 | Test cases with real execution logs | 11 / 11 (100%) |
-| Test cases with GIF/screenshot evidence | 11 / 11 (TC010 has dedicated Android evidence; iOS pending) |
-| Formal defect reports | 7 / 7 (BUG001–BUG007 — all execution issues documented) |
-| iOS-specific test cases | 1 (TC006) |
+| Test cases with genuine Android GIF/screenshot evidence | 10 / 11 (TC006 is iOS-only, not executed) |
+| Test cases with genuine iOS evidence | 0 / 11 (no macOS/Xcode/iOS Simulator available) |
+| Formal defect reports | 7 / 7 (BUG001–BUG007 — all execution issues documented, Android only) |
+| iOS-specific test cases | 1 (TC006) — designed, not executed |
 | Automation tests using correct framework | 64 — 57 API/unit/BDD + 7 Appium (Selenium replaced) |
 | Selenium-based tests (wrong framework) | 0 |
 | Config fragmentation (ruff) | Resolved — consolidated in `pyproject.toml` |
@@ -312,7 +313,7 @@ The standalone `ruff.toml` has been removed and its configuration has been merge
 | Feature coverage (US001 Search) | 100% executed |
 | Feature coverage (US002 Downloaded Papers) | 100% executed |
 | Feature coverage (US003 PDF) | 100% executed |
-| Feature coverage (US004 Network) | 100% executed (TC009 done; TC010 done, iOS dedicated evidence pending) |
+| Feature coverage (US004 Network) | 100% executed on Android (TC009, TC010 done); iOS not executed for either |
 
 ---
 
@@ -324,7 +325,7 @@ The standalone `ruff.toml` has been removed and its configuration has been merge
 | `manual-tests/test-execution/execution-logs/TC001-TC011` (11 files) | Execution records | Complete — real tester data, step results, and observations |
 | `manual-tests/test-execution/execution-summary.md` | Sprint summary | Complete — real results, performance data, 7 issues noted |
 | `manual-tests/test-execution/traceability-with-evidence.md` | Evidence links | Complete — real file paths for all 30 evidence files |
-| `manual-tests/test-execution/evidence/` (30 files) | GIFs + screenshots | Complete for TC001-TC009, TC011; TC010 dedicated Android evidence present, iOS pending |
+| `manual-tests/test-execution/evidence/` (30 files) | GIFs + screenshots | Complete (genuine) for Android on TC001-TC005, TC007-TC011; TC006 and all iOS coverage not executed — placeholder/synthetic files only |
 | `manual-tests/traceability-matrix.csv` | Requirements map | Complete — TC001/TC002: Yes, TC003: Partial; Automation Notes column added |
 | `manual-tests/wiki/coverage_summary.md` | Coverage metrics | Complete |
 | `manual-tests/testability_notes.md` | Live feedback | Complete — 3 real observations |

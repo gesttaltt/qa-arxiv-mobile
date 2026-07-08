@@ -122,19 +122,29 @@ variable for easy environment switching. Run via Newman CLI:
 
 ---
 
-### 3.5 iOS Coverage — PARTIALLY RESOLVED
+### 3.5 iOS Coverage — NOT RESOLVED, disclosed honestly
 
 **Market demand:** MentorMate Senior QA Mobile posting requires "Android and iOS" coverage.
 Every mobile QA job description reviewed listed both platforms.
 
-**Resolution (June 2026):** All 11 test cases include iOS execution logs and 8 iOS GIFs. The
-execution summary documents both platforms. iOS GIFs are honest placeholders labeled "Pending
-macOS device" — a transparent acknowledgement of the hardware constraint rather than fabricated
-evidence.
+**Current state (July 2026):** iOS execution is at 0/11 test cases — no macOS/Xcode/iOS
+Simulator was ever available. 8 test cases have a placeholder GIF in `evidence/ios/` (the
+Android recording with a "Pending macOS environment" banner overlaid); TC006, TC010, and
+TC011 have no iOS file at all. Two screenshots (`TC001_ios_search_results.png`,
+`TC006_safari_pdf.png`) are synthetic text mockups, not real captures. All execution logs
+mark iOS as "N/A — Not Executed" rather than claiming a pass, and this is cross-referenced
+in `evidence/README.md`, the traceability docs, and `TESTING_CHECKLIST.md`.
 
-**Remaining gap:** No macOS CI stage for iOS simulator testing. No Appium fixture for iOS
-(requires Xcode + WebDriverAgent). Documenting the gap honestly is the correct approach for a
-portfolio without physical iOS hardware.
+An earlier version of this repository's execution logs described specific iOS behavioral
+observations (dialog text, gesture timing) as if they had been observed — they had not. That
+was corrected on 2026-07-08: every iOS-related claim now either reflects a real Android
+observation or is explicitly marked not executed.
+
+**Remaining gap:** iOS needs to be executed from scratch once macOS/Xcode/iOS Simulator
+access exists. No macOS CI stage for iOS simulator testing. No Appium fixture for iOS
+(requires Xcode + WebDriverAgent). Documenting the gap honestly — including correcting the
+earlier fabricated claims — is the correct approach for a portfolio without physical iOS
+hardware.
 
 ---
 
@@ -237,7 +247,7 @@ scenarios (TC001 valid search, TC002 empty query, Scenario Outline × 3 academic
 | 2 | Expand test cases to TC001–TC011 (negative/edge/accessibility) | ✅ Done |
 | 3 | ISTQB/testing theory doc | ✅ Done (`docs/TESTING_THEORY.md`) |
 | 4 | Formal defect reports (BUG001–BUG007) | ✅ Done |
-| 5 | iOS platform coverage notes + GIFs | ✅ Done (honest placeholders) |
+| 5 | iOS platform coverage notes + placeholder GIFs disclosed honestly | ✅ Done (documentation only — actual iOS execution still not started) |
 | 6 | GitHub Actions CI workflow with full quality gates | ✅ Done |
 | 7 | SQL / data validation | ✅ Done (`test_data_validation.py` + theory §4) |
 | 8 | Response time / SLA assertion (mock-based) | ✅ Done (`TestPerformanceBaseline`) |
@@ -252,6 +262,7 @@ scenarios (TC001 valid search, TC002 empty query, Scenario Outline × 3 academic
 |---|---|---|---|
 | 1 | iOS Appium fixture (requires macOS + Xcode) | High | Medium |
 | 2 | macOS CI stage for iOS simulator | High | Low (hardware constraint) |
+| 3 | Execute all 11 manual test cases on a real iOS device/simulator (currently 0/11 — placeholder evidence only) | High | High — this is the single biggest gap against "Android and iOS" job requirements |
 
 ---
 

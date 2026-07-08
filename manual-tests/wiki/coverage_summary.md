@@ -12,17 +12,17 @@ Comprehensive test coverage analysis for arxiv-papers-mobile application focusin
 |--------------|------------|----------|--------|--------|------------|
 | Search | 4 | 4 | 4 | 0 | 100% |
 | Article Data / Downloaded | 2 | 2 | 2 | 0 | 100% |
-| PDF Management | 3 | 3 | 3 | 0 | 100% |
+| PDF Management | 3 | 2 | 2 | 0 | 67% (TC006 not executed — iOS-only, no device available) |
 | Network Handling | 2 | 2 | 2 | 0 | 100% |
-| **Total** | **11** | **11** | **11** | **0** | **100%** |
+| **Total** | **11** | **10** | **10** | **0** | **91%** (TC006 not executed) |
 
 ### Platform Coverage
 
 | Platform | Test Cases | Executed | Pass Rate |
 |----------|------------|----------|-----------|
-| iOS | 8 | 8 | 100% |
 | Android | 10 | 10 | 100% |
-| Cross-Platform | 7 | 7 | 100% |
+| iOS | 11 | 0 | N/A — no macOS/Xcode/iOS Simulator available; test cases designed but never executed |
+| Cross-Platform (design scope) | 7 | 7 on Android only | 100% (Android); iOS unexecuted |
 
 ### Test Type Distribution
 
@@ -50,7 +50,7 @@ Comprehensive test coverage analysis for arxiv-papers-mobile application focusin
 
 ### Test Execution Summary
 
-- **Manual test cases**: 11 executed, 11 passed
+- **Manual test cases**: 10 executed on Android, 10 passed; 1 (TC006, iOS-only) not executed — no macOS/Xcode/iOS Simulator available
 - **Automated API + unit tests**: 50 passing (pytest, runs in CI on every push)
 - **BDD scenarios**: 7 passing (pytest-bdd, Gherkin feature files: search + article_data_contract)
 - **Total automated**: 57 (excludes 7 Appium tests — run in CI via BrowserStack; 1 @slow excluded from regular CI runs)
@@ -88,7 +88,7 @@ All test cases properly linked to user stories with bidirectional traceability.
 
 ## Observations
 
-- Manual QA coverage is complete across all 11 test cases with real Android GIF evidence
+- Manual QA coverage is complete for 10 of 11 test cases on Android, with real GIF evidence; TC006 (iOS-only) was never executed
 - API automation covers the data layer for Search (TC001, TC002) and article data contract (TC003)
 - BDD scenarios in `automation/features/search.feature` bridge TC001/TC002 to Gherkin, readable by non-technical stakeholders
 - SLA logic tested deterministically via mocks — not subject to network variability

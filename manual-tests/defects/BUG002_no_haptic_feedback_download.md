@@ -14,18 +14,16 @@
 | Field | Value |
 |---|---|
 | App version | 1.2.0 (build 45) |
-| Platform | Both (Android + iOS) |
+| Platform | Android (reproduced; iOS not tested — no device available) |
 | OS version (Android) | Android 13 (API 33) |
-| OS version (iOS) | iOS 17.2 |
 | Device (Android) | Pixel 6 Emulator |
-| Device (iOS) | iPhone 15 Simulator |
-| Test environment | Local emulator / simulator |
+| Test environment | Local emulator |
 
 ---
 
 ## Summary
 
-When the user taps the download icon on a paper's detail screen, the item is added to the DOWNLOADED tab with no haptic feedback and no transition animation. On both platforms the state change is abrupt — there is no tactile or motion cue confirming the download started or completed.
+When the user taps the download icon on a paper's detail screen, the item is added to the DOWNLOADED tab with no haptic feedback and no transition animation. On Android the state change is abrupt — there is no tactile or motion cue confirming the download started or completed. iOS was not tested.
 
 ---
 

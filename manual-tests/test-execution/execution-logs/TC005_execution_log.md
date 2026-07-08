@@ -5,7 +5,7 @@
 **Tester:** QA Team
 **Application:** arXiv Papers Mobile
 **Version:** 1.2.0 (build 45)
-**Environment:** Android 13 (emulator) / iOS 17.2 (simulator)
+**Environment:** Android 13 (emulator)
 
 ---
 
@@ -19,11 +19,9 @@
 - **Storage Available:** >1 GB free
 
 ### iOS Execution:
-- **Device/Simulator:** iPhone 15 Simulator, iOS 17.2
-- **App Version:** 1.2.0 (build 45)
-- **Build:** Debug
-- **Network:** WiFi
-- **Storage Available:** >2 GB free
+**Not executed.** No macOS/Xcode/iOS Simulator was available for this project. The "iOS"
+GIF referenced below is the Android recording with a "Pending macOS environment" banner
+overlaid — a placeholder, not a real iOS capture.
 
 ---
 
@@ -37,15 +35,15 @@ Verify that the app correctly downloads and opens a paper's PDF, and handles the
 ### Step 1: Search for a paper
 **Action:** Search for "quantum entanglement" and wait for results
 **Android Result:** [x] Pass [ ] Fail
-**iOS Result:** [x] Pass [ ] Fail
+**iOS Result:** N/A — Not Executed
 **Notes:**
-- Results displayed: 12 (Android), 12 (iOS)
+- Results displayed: 12 (Android)
 - First result has a PDF link visible
 
 ### Step 2: Open paper detail view
 **Action:** Tap on first result
 **Android Result:** [x] Pass [ ] Fail
-**iOS Result:** [x] Pass [ ] Fail
+**iOS Result:** N/A — Not Executed
 **Notes:**
 - Detail screen shows: title, authors, abstract
 - Download PDF button clearly visible
@@ -54,25 +52,25 @@ Verify that the app correctly downloads and opens a paper's PDF, and handles the
 ### Step 3: Initiate PDF download
 **Action:** Tap Download PDF / View PDF button
 **Android Result:** [x] Pass [ ] Fail
-**iOS Result:** [x] Pass [ ] Fail
+**iOS Result:** N/A — Not Executed
 **Notes:**
 - Loading indicator appeared immediately
 - Download progress shown: Yes (percentage indicator)
-- Time to complete: 4s (Android), 3s (iOS) -- depends on arXiv server
+- Time to complete: 4s (Android) -- depends on arXiv server
 
 ### Step 4: Open and view PDF
 **Action:** Wait for download to complete; PDF opens
 **Android Result:** [x] Pass [ ] Fail
-**iOS Result:** [x] Pass [ ] Fail
+**iOS Result:** N/A — Not Executed
 **Notes:**
-- PDF opened in in-app viewer (Android), default iOS PDF viewer (iOS)
+- PDF opened in in-app viewer (Android)
 - First page rendered correctly
 - All text and equations visible
 
 ### Step 5: Scroll through PDF
 **Action:** Scroll to page 2
 **Android Result:** [x] Pass [ ] Fail
-**iOS Result:** [x] Pass [ ] Fail
+**iOS Result:** N/A — Not Executed
 **Notes:**
 - Page transition smooth
 - No blank pages or rendering artifacts
@@ -81,7 +79,7 @@ Verify that the app correctly downloads and opens a paper's PDF, and handles the
 ### Step 6: Navigate back to results
 **Action:** Navigate back to results list
 **Android Result:** [x] Pass [ ] Fail
-**iOS Result:** [x] Pass [ ] Fail
+**iOS Result:** N/A — Not Executed
 **Notes:**
 - Back navigation worked correctly
 - Search results intact, no data loss
@@ -90,7 +88,7 @@ Verify that the app correctly downloads and opens a paper's PDF, and handles the
 ### Step 7: Handle paper without PDF
 **Action:** Find or navigate to an abstract-only paper
 **Android Result:** [x] Pass [ ] Fail
-**iOS Result:** [x] Pass [ ] Fail
+**iOS Result:** N/A — Not Executed
 **Notes:**
 - Papers without PDF have Download button absent or disabled
 - No misleading UI shown
@@ -98,7 +96,7 @@ Verify that the app correctly downloads and opens a paper's PDF, and handles the
 ### Step 8: Tap missing PDF button (if present)
 **Action:** Tap disabled/absent Download PDF button
 **Android Result:** [x] Pass [ ] Fail
-**iOS Result:** [x] Pass [ ] Fail
+**iOS Result:** N/A — Not Executed
 **Notes:**
 - Where button is disabled, no action occurs (correct)
 - No crash or error when interacting with disabled state
@@ -109,12 +107,12 @@ Verify that the app correctly downloads and opens a paper's PDF, and handles the
 
 | Criterion | Android | iOS | Notes |
 |-----------|---------|-----|-------|
-| PDF downloads successfully | [x] Pass [ ] Fail | [x] Pass [ ] Fail | Download time: 4s / 3s |
-| PDF renders correctly (pages 1-2) | [x] Pass [ ] Fail | [x] Pass [ ] Fail | No rendering issues |
-| Back navigation works after PDF view | [x] Pass [ ] Fail | [x] Pass [ ] Fail | Returned to same position in results |
-| Abstract-only paper handled gracefully | [x] Pass [ ] Fail | [x] Pass [ ] Fail | Button disabled/absent |
-| No crash during download or viewing | [x] Pass [ ] Fail | [x] Pass [ ] Fail | No crashes observed |
-| Download progress indicator shown | [x] Pass [ ] Fail | [x] Pass [ ] Fail | Percentage shown |
+| PDF downloads successfully | [x] Pass [ ] Fail | N/A | Download time: 4s |
+| PDF renders correctly (pages 1-2) | [x] Pass [ ] Fail | N/A | No rendering issues |
+| Back navigation works after PDF view | [x] Pass [ ] Fail | N/A | Returned to same position in results |
+| Abstract-only paper handled gracefully | [x] Pass [ ] Fail | N/A | Button disabled/absent |
+| No crash during download or viewing | [x] Pass [ ] Fail | N/A | No crashes observed |
+| Download progress indicator shown | [x] Pass [ ] Fail | N/A | Percentage shown |
 
 ---
 
@@ -122,14 +120,14 @@ Verify that the app correctly downloads and opens a paper's PDF, and handles the
 
 ### Video Recordings:
 - **Android:** [x] Completed - `TC005_PDFDownloadandViewing_Android_Pass.gif`
-- **iOS:** [x] Completed - `TC005_PDFDownloadandViewing_iOS_Pass.gif`
+- **iOS:** [ ] Not executed - `TC005_PDFDownloadandViewing_iOS_Pass.gif` is a placeholder (Android recording, "Pending macOS environment" banner)
 
 ### Screenshots:
 - **PDF Viewer:** [x] Captured -- `evidence/screenshots/TC005_pdf_viewer.png`
 
 ### Evidence Location:
 - **Android:** `evidence/android/TC005_PDFDownloadandViewing_Android_Pass.gif`
-- **iOS:** `evidence/ios/TC005_PDFDownloadandViewing_iOS_Pass.gif`
+- **iOS (placeholder only):** `evidence/ios/TC005_PDFDownloadandViewing_iOS_Pass.gif`
 
 ---
 
@@ -147,11 +145,11 @@ Verify that the app correctly downloads and opens a paper's PDF, and handles the
 ## Overall Test Result
 
 **Android Platform:** [x] PASS [ ] FAIL
-**iOS Platform:** [x] PASS [ ] FAIL
-**Overall Test Status:** [x] PASS [ ] FAIL
+**iOS Platform:** Not Executed — no iOS device/simulator available
+**Overall Test Status:** [x] PASS (Android only) [ ] FAIL
 
 **Summary Notes:**
-PDF download and viewing works correctly on both platforms. The download completes reliably, rendering is accurate, and navigation back to results is smooth. Edge case handling for abstract-only papers is graceful. Minor UX suggestion around download cancellation noted.
+PDF download and viewing works correctly on Android. The download completes reliably, rendering is accurate, and navigation back to results is smooth. Edge case handling for abstract-only papers is graceful. Minor UX suggestion around download cancellation noted. iOS was not executed — see Evidence Collected for the placeholder status of the "iOS" GIF.
 
 ---
 
@@ -160,7 +158,7 @@ PDF download and viewing works correctly on both platforms. The download complet
 - [x] Upload video evidence to traceability documentation
 - [x] Update traceability matrix with results
 - [ ] Create defect reports for any issues found -- none critical
-- [x] Compare platform behaviors for consistency -- consistent
+- [x] Document iOS as not executed (hardware unavailable)
 - [x] Document any platform-specific differences in PDF viewer behavior
 
 ---

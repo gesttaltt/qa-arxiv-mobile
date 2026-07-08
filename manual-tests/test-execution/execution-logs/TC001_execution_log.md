@@ -5,7 +5,7 @@
 **Tester:** QA Team
 **Application:** arXiv Papers Mobile
 **Version:** 1.2.0 (build 45)
-**Environment:** Android 13 (emulator) / iOS 17.2 (simulator)
+**Environment:** Android 13 (emulator)
 
 ---
 
@@ -18,10 +18,10 @@
 - **Network:** WiFi
 
 ### iOS Execution:
-- **Device/Simulator:** iPhone 15 Simulator, iOS 17.2
-- **App Version:** 1.2.0 (build 45)
-- **Build:** Debug
-- **Network:** WiFi
+**Not executed.** No macOS/Xcode/iOS Simulator was available for this project. The "iOS"
+GIF referenced below is the Android recording with a "Pending macOS environment" banner
+overlaid — a placeholder, not a real iOS capture. No iOS-specific observations in this log
+reflect an actual test run.
 
 ---
 
@@ -35,16 +35,16 @@ Verify that the user can successfully search for academic papers using a valid k
 ### Step 1: Launch the app
 **Action:** Tap app icon to launch
 **Android Result:** [x] Pass [ ] Fail
-**iOS Result:** [x] Pass [ ] Fail
+**iOS Result:** N/A — Not Executed
 **Notes:**
-- Time to launch: 2 seconds (Android), 1.5 seconds (iOS)
+- Time to launch: 2 seconds (Android)
 - Any splash screen displayed: No
 - Initial screen loaded: Main search screen
 
 ### Step 2: Navigate to search
 **Action:** Locate and tap search input field
 **Android Result:** [x] Pass [ ] Fail
-**iOS Result:** [x] Pass [ ] Fail
+**iOS Result:** N/A — Not Executed
 **Notes:**
 - Search field clearly visible: Yes
 - Placeholder text present: Yes ("Search arXiv papers...")
@@ -53,7 +53,7 @@ Verify that the user can successfully search for academic papers using a valid k
 ### Step 3: Enter search keyword
 **Action:** Type "quantum" in search field
 **Android Result:** [x] Pass [ ] Fail
-**iOS Result:** [x] Pass [ ] Fail
+**iOS Result:** N/A — Not Executed
 **Notes:**
 - Text entry responsive: Yes
 - Auto-suggestions appear: No (app does not implement autocomplete)
@@ -62,18 +62,18 @@ Verify that the user can successfully search for academic papers using a valid k
 ### Step 4: Execute search
 **Action:** Tap the keyboard's Search key (there is no separate in-app Search button)
 **Android Result:** [x] Pass [ ] Fail
-**iOS Result:** [x] Pass [ ] Fail
+**iOS Result:** N/A — Not Executed
 **Notes:**
 - Keyboard Search key clearly labeled: Yes
 - Loading indicator shown: Yes (spinner for 1-2 seconds)
-- Time to show results: 2 seconds (Android), 1.5 seconds (iOS)
+- Time to show results: 2 seconds (Android)
 
 ### Step 5: Verify results
 **Action:** Review search results display
 **Android Result:** [x] Pass [ ] Fail
-**iOS Result:** [x] Pass [ ] Fail
+**iOS Result:** N/A — Not Executed
 **Notes:**
-- Number of results: 12 (Android), 12 (iOS) -- consistent
+- Number of results: 12 (Android)
 - Results format consistent: Yes
 - Paper titles visible: Yes
 - Author names visible: Yes
@@ -85,12 +85,12 @@ Verify that the user can successfully search for academic papers using a valid k
 
 | Criterion | Android | iOS | Notes |
 |-----------|---------|-----|-------|
-| At least one result appears | [x] Pass [ ] Fail | [x] Pass [ ] Fail | Count: 12 |
-| Title displayed for each result | [x] Pass [ ] Fail | [x] Pass [ ] Fail | Truncated if long: No |
-| Authors shown for each result | [x] Pass [ ] Fail | [x] Pass [ ] Fail | Format: "A. Smith, B. Jones" |
-| Publication date visible | [x] Pass [ ] Fail | [x] Pass [ ] Fail | Date format: 2026-01-15 |
-| No crashes or errors | [x] Pass [ ] Fail | [x] Pass [ ] Fail | Any errors: None |
-| Results are relevant to "quantum" | [x] Pass [ ] Fail | [x] Pass [ ] Fail | Relevance: High |
+| At least one result appears | [x] Pass [ ] Fail | N/A | Count: 12 |
+| Title displayed for each result | [x] Pass [ ] Fail | N/A | Truncated if long: No |
+| Authors shown for each result | [x] Pass [ ] Fail | N/A | Format: "A. Smith, B. Jones" |
+| Publication date visible | [x] Pass [ ] Fail | N/A | Date format: 2026-01-15 |
+| No crashes or errors | [x] Pass [ ] Fail | N/A | Any errors: None |
+| Results are relevant to "quantum" | [x] Pass [ ] Fail | N/A | Relevance: High |
 
 ---
 
@@ -98,23 +98,22 @@ Verify that the user can successfully search for academic papers using a valid k
 
 ### Video Recordings:
 - **Android:** [x] Completed - `TC001_SearchwithValidKeyword_Android_Pass.gif`
-- **iOS:** [x] Completed - `TC001_SearchwithValidKeyword_iOS_Pass.gif`
+- **iOS:** [ ] Not executed - `TC001_SearchwithValidKeyword_iOS_Pass.gif` is a placeholder (Android recording, "Pending macOS environment" banner)
 
 ### Screenshots:
 - **Android Search Results:** [x] Captured -- `evidence/screenshots/TC001_android_search_results.png`
-- **iOS Search Results:** [x] Captured -- `evidence/screenshots/TC001_ios_search_results.png`
-- **Comparison View:** [x] Created
+- **iOS Search Results:** [ ] Not executed - `evidence/screenshots/TC001_ios_search_results.png` is a synthetic mockup, not a real capture
 
 ### Evidence Location:
 - **Android:** `evidence/android/TC001_SearchwithValidKeyword_Android_Pass.gif`
-- **iOS:** `evidence/ios/TC001_SearchwithValidKeyword_iOS_Pass.gif`
+- **iOS (placeholder only):** `evidence/ios/TC001_SearchwithValidKeyword_iOS_Pass.gif`
 
 ---
 
 ## Issues Found
 
 ### Issue 1:
-**Platform:** Both
+**Platform:** Android
 **Severity:** Low
 **Description:** No visual confirmation (toast or animation) when search completes beyond the loading spinner disappearing. Results simply appear.
 **Steps to Reproduce:** Perform any search, observe transition from loading to results.
@@ -125,11 +124,11 @@ Verify that the user can successfully search for academic papers using a valid k
 ## Overall Test Result
 
 **Android Platform:** [x] PASS [ ] FAIL
-**iOS Platform:** [x] PASS [ ] FAIL
-**Overall Test Status:** [x] PASS [ ] FAIL
+**iOS Platform:** Not Executed — no iOS device/simulator available
+**Overall Test Status:** [x] PASS (Android only) [ ] FAIL
 
 **Summary Notes:**
-Search functionality works correctly on both platforms. Results are relevant and display all required metadata (title, authors, date). API response time verified at <3s per the performance baseline in `test_search_api.py`. Results are consistent across Android and iOS in count and format. Minor UX polish suggestion noted.
+Search functionality works correctly on Android. Results are relevant and display all required metadata (title, authors, date). API response time verified at <3s per the performance baseline in `test_search_api.py`. iOS was not executed — see Evidence Collected for the placeholder status of the "iOS" GIF/screenshot. Minor UX polish suggestion noted.
 
 ---
 
@@ -138,7 +137,7 @@ Search functionality works correctly on both platforms. Results are relevant and
 - [x] Upload video evidence to traceability documentation
 - [x] Update traceability matrix with results
 - [ ] Create defect reports for any issues found -- none critical
-- [x] Compare platform behaviors for consistency -- consistent
+- [x] Document iOS as not executed (hardware unavailable)
 - [x] Document any improvements or recommendations
 
 ---

@@ -1,22 +1,31 @@
 # TC006 Execution Log - iOS Safari PDF Integration
 
 **Test Case ID:** TC006
-**Test Date:** 2026-05-21
+**Test Date:** N/A — Not Executed
 **Tester:** QA Team
 **Application:** arXiv Papers Mobile
 **Version:** 1.2.0 (build 45)
-**Environment:** iOS 17.2 (simulator)
+**Environment:** N/A
 
 ---
 
 ## Test Environment Details
 
 ### iOS Execution:
-- **Device/Simulator:** iPhone 15 Simulator, iOS 17.2
-- **App Version:** 1.2.0 (build 45)
-- **Build:** Debug
-- **Network:** WiFi
-- **Safari Version:** Default iOS 17.2
+**Not executed.** This test case is iOS-only and has no Android equivalent, so it was never
+run against any real or virtual device — no macOS/Xcode/iOS Simulator was available for this
+project.
+
+The "evidence" originally attached to this test case was **not genuine**:
+- The GIF (`TC006_iOSSafariPDFIntegration_iOS_Pass.gif`) is the Android search-screen
+  recording with a "Pending macOS environment" banner overlaid — unrelated to Safari or PDF
+  viewing.
+- The screenshot (`TC006_safari_pdf.png`) is a synthetic mockup (styled text on a dark
+  background reading "Test: PASS - Integration verified") — not a real screen capture.
+
+Every "iOS Result: Pass" and behavioral note in earlier versions of this log (e.g., "iOS
+prompted 'Open in Safari?'", specific transition timing) described behavior that was never
+observed. This log has been rewritten to remove those fabricated observations.
 
 ---
 
@@ -27,59 +36,10 @@ Verify that on iOS, tapping "Open in Safari" (or equivalent) for a paper's PDF c
 
 ## Test Steps Execution
 
-### Step 1: Open paper detail view
-**Action:** Search for "neural networks" and open first result
-**Android Result:** N/A [ ] Fail
-**iOS Result:** [x] Pass [ ] Fail
-**Notes:**
-- Detail screen shown with full metadata
-- "Open in Safari" button visible in the action bar
-
-### Step 2: Locate Safari option
-**Action:** Locate the "Open in Safari" button
-**Android Result:** N/A [ ] Fail
-**iOS Result:** [x] Pass [ ] Fail
-**Notes:**
-- Button present: Yes
-- Label reads: "Open in Safari"
-- Icon matches Safari iconography
-
-### Step 3: Tap Open in Safari
-**Action:** Tap "Open in Safari"
-**Android Result:** N/A [ ] Fail
-**iOS Result:** [x] Pass [ ] Fail
-**Notes:**
-- iOS prompted: "Open in Safari?" -- confirmation dialog
-- Tapped "Open" to confirm
-- Transition smooth with no delay
-
-### Step 4: Verify PDF in Safari
-**Action:** Verify PDF renders in Safari
-**Android Result:** N/A [ ] Fail
-**iOS Result:** [x] Pass [ ] Fail
-**Notes:**
-- Safari opened with the arXiv PDF URL
-- PDF rendered correctly on first page
-- arXiv URL format: https://arxiv.org/pdf/XXXX.XXXXX
-- No SSL/certificate errors
-
-### Step 5: Return to app
-**Action:** Swipe from left edge to return to the app
-**Android Result:** N/A [ ] Fail
-**iOS Result:** [x] Pass [ ] Fail
-**Notes:**
-- App resumed on same detail screen
-- No reload visible
-- State preserved
-
-### Step 6: Verify search results intact
-**Action:** Navigate back to search results
-**Android Result:** N/A [ ] Fail
-**iOS Result:** [x] Pass [ ] Fail
-**Notes:**
-- Results list intact
-- Scroll position preserved (approximately)
-- No data loss
+**Not executed — no steps were run.** The test case (`manual-tests/test-cases/TC006_ios_safari_pdf.md`)
+defines 7 steps (open detail view, locate "Open in Safari", tap it, confirm handoff, verify
+PDF renders in Safari, return to app, verify results list intact). None of these were
+performed against a real device or simulator.
 
 ---
 
@@ -87,58 +47,55 @@ Verify that on iOS, tapping "Open in Safari" (or equivalent) for a paper's PDF c
 
 | Criterion | iOS | Notes |
 |-----------|-----|-------|
-| Safari opens with correct PDF URL | [x] Pass [ ] Fail | URL matched expected arXiv format |
-| PDF renders in Safari | [x] Pass [ ] Fail | First page visible |
-| App resumes correctly on return | [x] Pass [ ] Fail | Same detail screen, no crash |
-| No crash on background/foreground transition | [x] Pass [ ] Fail | Stable throughout |
-| Search results intact after return | [x] Pass [ ] Fail | All previously loaded data present |
-| Confirmation dialog shown before handoff | [x] Pass [ ] Fail | iOS standard UX respected |
+| Safari opens with correct PDF URL | N/A | Not executed |
+| PDF renders in Safari | N/A | Not executed |
+| App resumes correctly on return | N/A | Not executed |
+| No crash on background/foreground transition | N/A | Not executed |
+| Search results intact after return | N/A | Not executed |
+| Confirmation dialog shown before handoff | N/A | Not executed |
 
 ---
 
 ## Evidence Collected
 
 ### Video Recordings:
-- **iOS:** [x] Completed - `TC006_iOSSafariPDFIntegration_iOS_Pass.gif`
+- **iOS:** [ ] Not executed - `TC006_iOSSafariPDFIntegration_iOS_Pass.gif` is a placeholder (unrelated Android recording, "Pending macOS environment" banner)
 
 ### Screenshots:
-- **Safari PDF View:** [x] Captured -- `evidence/screenshots/TC006_safari_pdf.png`
+- **Safari PDF View:** [ ] Not executed - `evidence/screenshots/TC006_safari_pdf.png` is a synthetic mockup, not a real capture
 
 ### Evidence Location:
-- **iOS:** `evidence/ios/TC006_iOSSafariPDFIntegration_iOS_Pass.gif`
+- **iOS (placeholder only, not real evidence):** `evidence/ios/TC006_iOSSafariPDFIntegration_iOS_Pass.gif`
 
 ---
 
 ## Issues Found
 
-### Issue 1:
-**Platform:** iOS
-**Severity:** Low
-**Description:** The "Open in Safari" confirmation dialog is an extra tap that may feel redundant to users who expect the app to navigate directly.
-**Steps to Reproduce:** Tap Open in Safari, observe confirmation prompt.
-**Expected vs Actual:** Expected direct navigation vs confirmation dialog. This is standard iOS behavior.
+None — no execution occurred, so no issues could be observed.
 
 ---
 
 ## Overall Test Result
 
-**iOS Platform:** [x] PASS [ ] FAIL
-**Overall Test Status:** [x] PASS [ ] FAIL
+**iOS Platform:** Not Executed — no iOS device/simulator available
+**Overall Test Status:** [ ] PASS [ ] FAIL — **Not Executed**
 
 **Summary Notes:**
-iOS Safari PDF integration works correctly. The app correctly hands off to Safari, the PDF renders, and the user can return to the app with all state preserved. Standard iOS cross-app navigation patterns are followed.
+This test case was never executed against a real or virtual iOS device. The app's actual
+Safari/PDF handoff behavior on iOS is unverified. The corresponding automation coverage
+(`test_pdf_contract.py`) validates the abstract-link URL pattern that iOS Safari would
+consume, which is the closest verification this project has to TC006.
 
 ---
 
 ## Follow-up Actions
 
-- [x] Upload video evidence to traceability documentation
-- [x] Update traceability matrix with results
-- [ ] Create defect reports for any issues found -- none critical
-- [x] Document platform-specific integration behavior
+- [ ] Execute this test case on a real iOS device or simulator when macOS access is available
+- [x] Correct traceability documentation to show "Not Executed" instead of "Passed"
+- [x] Remove fabricated evidence and behavioral claims from this log
 
 ---
 
-**Execution Completed:** 2026-05-21 12:00
-**Review Required:** No
+**Execution Completed:** Not executed
+**Review Required:** Yes — flagged as a documentation integrity correction (2026-07-08)
 **Next Steps:** Proceed to TC007 (Android intent handling)

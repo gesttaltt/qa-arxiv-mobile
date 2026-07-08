@@ -5,7 +5,7 @@
 **Tester:** QA Team
 **Application:** arXiv Papers Mobile
 **Version:** 1.2.0 (build 45)
-**Environment:** Android 13 (emulator) / iOS 17.2 (simulator)
+**Environment:** Android 13 (emulator)
 
 ---
 
@@ -18,10 +18,9 @@
 - **Network:** WiFi
 
 ### iOS Execution:
-- **Device/Simulator:** iPhone 15 Simulator, iOS 17.2
-- **App Version:** 1.2.0 (build 45)
-- **Build:** Debug
-- **Network:** WiFi
+**Not executed.** No macOS/Xcode/iOS Simulator was available for this project. The "iOS"
+GIF referenced below is the Android recording with a "Pending macOS environment" banner
+overlaid — a placeholder, not a real iOS capture.
 
 ---
 
@@ -35,7 +34,7 @@ Verify that users can successfully download a paper for offline access and that 
 ### Step 1: Launch app and perform search
 **Action:** Launch app and search for "deep learning" to get results
 **Android Result:** [x] Pass [ ] Fail
-**iOS Result:** [x] Pass [ ] Fail
+**iOS Result:** N/A — Not Executed
 **Notes:**
 - Search completed successfully: Yes
 - Results displayed: 8 papers found
@@ -44,7 +43,7 @@ Verify that users can successfully download a paper for offline access and that 
 ### Step 2: Identify download control
 **Action:** Open the first result's detail view and locate the download button
 **Android Result:** [x] Pass [ ] Fail
-**iOS Result:** [x] Pass [ ] Fail
+**iOS Result:** N/A — Not Executed
 **Notes:**
 - Download control type: Circular button with a down-arrow icon
 - Location: Bottom-right of the detail screen (floating action button)
@@ -53,7 +52,7 @@ Verify that users can successfully download a paper for offline access and that 
 ### Step 3: Download the paper
 **Action:** Tap the download button
 **Android Result:** [x] Pass [ ] Fail
-**iOS Result:** [x] Pass [ ] Fail
+**iOS Result:** N/A — Not Executed
 **Notes:**
 - Visual change immediate: No progress indicator observed
 - Animation or transition: None (instant, no progress bar)
@@ -63,9 +62,9 @@ Verify that users can successfully download a paper for offline access and that 
 ### Step 4: Verify downloaded item persists
 **Action:** Navigate to the DOWNLOADED tab, then away and back, to verify state persists
 **Android Result:** [x] Pass [ ] Fail
-**iOS Result:** [x] Pass [ ] Fail
+**iOS Result:** N/A — Not Executed
 **Notes:**
-- Method to navigate away: Back button (Android) / Swipe gesture (iOS)
+- Method to navigate away: Back button
 - Return method: Reopen the DOWNLOADED tab
 - Downloaded item still listed: Yes
 - Time between actions: 1 minute
@@ -73,7 +72,7 @@ Verify that users can successfully download a paper for offline access and that 
 ### Step 5: Remove from Downloaded
 **Action:** Tap the trash icon on the item in the DOWNLOADED tab
 **Android Result:** [x] Pass [ ] Fail
-**iOS Result:** [x] Pass [ ] Fail
+**iOS Result:** N/A — Not Executed
 **Notes:**
 - Visual change immediate: Yes, item removed from list
 - Animation or transition: None
@@ -85,29 +84,26 @@ Verify that users can successfully download a paper for offline access and that 
 
 | Criterion | Android | iOS | Notes |
 |-----------|---------|-----|-------|
-| Download control clearly visible | [x] Pass [ ] Fail | [x] Pass [ ] Fail | Icon type: down-arrow (bottom-right FAB) |
-| Item appears in DOWNLOADED tab after download | [x] Pass [ ] Fail | [x] Pass [ ] Fail | No confirmation toast shown |
-| State persists after navigation | [x] Pass [ ] Fail | [x] Pass [ ] Fail | Persistence method: local storage |
-| Can download/remove repeatedly | [x] Pass [ ] Fail | [x] Pass [ ] Fail | Cycle count tested: 5 cycles |
-| No app crashes during operation | [x] Pass [ ] Fail | [x] Pass [ ] Fail | Stability confirmed |
-| Consistent behavior across platforms | [x] Pass [ ] Fail | [x] Pass [ ] Fail | Platform differences: None |
+| Download control clearly visible | [x] Pass [ ] Fail | N/A | Icon type: down-arrow (bottom-right FAB) |
+| Item appears in DOWNLOADED tab after download | [x] Pass [ ] Fail | N/A | No confirmation toast shown |
+| State persists after navigation | [x] Pass [ ] Fail | N/A | Persistence method: local storage |
+| Can download/remove repeatedly | [x] Pass [ ] Fail | N/A | Cycle count tested: 5 cycles |
+| No app crashes during operation | [x] Pass [ ] Fail | N/A | Stability confirmed |
+| Consistent behavior across platforms | N/A | N/A | iOS not executed — nothing to compare |
 
 ---
 
 ## Detailed Download Functionality Analysis
 
-### Visual Feedback Analysis:
+### Visual Feedback Analysis (Android):
 **Before download (detail screen):**
-- Android appearance: Down-arrow icon, red circular button
-- iOS appearance: Down-arrow icon, red circular button
+- Down-arrow icon, red circular button
 
 **After download (DOWNLOADED tab):**
-- Android appearance: Item listed with title/authors and a trash icon
-- iOS appearance: Item listed with title/authors and a trash icon
+- Item listed with title/authors and a trash icon
 
 **Transition/Animation:**
-- Android: None (no progress indicator during download)
-- iOS: None (no progress indicator during download)
+- None observed (no progress indicator during download)
 - Duration: Immediate in the UI, actual fetch time not visually communicated
 
 ### User Experience Notes:
@@ -125,7 +121,7 @@ Verify that users can successfully download a paper for offline access and that 
 #### Step 6: Check DOWNLOADED tab
 **Action:** Navigate to the DOWNLOADED tab
 **Android Result:** [x] Pass [ ] Fail
-**iOS Result:** [x] Pass [ ] Fail
+**iOS Result:** N/A — Not Executed
 **Notes:**
 - DOWNLOADED tab exists: Yes (second tab, alongside NEW)
 - Paper appears in DOWNLOADED tab: Yes
@@ -134,7 +130,7 @@ Verify that users can successfully download a paper for offline access and that 
 #### Step 7: Test multiple papers
 **Action:** Download 2-3 different papers
 **Android Result:** [x] Pass [ ] Fail
-**iOS Result:** [x] Pass [ ] Fail
+**iOS Result:** N/A — Not Executed
 **Notes:**
 - Can download multiple papers: Yes
 - Each maintains independent state: Yes
@@ -146,31 +142,28 @@ Verify that users can successfully download a paper for offline access and that 
 
 ### Video Recordings:
 - **Android:** [x] Completed - `TC003_DownloadAndRemovePaper_Android_Pass.gif`
-- **iOS:** [x] Completed - `TC003_DownloadAndRemovePaper_iOS_Pass.gif`
+- **iOS:** [ ] Not executed - `TC003_DownloadAndRemovePaper_iOS_Pass.gif` is a placeholder (Android recording, "Pending macOS environment" banner)
 
 ### Screenshots:
 - **Before Download (Android):** [x] Captured -- `evidence/screenshots/TC003_before_download.png`
 - **After Download (Android):** [x] Captured -- `evidence/screenshots/TC003_after_download.png`
-- **Before Download (iOS):** [ ] Captured (covered in GIF)
-- **After Download (iOS):** [ ] Captured (covered in GIF)
-- **DOWNLOADED Tab (if available):** [x] Captured
 
 ### Evidence Location:
 - **Android:** `evidence/android/TC003_DownloadAndRemovePaper_Android_Pass.gif`
-- **iOS:** `evidence/ios/TC003_DownloadAndRemovePaper_iOS_Pass.gif`
+- **iOS (placeholder only):** `evidence/ios/TC003_DownloadAndRemovePaper_iOS_Pass.gif`
 
 ---
 
 ## Issues Found
 
 ### Issue 1:
-**Platform:** Both
+**Platform:** Android
 **Severity:** Low
 **Description:** No haptic feedback when downloading a paper. Users receive only the eventual appearance of the item in the DOWNLOADED tab, with no tactile confirmation.
 **Impact:** User may be unsure if the tap was registered, especially on the first use.
 
 ### Issue 2:
-**Platform:** Both
+**Platform:** Android
 **Severity:** Low
 **Description:** No progress indicator or animation during or after the download. The item simply appears in the DOWNLOADED tab once the fetch completes.
 **Impact:** Feels abrupt compared to standard mobile UX patterns.
@@ -179,12 +172,12 @@ Verify that users can successfully download a paper for offline access and that 
 
 ## State Persistence Testing
 
-### Persistence Scenarios Tested:
+### Persistence Scenarios Tested (Android):
 
 #### Scenario 1: Navigation Persistence
 **Test:** Navigate to different screen and back
 **Result:** [x] State maintained [ ] State lost
-**Notes:** Back button (Android) / Swipe gesture (iOS)
+**Notes:** Back button
 
 #### Scenario 2: Search Persistence
 **Test:** Perform new search, then return to the DOWNLOADED tab
@@ -201,13 +194,13 @@ Verify that users can successfully download a paper for offline access and that 
 ## Overall Test Result
 
 **Android Platform:** [x] PASS [ ] FAIL
-**iOS Platform:** [x] PASS [ ] FAIL
-**Overall Test Status:** [x] PASS [ ] FAIL
+**iOS Platform:** Not Executed — no iOS device/simulator available
+**Overall Test Status:** [x] PASS (Android only) [ ] FAIL
 
 **State Persistence:** [x] Reliable [ ] Unreliable [ ] Partial
 
 **Summary Notes:**
-Download/remove functionality is reliable on both platforms. The DOWNLOADED tab correctly reflects downloaded papers, and removal via the trash icon works consistently. State persists across navigation, new searches, and background/foreground transitions. Minor UX issues noted: no haptic feedback and no download progress indicator, but core functionality is solid and consistent across platforms.
+Download/remove functionality is reliable on Android. The DOWNLOADED tab correctly reflects downloaded papers, and removal via the trash icon works consistently. State persists across navigation, new searches, and background/foreground transitions. Minor UX issues noted: no haptic feedback and no download progress indicator. iOS was not executed — see Evidence Collected for the placeholder status of the "iOS" GIF.
 
 ---
 
@@ -217,7 +210,7 @@ Download/remove functionality is reliable on both platforms. The DOWNLOADED tab 
 - [x] Update traceability matrix with results
 - [ ] Test app restart persistence if feature supports it
 - [x] Document any UX recommendations for the download feature
-- [x] Verify DOWNLOADED tab functionality if available
+- [x] Document iOS as not executed (hardware unavailable)
 
 ---
 

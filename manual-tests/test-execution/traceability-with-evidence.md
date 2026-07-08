@@ -2,21 +2,27 @@
 
 This document provides complete traceability from requirements to test execution with verifiable evidence.
 
+**iOS was never executed** on a real or virtual device (no macOS/Xcode/iOS Simulator
+available). Where an "iOS Execution" link appears below, it points to a placeholder — the
+Android recording with a "Pending macOS environment" banner overlaid — not real iOS
+evidence. See [`evidence/README.md`](evidence/README.md) for the full breakdown, including
+which screenshots are genuine vs. mislabeled/synthetic.
+
 ## 🎯 Real Execution Status Overview
 
 | Test Case ID | Description | Android Status | iOS Status | Evidence Collected |
 |--------------|-------------|----------------|------------|-------------------|
-| TC001 | Search with valid keyword | ✅ Passed | ✅ Passed | GIF + Screenshots |
-| TC002 | Search with empty input | ✅ Passed | ✅ Passed | GIF + Screenshots |
-| TC003 | Download a paper and remove it from Downloaded | ✅ Passed | ✅ Passed | GIF + Before/After screenshots |
-| TC004 | Search offline behavior | ✅ Passed | ✅ Passed | GIF + Screenshot |
-| TC005 | PDF download and viewing | ✅ Passed | ✅ Passed | GIF + Screenshot |
-| TC006 | iOS Safari PDF integration | N/A | ✅ Passed | GIF + Screenshot |
-| TC007 | Android intent handling | ✅ Passed | N/A | GIF + Screenshot |
-| TC008 | Bulk downloaded papers management | ✅ Passed | ✅ Passed | GIF |
-| TC009 | WiFi to cellular transition | ✅ Passed | ✅ Passed | GIF + Screenshot |
-| TC010 | Offline data persistence | ✅ Passed | ✅ Passed | Dedicated Android GIF; iOS shares TC004 evidence |
-| TC011 | Accessibility TalkBack | ✅ Passed | N/A | GIF + Screenshot |
+| TC001 | Search with valid keyword | ✅ Passed | ⏸ Not Executed | Android GIF + Screenshot |
+| TC002 | Search with empty input | ✅ Passed | ⏸ Not Executed | Android GIF + Screenshot |
+| TC003 | Download a paper and remove it from Downloaded | ✅ Passed | ⏸ Not Executed | Android GIF + Before/After screenshots |
+| TC004 | Search offline behavior | ✅ Passed | ⏸ Not Executed | Android GIF (screenshot is generic, not the error state) |
+| TC005 | PDF download and viewing | ✅ Passed | ⏸ Not Executed | Android GIF + Screenshot |
+| TC006 | iOS Safari PDF integration | N/A | ⏸ Not Executed | None — placeholder GIF, synthetic mockup screenshot |
+| TC007 | Android intent handling | ✅ Passed | N/A | Android GIF (screenshot is generic, not the intent chooser) |
+| TC008 | Bulk downloaded papers management | ✅ Passed | ⏸ Not Executed | Android GIF |
+| TC009 | WiFi to cellular transition | ✅ Passed | ⏸ Not Executed | Android GIF (screenshot is generic, not the transition state) |
+| TC010 | Offline data persistence | ✅ Passed | ⏸ Not Executed | Dedicated Android GIF; no iOS evidence at all |
+| TC011 | Accessibility TalkBack | ✅ Passed | N/A | Android GIF (screenshot is generic, not TalkBack-specific) |
 
 ---
 
@@ -26,21 +32,21 @@ This document provides complete traceability from requirements to test execution
 
 **Requirement:** US001 - Search for Academic Papers  
 **Priority:** High  
-**Platforms:** Android + iOS
+**Platforms:** Android (executed) + iOS (designed, not executed)
 
 #### Evidence Links:
 - **Android Execution:** [evidence/android/TC001_SearchwithValidKeyword_Android_Pass.gif](evidence/android/TC001_SearchwithValidKeyword_Android_Pass.gif)
-- **iOS Execution:** [evidence/ios/TC001_SearchwithValidKeyword_iOS_Pass.gif](evidence/ios/TC001_SearchwithValidKeyword_iOS_Pass.gif)
+- **iOS Execution:** Not executed — `evidence/ios/TC001_SearchwithValidKeyword_iOS_Pass.gif` is a placeholder, not real evidence
 - **Screenshots:**
   - Android search results: `evidence/screenshots/TC001_android_search_results.png`
-  - iOS search results: `evidence/screenshots/TC001_ios_search_results.png`
+  - "iOS search results": `evidence/screenshots/TC001_ios_search_results.png` is a synthetic mockup, not a real capture
 
 #### Execution Summary:
 - **Test Date:** 2026-05-21
 - **Tester:** QA Team
 - **Environment:** arXiv Papers Mobile (React Native)
-- **Result:** Pass
-- **Notes:** Search returns relevant results; cards display title, authors, and date. Verified on Android and iOS.
+- **Result:** Pass (Android only)
+- **Notes:** Search returns relevant results; cards display title, authors, and date. Verified on Android only.
 
 ---
 
@@ -48,20 +54,19 @@ This document provides complete traceability from requirements to test execution
 
 **Requirement:** US001 - Search for Academic Papers  
 **Priority:** High  
-**Platforms:** Android + iOS
+**Platforms:** Android (executed) + iOS (designed, not executed)
 
 #### Evidence Links:
 - **Android Execution:** [evidence/android/TC002_SearchwithEmptyQuery_Android_Pass.gif](evidence/android/TC002_SearchwithEmptyQuery_Android_Pass.gif)
-- **iOS Execution:** [evidence/ios/TC002_SearchwithEmptyQuery_iOS_Pass.gif](evidence/ios/TC002_SearchwithEmptyQuery_iOS_Pass.gif)
+- **iOS Execution:** Not executed — `evidence/ios/TC002_SearchwithEmptyQuery_iOS_Pass.gif` is a placeholder, not real evidence
 - **Screenshots:**
   - Android empty search: `evidence/screenshots/TC002_android_empty_search.png`
-  - iOS empty search: `evidence/screenshots/TC002_ios_empty_search.png`
 
 #### Execution Summary:
 - **Test Date:** 2026-05-21
 - **Tester:** QA Team
 - **Environment:** arXiv Papers Mobile (React Native)
-- **Result:** Pass
+- **Result:** Pass (Android only)
 - **Notes:** Validation message shown when search attempted with empty field. No app crash observed. API layer also validated.
 
 ---
@@ -70,11 +75,11 @@ This document provides complete traceability from requirements to test execution
 
 **Requirement:** US002 - Manage Downloaded Papers  
 **Priority:** High  
-**Platforms:** Android + iOS
+**Platforms:** Android (executed) + iOS (designed, not executed)
 
 #### Evidence Links:
 - **Android Execution:** [evidence/android/TC003_DownloadAndRemovePaper_Android_Pass.gif](evidence/android/TC003_DownloadAndRemovePaper_Android_Pass.gif)
-- **iOS Execution:** [evidence/ios/TC003_DownloadAndRemovePaper_iOS_Pass.gif](evidence/ios/TC003_DownloadAndRemovePaper_iOS_Pass.gif)
+- **iOS Execution:** Not executed — `evidence/ios/TC003_DownloadAndRemovePaper_iOS_Pass.gif` is a placeholder, not real evidence
 - **Screenshots:**
   - Before download: `evidence/screenshots/TC003_before_download.png`
   - After download: `evidence/screenshots/TC003_after_download.png`
@@ -83,26 +88,26 @@ This document provides complete traceability from requirements to test execution
 - **Test Date:** 2026-05-21
 - **Tester:** QA Team
 - **Environment:** arXiv Papers Mobile (React Native)
-- **Result:** Pass
+- **Result:** Pass (Android only)
 - **Notes:** Download and removal work correctly. Item appears in the DOWNLOADED tab after download and disappears after tapping the trash icon.
 
 ### TC004 - Search Offline Behavior
 
 **Requirement:** US001 - Search for Academic Papers
 **Priority:** Medium
-**Platforms:** Android + iOS
+**Platforms:** Android (executed) + iOS (designed, not executed)
 
 #### Evidence Links:
 - **Android Execution:** [evidence/android/TC004_SearchOfflineBehavior_Android_Pass.gif](evidence/android/TC004_SearchOfflineBehavior_Android_Pass.gif)
-- **iOS Execution:** [evidence/ios/TC004_SearchOfflineBehavior_iOS_Pass.gif](evidence/ios/TC004_SearchOfflineBehavior_iOS_Pass.gif)
+- **iOS Execution:** Not executed — `evidence/ios/TC004_SearchOfflineBehavior_iOS_Pass.gif` is a placeholder, not real evidence
 - **Screenshots:**
-  - Offline error state: `evidence/screenshots/TC004_offline_error.png`
+  - `evidence/screenshots/TC004_offline_error.png` is mislabeled — it shows a normal paper detail screen, not the offline error state. The GIF is the only accurate evidence of the error message.
 
 #### Execution Summary:
 - **Test Date:** 2026-05-21
 - **Tester:** QA Team
 - **Environment:** arXiv Papers Mobile (React Native)
-- **Result:** Pass
+- **Result:** Pass (Android only)
 - **Notes:** App displays "No internet connection" error, remains interactive, recovers after network restore without restart.
 
 ---
@@ -111,11 +116,11 @@ This document provides complete traceability from requirements to test execution
 
 **Requirement:** US003 - Download and View PDFs
 **Priority:** High
-**Platforms:** Android + iOS
+**Platforms:** Android (executed) + iOS (designed, not executed)
 
 #### Evidence Links:
 - **Android Execution:** [evidence/android/TC005_PDFDownloadandViewing_Android_Pass.gif](evidence/android/TC005_PDFDownloadandViewing_Android_Pass.gif)
-- **iOS Execution:** [evidence/ios/TC005_PDFDownloadandViewing_iOS_Pass.gif](evidence/ios/TC005_PDFDownloadandViewing_iOS_Pass.gif)
+- **iOS Execution:** Not executed — `evidence/ios/TC005_PDFDownloadandViewing_iOS_Pass.gif` is a placeholder, not real evidence
 - **Screenshots:**
   - PDF viewer: `evidence/screenshots/TC005_pdf_viewer.png`
 
@@ -123,7 +128,7 @@ This document provides complete traceability from requirements to test execution
 - **Test Date:** 2026-05-21
 - **Tester:** QA Team
 - **Environment:** arXiv Papers Mobile (React Native)
-- **Result:** Pass
+- **Result:** Pass (Android only)
 - **Notes:** PDF downloads and renders correctly. Back navigation restores search results. Abstract-only papers handled gracefully (button absent/disabled).
 
 ---
@@ -135,16 +140,14 @@ This document provides complete traceability from requirements to test execution
 **Platform:** iOS only
 
 #### Evidence Links:
-- **iOS Execution:** [evidence/ios/TC006_iOSSafariPDFIntegration_iOS_Pass.gif](evidence/ios/TC006_iOSSafariPDFIntegration_iOS_Pass.gif)
-- **Screenshots:**
-  - Safari PDF view: `evidence/screenshots/TC006_safari_pdf.png`
+- **iOS Execution:** **Not executed.** `evidence/ios/TC006_iOSSafariPDFIntegration_iOS_Pass.gif` is an unrelated Android recording with a "Pending macOS environment" banner, and `evidence/screenshots/TC006_safari_pdf.png` is a synthetic mockup (styled text reading "Test: PASS"). Neither is real evidence.
 
 #### Execution Summary:
-- **Test Date:** 2026-05-21
-- **Tester:** QA Team
-- **Environment:** arXiv Papers Mobile (React Native)
-- **Result:** Pass
-- **Notes:** Safari opens correct arXiv PDF URL. App resumes on same detail screen with full state preservation. No crash on return.
+- **Test Date:** N/A — not executed
+- **Tester:** N/A
+- **Environment:** N/A — no iOS device/simulator available
+- **Result:** **Not Executed**
+- **Notes:** This test case is iOS-only and has no Android equivalent, so it was never run against any real or virtual device. The app's actual Safari/PDF handoff behavior on iOS is unverified. The closest verification this project has is `test_pdf_contract.py`, which validates the abstract-link URL pattern that iOS Safari would consume.
 
 ---
 
@@ -157,7 +160,7 @@ This document provides complete traceability from requirements to test execution
 #### Evidence Links:
 - **Android Execution:** [evidence/android/TC007_AndroidIntentPDFHandling_Android_Pass.gif](evidence/android/TC007_AndroidIntentPDFHandling_Android_Pass.gif)
 - **Screenshots:**
-  - Intent chooser: `evidence/screenshots/TC007_intent_chooser.png`
+  - `evidence/screenshots/TC007_intent_chooser.png` is mislabeled — it shows the DOWNLOADED tab, not the Android intent chooser dialog. The GIF is the only accurate evidence of that scenario.
 
 #### Execution Summary:
 - **Test Date:** 2026-05-21
@@ -172,17 +175,17 @@ This document provides complete traceability from requirements to test execution
 
 **Requirement:** US002 - Manage Downloaded Papers
 **Priority:** Low
-**Platforms:** Android + iOS
+**Platforms:** Android (executed) + iOS (designed, not executed)
 
 #### Evidence Links:
 - **Android Execution:** [evidence/android/TC008_BulkDownloadedPapersManagement_Android_Pass.gif](evidence/android/TC008_BulkDownloadedPapersManagement_Android_Pass.gif)
-- **iOS Execution:** [evidence/ios/TC008_BulkDownloadedPapersManagement_iOS_Pass.gif](evidence/ios/TC008_BulkDownloadedPapersManagement_iOS_Pass.gif)
+- **iOS Execution:** Not executed — `evidence/ios/TC008_BulkDownloadedPapersManagement_iOS_Pass.gif` is a placeholder, not real evidence
 
 #### Execution Summary:
 - **Test Date:** 2026-05-21
 - **Tester:** QA Team
 - **Environment:** arXiv Papers Mobile (React Native)
-- **Result:** Pass
+- **Result:** Pass (Android only)
 - **Notes:** Boundary values (0, 1, 3) all pass. Persistence confirmed after force-close. Sequential removal correctly returns to empty-state.
 
 ---
@@ -191,19 +194,19 @@ This document provides complete traceability from requirements to test execution
 
 **Requirement:** US004 - Network Connectivity
 **Priority:** Medium
-**Platforms:** Android + iOS
+**Platforms:** Android (executed) + iOS (designed, not executed)
 
 #### Evidence Links:
 - **Android Execution:** [evidence/android/TC009_WiFitoCellularTransition_Android_Pass.gif](evidence/android/TC009_WiFitoCellularTransition_Android_Pass.gif)
-- **iOS Execution:** [evidence/ios/TC009_WiFitoCellularTransition_iOS_Pass.gif](evidence/ios/TC009_WiFitoCellularTransition_iOS_Pass.gif)
+- **iOS Execution:** Not executed — `evidence/ios/TC009_WiFitoCellularTransition_iOS_Pass.gif` is a placeholder, not real evidence
 - **Screenshots:**
-  - Network transition state: `evidence/screenshots/TC009_network_transition.png`
+  - `evidence/screenshots/TC009_network_transition.png` is mislabeled — it shows a generic search results list, with no network-state indicator visible. The GIF is the only accurate evidence of the transition.
 
 #### Execution Summary:
 - **Test Date:** 2026-05-21
 - **Tester:** QA Team
 - **Environment:** arXiv Papers Mobile (React Native)
-- **Result:** Pass
+- **Result:** Pass (Android only)
 - **Notes:** Transitions across all 4 network states (WiFi, cellular, offline, recovery) cause no crashes. Searches and downloads work over cellular. No duplicate downloads on WiFi reconnection.
 
 ---
@@ -212,18 +215,18 @@ This document provides complete traceability from requirements to test execution
 
 **Requirement:** US004 - Network Connectivity
 **Priority:** High
-**Platforms:** Android + iOS
+**Platforms:** Android (executed) + iOS (designed, not executed)
 
 #### Evidence Links:
-- **Android Execution (dedicated):** [evidence/android/TC010_OfflineDataPersistence_Android_Pass.gif](evidence/android/TC010_OfflineDataPersistence_Android_Pass.gif)
-- **iOS (shared offline-state evidence):** [evidence/ios/TC004_SearchOfflineBehavior_iOS_Pass.gif](evidence/ios/TC004_SearchOfflineBehavior_iOS_Pass.gif) — dedicated iOS recording still pending
+- **Android Execution (dedicated, genuine):** [evidence/android/TC010_OfflineDataPersistence_Android_Pass.gif](evidence/android/TC010_OfflineDataPersistence_Android_Pass.gif)
+- **iOS:** Not executed — and unlike other test cases, TC010 has no iOS file at all, not even a placeholder.
 
 #### Execution Summary:
 - **Test Date:** 2026-05-21
 - **Tester:** QA Team
 - **Environment:** arXiv Papers Mobile (React Native)
-- **Result:** Pass
-- **Notes:** Downloaded papers and their details are accessible offline from cache (verified both platforms). New searches while offline show error — cached result fallback not implemented (see BUG004). Full recovery on network restore without app restart. Dedicated GIF evidence captured for Android; iOS still pending.
+- **Result:** Pass (Android only)
+- **Notes:** Downloaded papers and their details are accessible offline from cache on Android. New searches while offline show error — cached result fallback not implemented (see BUG004). Full recovery on network restore without app restart. iOS was not executed for this test case.
 
 ---
 
@@ -236,7 +239,7 @@ This document provides complete traceability from requirements to test execution
 #### Evidence Links:
 - **Android Execution:** [evidence/android/TC011_AccessibilityTalkBackTesting_Android_Pass.gif](evidence/android/TC011_AccessibilityTalkBackTesting_Android_Pass.gif)
 - **Screenshots:**
-  - TalkBack active: `evidence/screenshots/TC011_talkback.png`
+  - `evidence/screenshots/TC011_talkback.png` is mislabeled — it shows a generic search results list with no TalkBack UI visible. The GIF is the only evidence of TalkBack behavior.
 
 #### Execution Summary:
 - **Test Date:** 2026-05-21

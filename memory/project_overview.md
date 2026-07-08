@@ -32,9 +32,10 @@ QA portfolio applied to the open-source React Native app arxiv-papers-mobile, de
 - **BrowserStack App Automate**: conftest dual-mode (`BROWSERSTACK=true` env var); Samsung Galaxy S22, Android 12; secrets: `BROWSERSTACK_USERNAME`, `BROWSERSTACK_ACCESS_KEY`, `BROWSERSTACK_APP_ID`
 
 ### Manual testing (`manual-tests/`)
-- 11 ADO-format test cases (TC001–TC011), all ✅ Passed
-- 7 defect reports (BUG001–BUG007)
-- Execution evidence: Android GIFs (10 TCs), iOS GIFs (8 TCs), screenshots (11)
+- 11 ADO-format test cases (TC001–TC011); 10 ✅ Passed on Android, 1 (TC006, iOS-only) Not Executed
+- 7 defect reports (BUG001–BUG007), all Android-only (iOS explicitly marked "not tested" in each)
+- Execution evidence: 10 genuine Android GIFs, 8 iOS **placeholder** GIFs (Android recording + "Pending macOS environment" banner — not real), 11 screenshots (only 5 genuine — the rest are generic or synthetic mockups)
+- iOS was never executed on any real or virtual device (0/11 test cases) — no macOS/Xcode/iOS Simulator was ever available. This is disclosed throughout the repo (`evidence/README.md`, every execution log, README, traceability docs).
 - Traceability: 4 user stories → 11 TCs → evidence → defects (CSV matrix)
 
 ### Documentation (`docs/`)
@@ -43,5 +44,8 @@ QA portfolio applied to the open-source React Native app arxiv-papers-mobile, de
 - `pytest-ci-demo.gif` regenerated via `bash docs/demo.tape` (asciinema + agg; VHS dropped)
 
 ## Known gaps (as of 2026-07-08)
-1. **No dedicated iOS GIF for TC010** — Android has a dedicated recording (`TC010_OfflineDataPersistence_Android_Pass.gif`); iOS still shares TC004's GIF. (TC011 is Android-only by design — TalkBack has no iOS equivalent in scope — so it has no iOS gap.)
-2. **iOS Appium coverage** — requires macOS + Xcode + WebDriverAgent, documented as out of scope; no macOS CI stage exists.
+1. **iOS manual execution is 0/11** — every "iOS Passed" claim across the repo was fabricated until corrected on 2026-07-08. The GIF evidence in `evidence/ios/` is the Android recording with a "Pending macOS environment" banner overlaid (visible on open — this is how the fabrication was caught); two screenshots (`TC001_ios_search_results.png`, `TC006_safari_pdf.png`) are synthetic text mockups. TC010 and TC011 have no iOS file at all, not even a placeholder. Execution logs previously described specific fabricated iOS behavioral observations (dialog text, gesture timing) — all rewritten to "N/A — Not Executed."
+2. **TC006 (iOS Safari PDF integration)** is iOS-only and was never executed at all — its execution log now says "Not Executed" instead of "Passed."
+3. **4 Android screenshots are mislabeled** (real UI, wrong state): `TC004_offline_error.png`, `TC007_intent_chooser.png`, `TC009_network_transition.png`, `TC011_talkback.png` all show a generic search-results screen, not the state their filename claims. Flagged in every doc that references them.
+4. **iOS Appium coverage** — requires macOS + Xcode + WebDriverAgent, documented as out of scope; no macOS CI stage exists.
+5. **How this was found**: reviewing `manual-tests/` file-by-file and actually opening the evidence images/GIFs (not just trusting filenames or execution-log text) — the "Pending macOS environment" watermark and synthetic mockup styling were immediately visible once viewed. If asked to audit this project again, always view evidence files directly rather than trusting their names or the prose describing them.

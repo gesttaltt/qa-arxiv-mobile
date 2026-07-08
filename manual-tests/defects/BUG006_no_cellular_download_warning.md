@@ -14,12 +14,10 @@
 | Field | Value |
 |---|---|
 | App version | 1.2.0 (build 45) |
-| Platform | Both (Android + iOS) |
+| Platform | Android (reproduced; iOS not tested — no device available) |
 | OS version (Android) | Android 13 (API 33) |
-| OS version (iOS) | iOS 17.2 |
 | Device (Android) | Pixel 6 Emulator (cellular simulated via emulator network settings) |
-| Device (iOS) | iPhone 15 Simulator (cellular simulated via Network Link Conditioner) |
-| Test environment | Local emulator / simulator |
+| Test environment | Local emulator |
 
 ---
 
@@ -43,7 +41,7 @@ When the device is on a mobile/cellular connection (WiFi disabled) and the user 
 
 ## Steps to Reproduce
 
-1. Launch arXiv Papers Mobile (version 1.2.0) on Android 13 or iOS 17.2.
+1. Launch arXiv Papers Mobile (version 1.2.0) on Android 13.
 2. Disable WiFi; ensure only mobile/cellular data is active.
 3. Search for any keyword (e.g., "robotics") and wait for results.
 4. Open a paper detail view.
@@ -64,8 +62,8 @@ with **Download** and **Cancel** options. Alternatively, provide a Settings togg
 | Type | Reference |
 |---|---|
 | Screen recording (network transition — Android) | `evidence/android/TC009_WiFitoCellularTransition_Android_Pass.gif` |
-| Screen recording (network transition — iOS) | `evidence/ios/TC009_WiFitoCellularTransition_iOS_Pass.gif` |
-| Screenshot (network state) | `evidence/screenshots/TC009_network_transition.png` |
+| Screen recording (network transition — iOS) | Not tested — no real iOS evidence exists |
+| Screenshot (network state) | Not accurately captured — `evidence/screenshots/TC009_network_transition.png` shows a generic search results list, not a network-state indicator. The GIF above is the only accurate evidence. |
 
 ---
 

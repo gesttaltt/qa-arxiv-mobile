@@ -14,12 +14,10 @@
 | Field | Value |
 |---|---|
 | App version | 1.2.0 (build 45) |
-| Platform | Both (Android + iOS) |
+| Platform | Android (reproduced; iOS not tested — no device available) |
 | OS version (Android) | Android 13 (API 33) |
-| OS version (iOS) | iOS 17.2 |
 | Device (Android) | Pixel 6 Emulator |
-| Device (iOS) | iPhone 15 Simulator |
-| Test environment | Local emulator / simulator |
+| Test environment | Local emulator |
 
 ---
 
@@ -43,7 +41,7 @@ After the user performs a successful search online, if the device loses network 
 
 ## Steps to Reproduce
 
-1. Launch arXiv Papers Mobile (version 1.2.0) on Android 13 or iOS 17.2 with WiFi active.
+1. Launch arXiv Papers Mobile (version 1.2.0) on Android 13 with WiFi active.
 2. Search for "quantum computing" — confirm results are displayed (12 results).
 3. Note the titles of the first 3 results.
 4. Disable WiFi and mobile data.
@@ -66,8 +64,8 @@ If full result caching is out of scope, at minimum the error screen should offer
 | Type | Reference |
 |---|---|
 | Screen recording (offline error — Android) | `evidence/android/TC004_SearchOfflineBehavior_Android_Pass.gif` |
-| Screen recording (offline error — iOS) | `evidence/ios/TC004_SearchOfflineBehavior_iOS_Pass.gif` |
-| Screenshot (offline error state) | `evidence/screenshots/TC004_offline_error.png` |
+| Screen recording (offline error — iOS) | Not tested — no real iOS evidence exists |
+| Screenshot (offline error state) | Not accurately captured — `evidence/screenshots/TC004_offline_error.png` shows a generic paper detail screen, not the error. The GIF above is the only accurate evidence. |
 | Execution log (TC010 — Issue 1) | `manual-tests/test-execution/execution-logs/TC010_execution_log.md` |
 
 ---

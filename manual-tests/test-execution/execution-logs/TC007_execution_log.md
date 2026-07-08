@@ -18,6 +18,9 @@
 - **Network:** WiFi
 - **PDF Viewer Installed:** Google Drive PDF Viewer (Scenario A/B testing)
 
+This test case is Android-only by design (there is no iOS equivalent — Android's intent
+chooser has no direct counterpart on iOS).
+
 ---
 
 ## Test Objective
@@ -30,7 +33,6 @@ Verify that on Android the app correctly fires an implicit intent to open a down
 ### Step 1: Open paper detail view
 **Action:** Search for "deep learning" and open the first result detail
 **Android Result:** [x] Pass [ ] Fail
-**iOS Result:** N/A [ ] Fail
 **Notes:**
 - Detail screen loaded correctly
 - Download PDF button visible
@@ -38,7 +40,6 @@ Verify that on Android the app correctly fires an implicit intent to open a down
 ### Step 2: Download PDF
 **Action:** Tap Download PDF and wait for completion
 **Android Result:** [x] Pass [ ] Fail
-**iOS Result:** N/A [ ] Fail
 **Notes:**
 - Download completed successfully (progress: 0% -> 100%)
 - Confirmation shown: "Download complete"
@@ -47,7 +48,6 @@ Verify that on Android the app correctly fires an implicit intent to open a down
 ### Step 3: Open PDF via intent
 **Action:** Tap Open PDF
 **Android Result:** [x] Pass [ ] Fail
-**iOS Result:** N/A [ ] Fail
 **Notes:**
 - Scenario A/B tested: Intent chooser appeared with available PDF viewers
 - Google Drive PDF Viewer, Chrome, and Samsung PDF Viewer listed
@@ -56,7 +56,6 @@ Verify that on Android the app correctly fires an implicit intent to open a down
 ### Step 4: View PDF in selected app
 **Action:** Select viewer from chooser
 **Android Result:** [x] Pass [ ] Fail
-**iOS Result:** N/A [ ] Fail
 **Notes:**
 - PDF opened correctly in Chrome
 - All content rendered
@@ -65,7 +64,6 @@ Verify that on Android the app correctly fires an implicit intent to open a down
 ### Step 5: Scroll through PDF
 **Action:** Scroll through at least 2 pages
 **Android Result:** [x] Pass [ ] Fail
-**iOS Result:** N/A [ ] Fail
 **Notes:**
 - Scrolling smooth
 - Pages 1-2 rendered without issues
@@ -74,7 +72,6 @@ Verify that on Android the app correctly fires an implicit intent to open a down
 ### Step 6: Return to app
 **Action:** Press Android back button
 **Android Result:** [x] Pass [ ] Fail
-**iOS Result:** N/A [ ] Fail
 **Notes:**
 - App returned to detail screen
 - No state loss
@@ -83,7 +80,6 @@ Verify that on Android the app correctly fires an implicit intent to open a down
 ### Step 7: Test no PDF viewer (Scenario C)
 **Action:** Uninstall all PDF viewers and repeat step 3
 **Android Result:** [x] Pass [ ] Fail
-**iOS Result:** N/A [ ] Fail
 **Notes:**
 - App showed message: "No PDF viewer found"
 - No crash or ActivityNotFoundException
@@ -111,7 +107,7 @@ Verify that on Android the app correctly fires an implicit intent to open a down
 - **Android:** [x] Completed - `TC007_AndroidIntentPDFHandling_Android_Pass.gif`
 
 ### Screenshots:
-- **Intent Chooser:** [x] Captured -- `evidence/screenshots/TC007_intent_chooser.png`
+- **Intent Chooser:** [ ] Mislabeled -- `evidence/screenshots/TC007_intent_chooser.png` actually shows the DOWNLOADED tab, not the Android intent chooser dialog. No accurate intent-chooser screenshot was captured; the GIF is the only evidence of that scenario.
 
 ### Evidence Location:
 - **Android:** `evidence/android/TC007_AndroidIntentPDFHandling_Android_Pass.gif`
@@ -134,7 +130,7 @@ Verify that on Android the app correctly fires an implicit intent to open a down
 **Overall Test Status:** [x] PASS [ ] FAIL
 
 **Summary Notes:**
-All three intent scenarios (A, B, C) pass correctly. PDF intents are properly fired, chooser/app opens the PDF, back navigation returns cleanly, and the missing-viewer case is handled gracefully without crash.
+All three intent scenarios (A, B, C) pass correctly. PDF intents are properly fired, chooser/app opens the PDF, back navigation returns cleanly, and the missing-viewer case is handled gracefully without crash. This test case is Android-only; no iOS equivalent exists.
 
 ---
 
@@ -144,6 +140,7 @@ All three intent scenarios (A, B, C) pass correctly. PDF intents are properly fi
 - [x] Update traceability matrix with results
 - [ ] Create defect reports for any issues found -- none critical
 - [x] Document Android API level considerations for intent queries
+- [x] Correct the mislabeled intent-chooser screenshot reference
 
 ---
 
