@@ -26,6 +26,11 @@ This site is auto-generated from the `docs/` folder on every push to `main`.
 
 Manual test cases are in [`manual-tests/test-cases/`](https://github.com/gesttaltt/qa-arxiv-mobile/tree/main/manual-tests/test-cases).
 
+"Platform" below is the design scope of each test case. **Execution status: 10/11 executed
+and passing on Android; iOS is 0/11 executed** — no macOS/Xcode/iOS Simulator was available.
+See [QA Audit](QA_AUDIT) for the full breakdown, including which "iOS" evidence files are
+disclosed placeholders rather than real captures.
+
 | ID | Title | Technique | Platform |
 |---|---|---|---|
 | TC001 | Search with valid keyword | Equivalence Partitioning | Both |
