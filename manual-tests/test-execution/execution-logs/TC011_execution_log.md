@@ -21,7 +21,7 @@
 ---
 
 ## Test Objective
-Verify that the core user journeys (search, view result, toggle favourite) are fully operable using the Android TalkBack screen reader without requiring sighted interaction.
+Verify that the core user journeys (search, view result, download a paper) are fully operable using the Android TalkBack screen reader without requiring sighted interaction.
 
 ---
 
@@ -55,11 +55,11 @@ Verify that the core user journeys (search, view result, toggle favourite) are f
 - Keyboard accessible via TalkBack
 
 ### Step 4: Submit search
-**Action:** Move focus to Search button; double-tap to submit
+**Action:** Use the on-screen keyboard's Search action key to submit
 **Android Result:** [x] Pass [ ] Fail
 **iOS Result:** N/A [ ] Fail
 **Notes:**
-- TalkBack announced: "Search button"
+- TalkBack announced: "Search"
 - Search executed successfully
 - Results loaded and announced
 
@@ -105,7 +105,7 @@ Verify that the core user journeys (search, view result, toggle favourite) are f
 | Criterion | Android | Notes |
 |-----------|---------|-------|
 | Search field has descriptive label | [x] Pass [ ] Fail | "Search arXiv papers, text field" |
-| Search button announced correctly | [x] Pass [ ] Fail | "Search button" |
+| Keyboard Search key announced correctly | [x] Pass [ ] Fail | "Search" |
 | Result titles announced (not "image") | [x] Pass [ ] Fail | Titles + authors read clearly |
 | Download button has label | [x] Pass [ ] Fail | "Download" |
 | Focus follows logical order | [x] Pass [ ] Fail | Top-to-bottom, left-to-right |

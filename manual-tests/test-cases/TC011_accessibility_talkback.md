@@ -10,7 +10,7 @@
 ---
 
 **Objective:**  
-Verify that the core user journeys (search, view result, toggle favourite) are fully
+Verify that the core user journeys (search, view result, download a paper) are fully
 operable using the Android TalkBack screen reader without requiring sighted interaction.
 
 **Preconditions:**  
@@ -29,16 +29,16 @@ operable using the Android TalkBack screen reader without requiring sighted inte
 | 1 | With TalkBack on, open the app | TalkBack announces the app name or first focusable element | |
 | 2 | Swipe right to move focus to the search input field | TalkBack announces *"Search field"* or the field's accessibility label | |
 | 3 | Double-tap to activate the field; type `robotics` via keyboard | Characters are announced as typed; field accepts input | |
-| 4 | Move focus to the Search button; double-tap to submit | TalkBack announces the button label (e.g., *"Search button"*); search executes | |
+| 4 | Use the on-screen keyboard's Search action key to submit | TalkBack announces the key label (e.g., *"Search"*); search executes | |
 | 5 | Swipe right through the result list | TalkBack announces each result's title and author(s) — not a generic *"image"* or *"button"* | |
 | 6 | Double-tap the first result to open its detail view | Detail screen opens; TalkBack announces the title | |
-| 7 | Locate the favourite/star button by swiping; double-tap | TalkBack announces a meaningful label (e.g., *"Add to favourites"* or *"Remove from favourites"*) — not *"unlabelled"* | |
+| 7 | Locate the download button by swiping; double-tap | TalkBack announces a meaningful label (e.g., *"Download"*) — not *"unlabelled"* | |
 | 8 | Navigate back to the results list using TalkBack back gesture | App returns to results; TalkBack announces the screen | |
 
 ---
 
 **Expected Result:**  
-- All interactive elements (search field, search button, result cards, favourite button,
+- All interactive elements (search field, keyboard search key, result cards, download button,
   navigation tabs) have descriptive accessibility labels — no element is announced as
   *"unlabelled"* or *"image"*.  
 - Focus order follows a logical reading sequence (top-to-bottom, left-to-right).  

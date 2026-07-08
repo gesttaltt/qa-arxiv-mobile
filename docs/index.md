@@ -30,12 +30,12 @@ Manual test cases are in [`manual-tests/test-cases/`](https://github.com/gesttal
 |---|---|---|---|
 | TC001 | Search with valid keyword | Equivalence Partitioning | Both |
 | TC002 | Search with empty query | Equivalence Partitioning | Both |
-| TC003 | Toggle paper as favourite | State Transition | Both |
+| TC003 | Download a paper and remove it | State Transition | Both |
 | TC004 | Search offline behavior | State Transition + Error Guessing | Both |
 | TC005 | PDF download and viewing | Equivalence Partitioning | Both |
 | TC006 | iOS Safari PDF integration | Platform Integration | iOS |
 | TC007 | Android intent handling | Decision Table | Android |
-| TC008 | Bulk favourite operations | Boundary Value Analysis | Both |
+| TC008 | Bulk downloaded papers management | Boundary Value Analysis | Both |
 | TC009 | WiFi to Cellular transition | State Transition | Both |
 | TC010 | Offline data persistence | State Transition + Error Guessing | Both |
 | TC011 | Accessibility – TalkBack | Platform Integration | Android |

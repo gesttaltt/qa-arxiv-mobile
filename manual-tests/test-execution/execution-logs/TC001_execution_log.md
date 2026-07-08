@@ -60,11 +60,11 @@ Verify that the user can successfully search for academic papers using a valid k
 - Keyboard type appropriate: Yes (standard text keyboard)
 
 ### Step 4: Execute search
-**Action:** Tap search button or press enter
+**Action:** Tap the keyboard's Search key (there is no separate in-app Search button)
 **Android Result:** [x] Pass [ ] Fail
 **iOS Result:** [x] Pass [ ] Fail
 **Notes:**
-- Search button clearly visible: Yes
+- Keyboard Search key clearly labeled: Yes
 - Loading indicator shown: Yes (spinner for 1-2 seconds)
 - Time to show results: 2 seconds (Android), 1.5 seconds (iOS)
 

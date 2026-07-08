@@ -51,7 +51,7 @@ which means loss of any unsaved state. Users on unreliable connections will hit 
 2. Disable WiFi and mobile data via **Settings → Network & internet**.
 3. Open the app.
 4. Tap the search field and type `machine learning`.
-5. Tap the **Search** button.
+5. Tap the keyboard's Search key to submit.
 
 **Actual result:**  
 A circular loading spinner appears and never disappears. The search field and all

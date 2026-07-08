@@ -51,7 +51,7 @@ Verify that the app responds gracefully when the user attempts a search with no 
 - Keyboard operates normally
 
 ### Step 3: Execute search while offline
-**Action:** Tap Search button
+**Action:** Tap the keyboard's Search key
 **Android Result:** [x] Pass [ ] Fail
 **iOS Result:** [x] Pass [ ] Fail
 **Notes:**

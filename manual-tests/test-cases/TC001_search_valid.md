@@ -11,7 +11,7 @@ Verify that the user can successfully search for academic papers using a valid k
 1. Launch the app.  
 2. Tap on the search input field.  
 3. Type the keyword: `quantum`.  
-4. Tap the “Search” button.  
+4. Tap the keyboard's Search key to submit (there is no separate in-app Search button).  
 5. Observe the results list.  
 
 **Expected Result:**  

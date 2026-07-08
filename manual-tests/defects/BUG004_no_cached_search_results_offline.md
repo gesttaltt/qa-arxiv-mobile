@@ -48,7 +48,7 @@ After the user performs a successful search online, if the device loses network 
 3. Note the titles of the first 3 results.
 4. Disable WiFi and mobile data.
 5. Tap the search field and type "quantum computing" (same query).
-6. Tap the Search button.
+6. Tap the keyboard's Search key.
 
 **Actual result:**
 The app shows an error message ("No internet connection"). The results from step 2 are not displayed. The screen is empty except for the error state.

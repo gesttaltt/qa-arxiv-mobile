@@ -56,14 +56,14 @@ Verify that the application properly handles empty search queries with appropria
 **Notes:**
 - Field is completely empty: Yes
 - Placeholder text visible: Yes ("Search arXiv papers...")
-- Search button state: Enabled (app does not disable the button)
+- Keyboard's Search key state: Enabled (app does not intercept it when the field is empty)
 
 ### Step 4: Attempt to search
-**Action:** Tap search button or press enter with empty field
+**Action:** Tap the keyboard's Search key with an empty field (there is no separate in-app Search button)
 **Android Result:** [x] Pass [ ] Fail
 **iOS Result:** [x] Pass [ ] Fail
 **Notes:**
-- Button responds to tap: Yes
+- Key responds to tap: Yes
 - Any loading indicators: No (immediate validation)
 - Immediate feedback given: Yes
 
@@ -94,7 +94,7 @@ Verify that the application properly handles empty search queries with appropria
 ## Detailed Behavior Analysis
 
 ### Validation Method Observed:
-- [ ] Search button disabled when field empty
+- [ ] Submission blocked when field empty
 - [x] Error message on search attempt
 - [x] Toast/snackbar notification
 - [ ] Inline field validation
@@ -139,12 +139,12 @@ Verify that the application properly handles empty search queries with appropria
 ### Issue 1:
 **Platform:** Both
 **Severity:** Low
-**Description:** The search button remains enabled even when the search field is empty. It would be better UX to disable the button until input is detected, preventing the validation message from appearing in the first place.
+**Description:** The app does not intercept an empty submission before it reaches the validation layer — since there is no in-app Search button to disable, the only mitigation would be to no-op silently on the keyboard's Search key when the field is empty, rather than showing a toast/alert every time.
 **Steps to Reproduce:**
 1. Launch app
-2. Tap search button without typing anything
+2. Tap the keyboard's Search key without typing anything
 3. Validation message appears
-**Expected vs Actual:** Button could be disabled when empty vs currently enabled at all times
+**Expected vs Actual:** Submission could be silently ignored when empty vs currently showing a validation message every time
 
 ### Issue 2:
 **Platform:** Both
@@ -179,7 +179,7 @@ Verify that the application properly handles empty search queries with appropria
 **Platform Consistency:** [x] Consistent [ ] Different behaviors noted
 
 **Summary Notes:**
-Empty query handling is consistent across both platforms. Validation message is clear and helpful. The app remains stable and no crashes occur. The search button remaining enabled when empty is a minor UX concern but does not affect functionality. API-layer validation also confirms the backend handles empty queries correctly.
+Empty query handling is consistent across both platforms. Validation message is clear and helpful. The app remains stable and no crashes occur. Showing a validation message on every empty submission (rather than silently ignoring it) is a minor UX concern but does not affect functionality. API-layer validation also confirms the backend handles empty queries correctly.
 
 ---
 
@@ -195,4 +195,4 @@ Empty query handling is consistent across both platforms. Validation message is 
 
 **Execution Completed:** 2026-05-21 11:15
 **Review Required:** No
-**Recommendations:** Consider disabling the search button when the field is empty as a proactive UX improvement.
+**Recommendations:** Consider silently ignoring the keyboard's Search key when the field is empty, instead of showing a validation message every time, as a proactive UX improvement.

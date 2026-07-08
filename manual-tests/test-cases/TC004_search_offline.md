@@ -26,7 +26,7 @@ indefinitely.
 |---|---|---|---|
 | 1 | Disable WiFi and mobile data on the device | No crash; app UI remains stable | |
 | 2 | Tap the search field and type `machine learning` | Text is accepted in the field | |
-| 3 | Tap the Search button | App shows an offline/network error message (e.g., *"No internet connection"* or *"Unable to reach server"*) | |
+| 3 | Tap the keyboard's Search key | App shows an offline/network error message (e.g., *"No internet connection"* or *"Unable to reach server"*) | |
 | 4 | Confirm no crash or blank screen is displayed | App is still interactive and navigable | |
 | 5 | Re-enable WiFi or mobile data | Network indicator restores | |
 | 6 | Repeat the same search | Results load successfully | |

@@ -8,7 +8,7 @@ Verify that the app handles empty search submissions gracefully.
 - No text has been entered in the search field.
 
 **Test Steps:**  
-1. Tap the search button without entering any keyword.  
+1. Tap the search field, leave it empty, and tap the keyboard's Search key.  
 
 **Expected Result:**  
 - The app displays a warning or validation message:  
