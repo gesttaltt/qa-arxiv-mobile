@@ -11,9 +11,9 @@
 
 ### Test Coverage Completed:
 - **Total Test Cases Specified:** 11
-- **Total Test Cases Executed:** 11 (TC010 executed; dedicated evidence pending)
+- **Total Test Cases Executed:** 11 (TC010 has dedicated Android evidence; iOS shares TC004's GIF)
 - **Platform Coverage:** Android + iOS (cross-platform validation)
-- **Evidence Type:** Animated GIF recordings (17) + Screenshots (10) + Suite summary (1) + Detailed logs (11)
+- **Evidence Type:** Animated GIF recordings (18) + Screenshots (11) + Suite summary (1) + Detailed logs (11)
 
 ### All Test Cases:
 ✅ **TC001** - Search with Valid Keyword (Core functionality)  
@@ -25,7 +25,7 @@
 ✅ **TC007** - Android Intent PDF Handling (Platform-specific)  
 ✅ **TC008** - Bulk Downloaded Papers Management (Boundary value analysis)  
 ✅ **TC009** - WiFi to Cellular Transition (State transition)  
-✅ **TC010** - Offline Data Persistence (Passed — dedicated evidence pending)  
+✅ **TC010** - Offline Data Persistence (Passed — dedicated Android evidence)  
 ✅ **TC011** - Accessibility TalkBack (Non-functional)
 
 ---
@@ -43,7 +43,7 @@
 | TC007 | Android intent handling | ✅ PASS | N/A | 🎥 Android GIF, screenshot |
 | TC008 | Bulk downloaded papers management | ✅ PASS | ✅ PASS | 🎥 Android + iOS GIFs |
 | TC009 | WiFi to cellular transition | ✅ PASS | ✅ PASS | 🎥 Android + iOS GIFs, screenshot |
-| TC010 | Offline data persistence | ✅ Passed | ✅ Passed | Shared TC004 evidence; dedicated recording pending |
+| TC010 | Offline data persistence | ✅ Passed | ✅ Passed | 🎥 Dedicated Android GIF; iOS shares TC004 evidence |
 | TC011 | Accessibility TalkBack | ✅ PASS | N/A | 🎥 Android GIF, screenshot |
 
 ---
@@ -52,7 +52,7 @@
 
 ### All Evidence Files:
 
-**Android GIFs (9):**
+**Android GIFs (10):**
 - `evidence/android/TC001_SearchwithValidKeyword_Android_Pass.gif`
 - `evidence/android/TC002_SearchwithEmptyQuery_Android_Pass.gif`
 - `evidence/android/TC003_DownloadAndRemovePaper_Android_Pass.gif`
@@ -61,6 +61,7 @@
 - `evidence/android/TC007_AndroidIntentPDFHandling_Android_Pass.gif`
 - `evidence/android/TC008_BulkDownloadedPapersManagement_Android_Pass.gif`
 - `evidence/android/TC009_WiFitoCellularTransition_Android_Pass.gif`
+- `evidence/android/TC010_OfflineDataPersistence_Android_Pass.gif`
 - `evidence/android/TC011_AccessibilityTalkBackTesting_Android_Pass.gif`
 
 **iOS GIFs (8):**
@@ -75,7 +76,7 @@
 
 **Suite Summary:** `evidence/suite_summary.gif`
 
-**Screenshots (10):** Located in `evidence/screenshots/` covering search results, offline errors, PDF viewer, Safari integration, intent chooser, download states, network transitions, TalkBack.
+**Screenshots (11):** Located in `evidence/screenshots/` covering search results, offline errors, PDF viewer, Safari integration, intent chooser, download states, network transitions, TalkBack.
 
 ---
 

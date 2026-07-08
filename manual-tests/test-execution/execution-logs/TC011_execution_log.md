@@ -162,4 +162,4 @@ The app demonstrates good accessibility baseline for TalkBack. All core user jou
 
 **Execution Completed:** 2026-05-21 13:15
 **Review Required:** No
-**Next Steps:** TC010 dedicated evidence recording (pending) / iOS VoiceOver coverage (future TC012)
+**Next Steps:** TC010 dedicated iOS evidence recording (pending) / iOS VoiceOver coverage (future TC012)

@@ -119,11 +119,12 @@ Verify that the app preserves previously loaded data (search results, downloaded
 ## Evidence Collected
 
 ### Video Recordings:
-- **Android:** [ ] Pending - Combined with TC004 evidence covers offline flow
+- **Android:** [x] Completed - `TC010_OfflineDataPersistence_Android_Pass.gif`
 - **iOS:** [ ] Pending - Combined with TC004 evidence covers offline flow
 
 ### Evidence Location:
-- **Note:** TC010 shares offline context with TC004; TC004 GIF evidence demonstrates the error-handling portion. A dedicated TC010 recording should capture the downloaded-papers-access-offline flow specifically.
+- **Android:** `evidence/android/TC010_OfflineDataPersistence_Android_Pass.gif`
+- **Note:** iOS still shares offline context with TC004; the TC004 GIF evidence demonstrates the error-handling portion. A dedicated iOS TC010 recording is still pending.
 
 ---
 
@@ -150,7 +151,8 @@ Offline data persistence works for downloaded papers (they are cached and access
 
 ## Follow-up Actions
 
-- [ ] Create dedicated TC010 video evidence showing downloaded-papers-access-offline flow
+- [x] Create dedicated TC010 Android video evidence showing downloaded-papers-access-offline flow
+- [ ] Create dedicated TC010 iOS video evidence (still pending)
 - [x] Update traceability matrix with results
 - [ ] Report issue regarding lack of cached search result fallback
 - [x] Cross-reference findings with TC004 for consistency

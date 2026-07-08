@@ -93,10 +93,11 @@
 - [x] **Result:** [x] Pass [ ] Fail
 - [x] **Issues found:** No cellular download warning
 
-### TC010 - Offline Data Persistence (PLANNED)
+### TC010 - Offline Data Persistence (PASS — Android evidence dedicated, iOS pending)
 - [x] Verified downloaded papers accessible offline
 - [x] Verified paper details from cache
-- [x] Create dedicated evidence video
+- [x] Create dedicated Android evidence video
+- [ ] Create dedicated iOS evidence video (currently shares TC004 GIF evidence)
 - [x] **Result:** [x] Pass [ ] Fail
 - [x] **Issues found:** New searches show error, not cached results
 
@@ -146,7 +147,7 @@
 - [x] All files saved and reviewed
 - [x] Changes committed to git
 - [x] README.md reflects completed testing (all 11 TC in both tables)
-- [x] Repository demonstrates real testing evidence (28 evidence files)
+- [x] Repository demonstrates real testing evidence (30 evidence files)
 
 **Commit Message Used:** (pending)
 
@@ -180,7 +181,7 @@
 ---
 
 ## 🎯 Success Achieved?
-- [x] Real app tested with video proof (28 evidence files)
+- [x] Real app tested with video proof (30 evidence files)
 - [x] Professional documentation completed (11 execution logs, traceability, summary)
 - [x] Repository shows verifiable QA work (full ISTQB-aligned process)
 - [x] Ready for stakeholder review

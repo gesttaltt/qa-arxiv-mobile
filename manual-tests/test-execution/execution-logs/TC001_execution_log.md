@@ -102,7 +102,7 @@ Verify that the user can successfully search for academic papers using a valid k
 
 ### Screenshots:
 - **Android Search Results:** [x] Captured -- `evidence/screenshots/TC001_android_search_results.png`
-- **iOS Search Results:** [x] Captured -- `evidence/ios/TC003_ios_search_results.png`
+- **iOS Search Results:** [x] Captured -- `evidence/screenshots/TC001_ios_search_results.png`
 - **Comparison View:** [x] Created
 
 ### Evidence Location:

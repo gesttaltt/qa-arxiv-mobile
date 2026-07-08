@@ -15,7 +15,7 @@ This document provides complete traceability from requirements to test execution
 | TC007 | Android intent handling | ✅ Passed | N/A | GIF + Screenshot |
 | TC008 | Bulk downloaded papers management | ✅ Passed | ✅ Passed | GIF |
 | TC009 | WiFi to cellular transition | ✅ Passed | ✅ Passed | GIF + Screenshot |
-| TC010 | Offline data persistence | ✅ Passed | ✅ Passed | Shared TC004 evidence; dedicated recording pending |
+| TC010 | Offline data persistence | ✅ Passed | ✅ Passed | Dedicated Android GIF; iOS shares TC004 evidence |
 | TC011 | Accessibility TalkBack | ✅ Passed | N/A | GIF + Screenshot |
 
 ---
@@ -215,15 +215,15 @@ This document provides complete traceability from requirements to test execution
 **Platforms:** Android + iOS
 
 #### Evidence Links:
-- **Shared evidence (offline state):** [evidence/android/TC004_SearchOfflineBehavior_Android_Pass.gif](evidence/android/TC004_SearchOfflineBehavior_Android_Pass.gif)
-- **Dedicated TC010 recording:** Pending — to be captured showing downloaded-papers-access-offline flow specifically
+- **Android Execution (dedicated):** [evidence/android/TC010_OfflineDataPersistence_Android_Pass.gif](evidence/android/TC010_OfflineDataPersistence_Android_Pass.gif)
+- **iOS (shared offline-state evidence):** [evidence/ios/TC004_SearchOfflineBehavior_iOS_Pass.gif](evidence/ios/TC004_SearchOfflineBehavior_iOS_Pass.gif) — dedicated iOS recording still pending
 
 #### Execution Summary:
 - **Test Date:** 2026-05-21
 - **Tester:** QA Team
 - **Environment:** arXiv Papers Mobile (React Native)
 - **Result:** Pass
-- **Notes:** Downloaded papers and their details are accessible offline from cache (verified both platforms). New searches while offline show error — cached result fallback not implemented (see BUG004). Full recovery on network restore without app restart. Dedicated GIF evidence pending.
+- **Notes:** Downloaded papers and their details are accessible offline from cache (verified both platforms). New searches while offline show error — cached result fallback not implemented (see BUG004). Full recovery on network restore without app restart. Dedicated GIF evidence captured for Android; iOS still pending.
 
 ---
 

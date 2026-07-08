@@ -4,7 +4,7 @@ This folder contains real test execution evidence for the arXiv Papers Mobile ap
 
 ## Current Contents
 
-### Android GIF Recordings (9 files)
+### Android GIF Recordings (10 files)
 | File | Test Case | Description |
 |------|-----------|-------------|
 | TC001_SearchwithValidKeyword_Android_Pass.gif | TC001 | Search with valid keyword |
@@ -15,6 +15,7 @@ This folder contains real test execution evidence for the arXiv Papers Mobile ap
 | TC007_AndroidIntentPDFHandling_Android_Pass.gif | TC007 | Android intent PDF handling |
 | TC008_BulkDownloadedPapersManagement_Android_Pass.gif | TC008 | Bulk downloaded papers management |
 | TC009_WiFitoCellularTransition_Android_Pass.gif | TC009 | WiFi to cellular transition |
+| TC010_OfflineDataPersistence_Android_Pass.gif | TC010 | Offline data persistence (dedicated recording) |
 | TC011_AccessibilityTalkBackTesting_Android_Pass.gif | TC011 | Accessibility TalkBack testing |
 
 ### iOS GIF Recordings (8 files)
@@ -29,12 +30,15 @@ This folder contains real test execution evidence for the arXiv Papers Mobile ap
 | TC008_BulkDownloadedPapersManagement_iOS_Pass.gif | TC008 | Bulk downloaded papers management |
 | TC009_WiFitoCellularTransition_iOS_Pass.gif | TC009 | WiFi to cellular transition |
 
-### Screenshots (10 files)
+> Note: TC010 dedicated evidence exists for Android only — iOS still shares TC004's offline-error GIF.
+
+### Screenshots (11 files)
 Evidence directory: `screenshots/`
 
 | File | Content |
 |------|---------|
 | TC001_android_search_results.png | Search results for "quantum" on Android |
+| TC001_ios_search_results.png | Search results on iOS |
 | TC002_android_empty_search.png | Empty search validation on Android |
 | TC003_before_download.png | Paper detail before download |
 | TC003_after_download.png | Downloaded tab after download |
@@ -52,6 +56,6 @@ Evidence directory: `screenshots/`
 
 ## Evidence Quality
 - **Format:** Animated GIF (test walkthroughs), PNG (screenshots)
-- **All test cases:** 10/11 executed with evidence (TC010 planned)
+- **All test cases:** 11/11 executed with evidence (TC010 has dedicated Android evidence; iOS shares TC004's GIF)
 - **Platforms:** Android + iOS coverage for cross-platform tests
-- **Total evidence files:** 28
+- **Total evidence files:** 30

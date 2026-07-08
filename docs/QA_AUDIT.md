@@ -13,11 +13,11 @@
 
 This audit reviews the current state of the QA project for the `arxiv-papers-mobile` React Native application. The project demonstrates solid foundational intent — ADO-style traceability, structured manual test cases, and CI/CD pipeline integration.
 
-Issues identified in the April 2026 initial audit have been progressively resolved. As of June 2026, all 11 test cases have been executed on both Android and iOS, 28 evidence files (17 GIFs, 10 screenshots, 1 suite summary) have been collected, all execution logs contain real tester data, and the `TESTING_CHECKLIST.md` has been completed in full. All 7 issues found during execution are formally documented as BUG001–BUG007.
+Issues identified in the April 2026 initial audit have been progressively resolved. As of July 2026, all 11 test cases have been executed on both Android and iOS, 30 evidence files (18 GIFs, 11 screenshots, 1 suite summary) have been collected, all execution logs contain real tester data, and the `TESTING_CHECKLIST.md` has been completed in full. All 7 issues found during execution are formally documented as BUG001–BUG007.
 
 The automation layer has been substantially expanded: 57 automated tests across API integration and BDD/Gherkin scenarios, plus 7 Appium tests running on BrowserStack App Automate (Samsung Galaxy S22); 100% coverage on `utils.py` enforced as a CI gate (`--cov-fail-under=100`); page objects excluded from coverage (require real device — validated by Appium tests in CI); GitHub Actions pipeline fully green with lint, type checking, and coverage gates.
 
-Remaining gaps: TC010 dedicated evidence is still pending (TC004 GIFs partially cover the offline state); iOS-specific test coverage beyond TC006 remains zero; no macOS CI stage exists for iOS simulator execution.
+Remaining gaps: TC010 dedicated evidence exists for Android only (iOS still shares TC004's GIF); iOS-specific test coverage beyond TC006 remains zero; no macOS CI stage exists for iOS simulator execution.
 
 ---
 
@@ -64,9 +64,9 @@ TC005 (PDF download and viewing), TC006 (iOS Safari PDF integration), and TC007 
 
 Remaining gap: no test case covers cancellation of an in-progress download or behavior when the device storage is full.
 
-### 1.4 Network and Offline Scenarios — Partially Executed
+### 1.4 Network and Offline Scenarios — Executed
 
-TC004 (offline search) and TC009 (WiFi-to-cellular transition) have been executed and passed. TC010 (offline data persistence) has been partially executed — downloaded papers and cached detail views were verified offline — but lacks dedicated evidence and has inconsistent status across documents.
+TC004 (offline search), TC009 (WiFi-to-cellular transition), and TC010 (offline data persistence) have all been executed and passed — downloaded papers and cached detail views were verified offline. TC010 has a dedicated Android GIF; the iOS recording still shares TC004's evidence.
 
 The following scenarios remain unaddressed by any test case:
 
@@ -84,14 +84,14 @@ All 11 files in `manual-tests/test-execution/execution-logs/` contain real execu
 
 ### 2.2 Evidence Files — RESOLVED
 
-28 evidence files have been committed to `manual-tests/test-execution/evidence/`:
+30 evidence files have been committed to `manual-tests/test-execution/evidence/`:
 
-- 9 Android GIFs (TC001–TC005, TC007–TC009, TC011)
+- 10 Android GIFs (TC001–TC005, TC007–TC011)
 - 8 iOS GIFs (TC001–TC006, TC008–TC009)
-- 10 screenshots covering search results, offline errors, PDF viewer, Safari integration, intent chooser, download before/after, network transition, and TalkBack
+- 11 screenshots covering search results, offline errors, PDF viewer, Safari integration, intent chooser, download before/after, network transition, and TalkBack
 - 1 animated suite summary GIF
 
-Evidence for TC010 (offline data persistence) remains pending — TC004 GIFs partially cover the offline state but a dedicated TC010 recording has not been made.
+Evidence for TC010 (offline data persistence) has a dedicated Android recording — iOS still shares TC004's GIF, which partially covers the offline state.
 
 ### 2.3 Execution Summary — RESOLVED
 
@@ -99,7 +99,7 @@ Evidence for TC010 (offline data persistence) remains pending — TC004 GIFs par
 
 ### 2.4 TESTING_CHECKLIST.md — RESOLVED
 
-All phases completed and checked: setup (2026-05-21), all 11 TC execution steps, evidence collection (28 files), execution logs, traceability updates, and final summary. All checkboxes closed.
+All phases completed and checked: setup (2026-05-21), all 11 TC execution steps, evidence collection (30 files), execution logs, traceability updates, and final summary. All checkboxes closed.
 
 ---
 
@@ -240,7 +240,7 @@ The standalone `ruff.toml` has been removed and its configuration has been merge
 | # | Action | File(s) |
 |---|--------|---------|
 | 1 | Executed all 11 test cases with real data | `execution-logs/TC001-TC011` |
-| 2 | Generated 28 evidence files (GIFs + screenshots) | `evidence/` — 17 GIFs, 10 screenshots, 1 summary |
+| 2 | Generated 30 evidence files (GIFs + screenshots) | `evidence/` — 18 GIFs, 11 screenshots, 1 summary |
 | 3 | Updated traceability-with-evidence.md and execution-summary.md | Both files reflecting real results |
 | 4 | Updated README tables to include all 11 test cases | `README.md` |
 | 5 | Updated traceability-matrix.csv with evidence column | `traceability-matrix.csv` |
@@ -283,7 +283,7 @@ The standalone `ruff.toml` has been removed and its configuration has been merge
 
 | # | Action | File(s) |
 |---|--------|---------|
-| 9 | Create dedicated evidence for TC010 (offline downloaded-papers persistence) — current evidence borrows TC004 GIFs | New GIF in `evidence/` |
+| 9 | Create dedicated iOS evidence for TC010 (offline downloaded-papers persistence) — Android has a dedicated recording; iOS still borrows the TC004 GIF | New GIF in `evidence/ios/` |
 | 10 | Create iOS-specific test cases: VoiceOver, Dynamic Type, Dark Mode, Safe Area/Notch | New test case files |
 | 11 | Add iOS-specific preconditions (simulator version, Xcode) to all cross-platform test cases | `TC001–TC005`, `TC008–TC010` |
 | 12 | Add performance threshold (≤ 5 s search response) as explicit acceptance criterion in TC001 | `TC001_search_valid.md` |
@@ -298,7 +298,7 @@ The standalone `ruff.toml` has been removed and its configuration has been merge
 |-----------|-------|
 | Test cases with specification files | 11 / 11 (100%) |
 | Test cases with real execution logs | 11 / 11 (100%) |
-| Test cases with GIF/screenshot evidence | 10 / 11 (TC010 pending dedicated evidence) |
+| Test cases with GIF/screenshot evidence | 11 / 11 (TC010 has dedicated Android evidence; iOS pending) |
 | Formal defect reports | 7 / 7 (BUG001–BUG007 — all execution issues documented) |
 | iOS-specific test cases | 1 (TC006) |
 | Automation tests using correct framework | 64 — 57 API/unit/BDD + 7 Appium (Selenium replaced) |
@@ -312,7 +312,7 @@ The standalone `ruff.toml` has been removed and its configuration has been merge
 | Feature coverage (US001 Search) | 100% executed |
 | Feature coverage (US002 Downloaded Papers) | 100% executed |
 | Feature coverage (US003 PDF) | 100% executed |
-| Feature coverage (US004 Network) | 67% executed (TC009 done, TC010 pending full evidence) |
+| Feature coverage (US004 Network) | 100% executed (TC009 done; TC010 done, iOS dedicated evidence pending) |
 
 ---
 
@@ -323,8 +323,8 @@ The standalone `ruff.toml` has been removed and its configuration has been merge
 | `manual-tests/test-cases/TC001-TC011` (11 files) | Test specs | All present; iOS preconditions missing in cross-platform TCs |
 | `manual-tests/test-execution/execution-logs/TC001-TC011` (11 files) | Execution records | Complete — real tester data, step results, and observations |
 | `manual-tests/test-execution/execution-summary.md` | Sprint summary | Complete — real results, performance data, 7 issues noted |
-| `manual-tests/test-execution/traceability-with-evidence.md` | Evidence links | Complete — real file paths for all 28 evidence files |
-| `manual-tests/test-execution/evidence/` (28 files) | GIFs + screenshots | Complete for TC001-TC009, TC011; TC010 pending dedicated evidence |
+| `manual-tests/test-execution/traceability-with-evidence.md` | Evidence links | Complete — real file paths for all 30 evidence files |
+| `manual-tests/test-execution/evidence/` (30 files) | GIFs + screenshots | Complete for TC001-TC009, TC011; TC010 dedicated Android evidence present, iOS pending |
 | `manual-tests/traceability-matrix.csv` | Requirements map | Complete — TC001/TC002: Yes, TC003: Partial; Automation Notes column added |
 | `manual-tests/wiki/coverage_summary.md` | Coverage metrics | Complete |
 | `manual-tests/testability_notes.md` | Live feedback | Complete — 3 real observations |
