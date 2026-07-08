@@ -52,7 +52,7 @@ When navigating the search results list with TalkBack, each result card is annou
 TalkBack announces each result as a list item. The "navigate by heading" gesture either does nothing or falls through to the next screen section (e.g., the bottom tab bar). Paper titles are read correctly when swiping through sequentially, but they are not landmarks for heading-based navigation.
 
 **Expected result:**
-Each result card title should be exposed as a heading (e.g., heading level 3 or an equivalent accessible landmark) so that screen reader users can skip to the next result without swiping through authors, publication date, and the favorite icon of each card.
+Each result card title should be exposed as a heading (e.g., heading level 3 or an equivalent accessible landmark) so that screen reader users can skip to the next result without swiping through the authors and publication date of each card.
 
 ---
 

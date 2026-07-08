@@ -38,15 +38,15 @@
 - [x] **Result:** [x] Pass [ ] Fail
 - [x] **Issues found:** None
 
-### TC003 - Toggle Favorite (PASS)
+### TC003 - Download a Paper and Remove It (PASS)
 - [x] Recording started with test ID announcement
-- [x] Located favorite control on search result
-- [x] Toggled favorite ON with visual confirmation
+- [x] Located download control on paper detail screen
+- [x] Downloaded paper with visual confirmation in DOWNLOADED tab
 - [x] Verified state persistence
-- [x] Toggled favorite OFF
-- [x] Recording saved as: TC003_TogglePaperasFavorite_{Platform}_Pass.gif
+- [x] Removed item via trash icon
+- [x] Recording saved as: TC003_DownloadAndRemovePaper_{Platform}_Pass.gif
 - [x] **Result:** [x] Pass [ ] Fail
-- [x] **Issues found:** No haptic feedback on favorite toggle
+- [x] **Issues found:** No haptic feedback on download action
 
 ### TC004 - Search Offline Behavior (PASS)
 - [x] Executed offline search flow
@@ -78,10 +78,10 @@
 - [x] **Result:** [x] Pass [ ] Fail
 - [x] **Issues found:** API 30+ queries manifest consideration
 
-### TC008 - Bulk Favorite Operations (PASS)
-- [x] Tested boundaries: 0, 1, 3 favorites
+### TC008 - Bulk Downloaded Papers Management (PASS)
+- [x] Tested boundaries: 0, 1, 3 downloaded papers
 - [x] Verified persistence after force-close
-- [x] Recording saved: TC008_BulkFavoriteOperations_{Platform}_Pass.gif
+- [x] Recording saved: TC008_BulkDownloadedPapersManagement_{Platform}_Pass.gif
 - [x] **Result:** [x] Pass [ ] Fail
 - [x] **Issues found:** No "Remove all" bulk action
 
@@ -94,7 +94,7 @@
 - [x] **Issues found:** No cellular download warning
 
 ### TC010 - Offline Data Persistence (PLANNED)
-- [x] Verified favorites accessible offline
+- [x] Verified downloaded papers accessible offline
 - [x] Verified paper details from cache
 - [x] Create dedicated evidence video
 - [x] **Result:** [x] Pass [ ] Fail

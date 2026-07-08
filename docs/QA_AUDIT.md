@@ -31,12 +31,12 @@ All 11 test cases are defined and have specification files:
 |-----------|-------------|----------|---------------|
 | TC001 | Search with valid keyword | High | Yes |
 | TC002 | Search with empty query | High | Yes |
-| TC003 | Toggle paper as favorite | High | Yes |
+| TC003 | Download a paper and remove it from Downloaded | High | Yes |
 | TC004 | Search offline behavior | Medium | Yes |
 | TC005 | PDF download and viewing | High | Yes |
 | TC006 | iOS Safari PDF integration | Medium | Yes |
 | TC007 | Android intent handling | Medium | Yes |
-| TC008 | Bulk favorite operations | Low | Yes |
+| TC008 | Bulk downloaded papers management | Low | Yes |
 | TC009 | WiFi to Cellular transition | Medium | Yes |
 | TC010 | Offline data persistence | High | Yes |
 | TC011 | Accessibility — TalkBack | Low | Yes |
@@ -52,7 +52,7 @@ Only TC006 is designated iOS-only. No existing test case covers any of the follo
 - **iPad Support:** iPad layout, split-screen, and multitasking behavior
 - **iOS Share Sheet:** Native share functionality when downloading/sharing papers
 - **Face ID / Touch ID:** Any biometric interaction if the app uses it
-- **Haptic Feedback:** Validation that toggle/favorite actions use correct haptics
+- **Haptic Feedback:** Validation that the download/remove actions use correct haptics
 - **Control Center Interruption:** App behavior when Control Center is opened mid-test
 - **Background / Foreground Transitions:** App state restored after suspension
 - **Push Notifications:** Behavior if the app sends any notifications
@@ -66,7 +66,7 @@ Remaining gap: no test case covers cancellation of an in-progress download or be
 
 ### 1.4 Network and Offline Scenarios — Partially Executed
 
-TC004 (offline search) and TC009 (WiFi-to-cellular transition) have been executed and passed. TC010 (offline data persistence) has been partially executed — favorites and cached detail views were verified offline — but lacks dedicated evidence and has inconsistent status across documents.
+TC004 (offline search) and TC009 (WiFi-to-cellular transition) have been executed and passed. TC010 (offline data persistence) has been partially executed — downloaded papers and cached detail views were verified offline — but lacks dedicated evidence and has inconsistent status across documents.
 
 The following scenarios remain unaddressed by any test case:
 
@@ -88,7 +88,7 @@ All 11 files in `manual-tests/test-execution/execution-logs/` contain real execu
 
 - 9 Android GIFs (TC001–TC005, TC007–TC009, TC011)
 - 8 iOS GIFs (TC001–TC006, TC008–TC009)
-- 10 screenshots covering search results, offline errors, PDF viewer, Safari integration, intent chooser, favorite before/after, network transition, and TalkBack
+- 10 screenshots covering search results, offline errors, PDF viewer, Safari integration, intent chooser, download before/after, network transition, and TalkBack
 - 1 animated suite summary GIF
 
 Evidence for TC010 (offline data persistence) remains pending — TC004 GIFs partially cover the offline state but a dedicated TC010 recording has not been made.
@@ -283,7 +283,7 @@ The standalone `ruff.toml` has been removed and its configuration has been merge
 
 | # | Action | File(s) |
 |---|--------|---------|
-| 9 | Create dedicated evidence for TC010 (offline favorites persistence) — current evidence borrows TC004 GIFs | New GIF in `evidence/` |
+| 9 | Create dedicated evidence for TC010 (offline downloaded-papers persistence) — current evidence borrows TC004 GIFs | New GIF in `evidence/` |
 | 10 | Create iOS-specific test cases: VoiceOver, Dynamic Type, Dark Mode, Safe Area/Notch | New test case files |
 | 11 | Add iOS-specific preconditions (simulator version, Xcode) to all cross-platform test cases | `TC001–TC005`, `TC008–TC010` |
 | 12 | Add performance threshold (≤ 5 s search response) as explicit acceptance criterion in TC001 | `TC001_search_valid.md` |
@@ -310,7 +310,7 @@ The standalone `ruff.toml` has been removed and its configuration has been merge
 | CI stages covering macOS / Xcode | 0 |
 | ADO pipeline tasks using correct syntax | Yes — `checkout: self` and `PublishBuildArtifacts@1` in all stages |
 | Feature coverage (US001 Search) | 100% executed |
-| Feature coverage (US002 Favorites) | 100% executed |
+| Feature coverage (US002 Downloaded Papers) | 100% executed |
 | Feature coverage (US003 PDF) | 100% executed |
 | Feature coverage (US004 Network) | 67% executed (TC009 done, TC010 pending full evidence) |
 

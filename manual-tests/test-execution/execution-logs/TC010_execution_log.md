@@ -26,7 +26,7 @@
 ---
 
 ## Test Objective
-Verify that the app preserves previously loaded data (search results, favorites) when the device goes offline, and displays appropriate offline indicators rather than empty or broken states.
+Verify that the app preserves previously loaded data (search results, downloaded papers) when the device goes offline, and displays appropriate offline indicators rather than empty or broken states.
 
 ---
 
@@ -40,13 +40,13 @@ Verify that the app preserves previously loaded data (search results, favorites)
 - Results loaded: 12 (Android), 12 (iOS)
 - Baseline established
 
-### Step 2: Mark favorites
-**Action:** Tap favorite icon on first two results
+### Step 2: Download two papers
+**Action:** Open the first two results and tap the download icon on each
 **Android Result:** [x] Pass [ ] Fail
 **iOS Result:** [x] Pass [ ] Fail
 **Notes:**
-- Favorites toggled on successfully
-- Star icons changed to filled state
+- Both downloads completed successfully
+- Items appeared in the DOWNLOADED tab
 
 ### Step 3: Go offline
 **Action:** Disable WiFi and mobile data
@@ -57,17 +57,17 @@ Verify that the app preserves previously loaded data (search results, favorites)
 - UI remained stable
 - No error state yet (no action attempted)
 
-### Step 4: Access favorites offline
-**Action:** Open Favorites tab
+### Step 4: Access downloaded papers offline
+**Action:** Open the DOWNLOADED tab
 **Android Result:** [x] Pass [ ] Fail
 **iOS Result:** [x] Pass [ ] Fail
 **Notes:**
-- Previously favorited papers displayed
+- Previously downloaded papers displayed
 - Offline indicator shown (subtle banner)
 - All metadata visible (title, authors)
 
-### Step 5: Open favorited paper detail offline
-**Action:** Tap on a favorited paper
+### Step 5: Open downloaded paper detail offline
+**Action:** Tap on a downloaded paper
 **Android Result:** [x] Pass [ ] Fail
 **iOS Result:** [x] Pass [ ] Fail
 **Notes:**
@@ -107,7 +107,7 @@ Verify that the app preserves previously loaded data (search results, favorites)
 
 | Criterion | Android | iOS | Notes |
 |-----------|---------|-----|-------|
-| Favorites accessible offline | [x] Pass [ ] Fail | [x] Pass [ ] Fail | From local cache |
+| Downloaded papers accessible offline | [x] Pass [ ] Fail | [x] Pass [ ] Fail | From local cache |
 | Paper details accessible offline | [x] Pass [ ] Fail | [x] Pass [ ] Fail | Title/authors/abstract cached |
 | Offline indicator shown | [x] Pass [ ] Fail | [x] Pass [ ] Fail | Banner-style indicator |
 | New search shows error (not crash) | [x] Pass [ ] Fail | [x] Pass [ ] Fail | Consistent with TC004 |
@@ -123,7 +123,7 @@ Verify that the app preserves previously loaded data (search results, favorites)
 - **iOS:** [ ] Pending - Combined with TC004 evidence covers offline flow
 
 ### Evidence Location:
-- **Note:** TC010 shares offline context with TC004; TC004 GIF evidence demonstrates the error-handling portion. A dedicated TC010 recording should capture the favorites-access-offline flow specifically.
+- **Note:** TC010 shares offline context with TC004; TC004 GIF evidence demonstrates the error-handling portion. A dedicated TC010 recording should capture the downloaded-papers-access-offline flow specifically.
 
 ---
 
@@ -132,7 +132,7 @@ Verify that the app preserves previously loaded data (search results, favorites)
 ### Issue 1:
 **Platform:** Both
 **Severity:** Medium
-**Description:** Cached search results are NOT shown when going offline and performing a NEW search. Only favorites survive offline. Users who want to re-read previous results cannot access them from search.
+**Description:** Cached search results are NOT shown when going offline and performing a NEW search. Only downloaded papers survive offline. Users who want to re-read previous results cannot access them from search.
 **Recommendation:** Consider showing last successful search results with an "offline" banner when network is unavailable, rather than only showing an error message.
 
 ---
@@ -144,13 +144,13 @@ Verify that the app preserves previously loaded data (search results, favorites)
 **Overall Test Status:** [x] PASS [ ] FAIL
 
 **Summary Notes:**
-Offline data persistence works for favorites (they are cached and accessible). Search results are not cached for offline reuse -- new searches while offline show an error rather than cached results. This is consistent behavior but represents a UX gap compared to apps that show cached search results with offline indicators. TC004 and TC010 together provide full offline coverage.
+Offline data persistence works for downloaded papers (they are cached and accessible). Search results are not cached for offline reuse -- new searches while offline show an error rather than cached results. This is consistent behavior but represents a UX gap compared to apps that show cached search results with offline indicators. TC004 and TC010 together provide full offline coverage.
 
 ---
 
 ## Follow-up Actions
 
-- [ ] Create dedicated TC010 video evidence showing favorites-access-offline flow
+- [ ] Create dedicated TC010 video evidence showing downloaded-papers-access-offline flow
 - [x] Update traceability matrix with results
 - [ ] Report issue regarding lack of cached search result fallback
 - [x] Cross-reference findings with TC004 for consistency

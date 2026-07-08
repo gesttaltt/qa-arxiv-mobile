@@ -5,7 +5,7 @@ This guide will help you execute real manual tests on the actual arXiv Papers Mo
 ## 📱 Target Application
 **Repository:** https://github.com/lopespm/arxiv-papers-mobile  
 **Tech Stack:** React Native (Android/iOS)  
-**Features:** Search arXiv papers, view details, mark favorites, download PDFs
+**Features:** Search arXiv papers, view details, download papers for offline access
 
 ---
 
@@ -103,10 +103,10 @@ Example: `TestCase_TC001_SearchValidKeyword_Android_Pass.mp4`
 - **Focus:** Error handling and user feedback
 - **Evidence:** Screen recording showing empty search behavior
 
-#### TC003 - Toggle Favorite Paper
+#### TC003 - Download a Paper and Remove It
 - **Platform:** Android + iOS  
 - **Focus:** State management and persistence
-- **Evidence:** Screen recording showing favorite toggle
+- **Evidence:** Screen recording showing download + removal from Downloaded tab
 
 ### Priority 2: Platform-Specific
 
@@ -133,15 +133,15 @@ manual-tests/test-execution/
 │   ├── android/
 │   │   ├── TC001_SearchValid_Android_Pass.mp4
 │   │   ├── TC002_EmptyQuery_Android_Pass.mp4
-│   │   └── TC003_ToggleFavorite_Android_Pass.mp4
+│   │   └── TC003_DownloadAndRemovePaper_Android_Pass.mp4
 │   ├── ios/
 │   │   ├── TC001_SearchValid_iOS_Pass.mp4
 │   │   ├── TC002_EmptyQuery_iOS_Pass.mp4
-│   │   └── TC003_ToggleFavorite_iOS_Pass.mp4
+│   │   └── TC003_DownloadAndRemovePaper_iOS_Pass.mp4
 │   └── screenshots/
 │       ├── android_home_screen.png
 │       ├── ios_search_results.png
-│       └── favorite_state_comparison.png
+│       └── TC003_before_download.png
 ├── execution-logs/
 │   ├── TC001_execution_log.md
 │   ├── TC002_execution_log.md

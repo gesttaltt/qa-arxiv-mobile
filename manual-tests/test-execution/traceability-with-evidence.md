@@ -8,12 +8,12 @@ This document provides complete traceability from requirements to test execution
 |--------------|-------------|----------------|------------|-------------------|
 | TC001 | Search with valid keyword | ✅ Passed | ✅ Passed | GIF + Screenshots |
 | TC002 | Search with empty input | ✅ Passed | ✅ Passed | GIF + Screenshots |
-| TC003 | Toggle paper as favorite | ✅ Passed | ✅ Passed | GIF + Before/After screenshots |
+| TC003 | Download a paper and remove it from Downloaded | ✅ Passed | ✅ Passed | GIF + Before/After screenshots |
 | TC004 | Search offline behavior | ✅ Passed | ✅ Passed | GIF + Screenshot |
 | TC005 | PDF download and viewing | ✅ Passed | ✅ Passed | GIF + Screenshot |
 | TC006 | iOS Safari PDF integration | N/A | ✅ Passed | GIF + Screenshot |
 | TC007 | Android intent handling | ✅ Passed | N/A | GIF + Screenshot |
-| TC008 | Bulk favorite operations | ✅ Passed | ✅ Passed | GIF |
+| TC008 | Bulk downloaded papers management | ✅ Passed | ✅ Passed | GIF |
 | TC009 | WiFi to cellular transition | ✅ Passed | ✅ Passed | GIF + Screenshot |
 | TC010 | Offline data persistence | ✅ Passed | ✅ Passed | Shared TC004 evidence; dedicated recording pending |
 | TC011 | Accessibility TalkBack | ✅ Passed | N/A | GIF + Screenshot |
@@ -66,25 +66,25 @@ This document provides complete traceability from requirements to test execution
 
 ---
 
-### TC003 - Toggle Paper as Favorite
+### TC003 - Download a Paper and Remove It from Downloaded
 
-**Requirement:** US002 - Manage Favorite Papers  
+**Requirement:** US002 - Manage Downloaded Papers  
 **Priority:** High  
 **Platforms:** Android + iOS
 
 #### Evidence Links:
-- **Android Execution:** [evidence/android/TC003_TogglePaperasFavorite_Android_Pass.gif](evidence/android/TC003_TogglePaperasFavorite_Android_Pass.gif)
-- **iOS Execution:** [evidence/ios/TC003_TogglePaperasFavorite_iOS_Pass.gif](evidence/ios/TC003_TogglePaperasFavorite_iOS_Pass.gif)
+- **Android Execution:** [evidence/android/TC003_DownloadAndRemovePaper_Android_Pass.gif](evidence/android/TC003_DownloadAndRemovePaper_Android_Pass.gif)
+- **iOS Execution:** [evidence/ios/TC003_DownloadAndRemovePaper_iOS_Pass.gif](evidence/ios/TC003_DownloadAndRemovePaper_iOS_Pass.gif)
 - **Screenshots:**
-  - Before favorite toggle: `evidence/screenshots/TC003_before_favorite.png`
-  - After favorite toggle: `evidence/screenshots/TC003_after_favorite.png`
+  - Before download: `evidence/screenshots/TC003_before_download.png`
+  - After download: `evidence/screenshots/TC003_after_download.png`
 
 #### Execution Summary:
 - **Test Date:** 2026-05-21
 - **Tester:** QA Team
 - **Environment:** arXiv Papers Mobile (React Native)
 - **Result:** Pass
-- **Notes:** Favorite toggle works correctly. Star icon changes state. Paper persists in Favorites list after navigation.
+- **Notes:** Download and removal work correctly. Item appears in the DOWNLOADED tab after download and disappears after tapping the trash icon.
 
 ### TC004 - Search Offline Behavior
 
@@ -168,15 +168,15 @@ This document provides complete traceability from requirements to test execution
 
 ---
 
-### TC008 - Bulk Favorite Operations
+### TC008 - Bulk Downloaded Papers Management
 
-**Requirement:** US002 - Manage Favorite Papers
+**Requirement:** US002 - Manage Downloaded Papers
 **Priority:** Low
 **Platforms:** Android + iOS
 
 #### Evidence Links:
-- **Android Execution:** [evidence/android/TC008_BulkFavoriteOperations_Android_Pass.gif](evidence/android/TC008_BulkFavoriteOperations_Android_Pass.gif)
-- **iOS Execution:** [evidence/ios/TC008_BulkFavoriteOperations_iOS_Pass.gif](evidence/ios/TC008_BulkFavoriteOperations_iOS_Pass.gif)
+- **Android Execution:** [evidence/android/TC008_BulkDownloadedPapersManagement_Android_Pass.gif](evidence/android/TC008_BulkDownloadedPapersManagement_Android_Pass.gif)
+- **iOS Execution:** [evidence/ios/TC008_BulkDownloadedPapersManagement_iOS_Pass.gif](evidence/ios/TC008_BulkDownloadedPapersManagement_iOS_Pass.gif)
 
 #### Execution Summary:
 - **Test Date:** 2026-05-21
@@ -216,14 +216,14 @@ This document provides complete traceability from requirements to test execution
 
 #### Evidence Links:
 - **Shared evidence (offline state):** [evidence/android/TC004_SearchOfflineBehavior_Android_Pass.gif](evidence/android/TC004_SearchOfflineBehavior_Android_Pass.gif)
-- **Dedicated TC010 recording:** Pending — to be captured showing favorites-access-offline flow specifically
+- **Dedicated TC010 recording:** Pending — to be captured showing downloaded-papers-access-offline flow specifically
 
 #### Execution Summary:
 - **Test Date:** 2026-05-21
 - **Tester:** QA Team
 - **Environment:** arXiv Papers Mobile (React Native)
 - **Result:** Pass
-- **Notes:** Favorites and paper details accessible offline from cache (verified both platforms). New searches while offline show error — cached result fallback not implemented (see BUG004). Full recovery on network restore without app restart. Dedicated GIF evidence pending.
+- **Notes:** Downloaded papers and their details are accessible offline from cache (verified both platforms). New searches while offline show error — cached result fallback not implemented (see BUG004). Full recovery on network restore without app restart. Dedicated GIF evidence pending.
 
 ---
 
@@ -243,6 +243,6 @@ This document provides complete traceability from requirements to test execution
 - **Tester:** QA Team
 - **Environment:** arXiv Papers Mobile (React Native)
 - **Result:** Pass
-- **Notes:** All WCAG 2.1 AA criteria checked pass. No "unlabelled" elements encountered. Search, results, detail view, and favorite toggle all fully operable via TalkBack gestures.
+- **Notes:** All WCAG 2.1 AA criteria checked pass. No "unlabelled" elements encountered. Search, results, detail view, and download/remove actions all fully operable via TalkBack gestures.
 
 ---

@@ -1,4 +1,4 @@
-# TC008 Execution Log - Bulk Favorite Operations
+# TC008 Execution Log - Bulk Downloaded Papers Management
 
 **Test Case ID:** TC008
 **Test Date:** 2026-05-21
@@ -26,56 +26,56 @@
 ---
 
 ## Test Objective
-Verify that the Favorites feature behaves correctly at its boundary states: empty list, a single item, and multiple items -- and that removing all items returns the list to a clean empty state.
+Verify that the DOWNLOADED tab behaves correctly at its boundary states: empty list, a single item, and multiple items -- and that removing all items returns the list to a clean empty state.
 
 ---
 
 ## Test Steps Execution
 
-### Step 1: Verify empty favorites list
-**Action:** Open Favorites tab with no items
+### Step 1: Verify empty DOWNLOADED tab
+**Action:** Open the DOWNLOADED tab with no items
 **Android Result:** [x] Pass [ ] Fail
 **iOS Result:** [x] Pass [ ] Fail
 **Notes:**
-- Empty-state message displayed: "No favorites yet"
+- Empty-state message displayed: "No downloads yet"
 - Empty-state illustration shown
 - No crash or leftover items
 - No residual data from previous sessions
 
-### Step 2: Add a single favorite
-**Action:** Search "machine learning" and mark first result as favorite
+### Step 2: Download a single paper
+**Action:** Search "machine learning", open the first result, and tap the download icon
 **Android Result:** [x] Pass [ ] Fail
 **iOS Result:** [x] Pass [ ] Fail
 **Notes:**
-- Star icon toggled to filled state
-- Visual feedback: color change from gray to yellow
-- No animation lag
+- Download completed without error
+- Visual feedback: item later appears in the DOWNLOADED tab
+- No progress indicator observed
 
-### Step 3: Verify single favorite shown
-**Action:** Open Favorites tab
+### Step 3: Verify single downloaded item shown
+**Action:** Open the DOWNLOADED tab
 **Android Result:** [x] Pass [ ] Fail
 **iOS Result:** [x] Pass [ ] Fail
 **Notes:**
 - Exactly 1 item listed
 - Title and author displayed correctly
-- Star icon shows filled state
+- Trash icon visible on the item
 
-### Step 4: Remove that single favorite
-**Action:** Remove the item from favorites
+### Step 4: Remove that single item
+**Action:** Tap the trash icon to remove the item
 **Android Result:** [x] Pass [ ] Fail
 **iOS Result:** [x] Pass [ ] Fail
 **Notes:**
-- After removal, favorites tab returns to empty-state
+- After removal, DOWNLOADED tab returns to empty-state
 - Count changes from 1 to 0 correctly
 - No ghost items or stale data
 
-### Step 5: Add multiple favorites
-**Action:** Mark 3 different papers as favorites across 2 searches
+### Step 5: Download multiple papers
+**Action:** Download 3 different papers across 2 searches
 **Android Result:** [x] Pass [ ] Fail
 **iOS Result:** [x] Pass [ ] Fail
 **Notes:**
-- All 3 items appeared in Favorites tab
-- Ordered by addition time (most recent first)
+- All 3 items appeared in the DOWNLOADED tab
+- Ordered by download time (most recent first)
 - No duplicates
 
 ### Step 6: Persistence check (force-close)
@@ -83,12 +83,12 @@ Verify that the Favorites feature behaves correctly at its boundary states: empt
 **Android Result:** [x] Pass [ ] Fail
 **iOS Result:** [x] Pass [ ] Fail
 **Notes:**
-- All 3 favorites persisted after restart
-- Star icons still filled on search results
+- All 3 downloaded items persisted after restart
+- Items still listed in the DOWNLOADED tab
 - Data persistence confirmed
 
-### Step 7: Remove all favorites
-**Action:** Remove all 3 favorites one by one
+### Step 7: Remove all downloaded items
+**Action:** Remove all 3 items one by one via the trash icon
 **Android Result:** [x] Pass [ ] Fail
 **iOS Result:** [x] Pass [ ] Fail
 **Notes:**
@@ -103,8 +103,8 @@ Verify that the Favorites feature behaves correctly at its boundary states: empt
 | Criterion | Android | iOS | Notes |
 |-----------|---------|-----|-------|
 | Empty-state displayed correctly | [x] Pass [ ] Fail | [x] Pass [ ] Fail | Message + illustration shown |
-| 1 item added shows count=1 | [x] Pass [ ] Fail | [x] Pass [ ] Fail | No duplicates |
-| 3 items all visible in list | [x] Pass [ ] Fail | [x] Pass [ ] Fail | Ordered by addition time |
+| 1 item downloaded shows count=1 | [x] Pass [ ] Fail | [x] Pass [ ] Fail | No duplicates |
+| 3 items all visible in list | [x] Pass [ ] Fail | [x] Pass [ ] Fail | Ordered by download time |
 | Persistence after force-close | [x] Pass [ ] Fail | [x] Pass [ ] Fail | All 3 survived restart |
 | Removal returns to empty-state | [x] Pass [ ] Fail | [x] Pass [ ] Fail | Smooth transition at each boundary |
 | No crash at any boundary value | [x] Pass [ ] Fail | [x] Pass [ ] Fail | 0, 1, and 3 all stable |
@@ -114,12 +114,12 @@ Verify that the Favorites feature behaves correctly at its boundary states: empt
 ## Evidence Collected
 
 ### Video Recordings:
-- **Android:** [x] Completed - `TC008_BulkFavoriteOperations_Android_Pass.gif`
-- **iOS:** [x] Completed - `TC008_BulkFavoriteOperations_iOS_Pass.gif`
+- **Android:** [x] Completed - `TC008_BulkDownloadedPapersManagement_Android_Pass.gif`
+- **iOS:** [x] Completed - `TC008_BulkDownloadedPapersManagement_iOS_Pass.gif`
 
 ### Evidence Location:
-- **Android:** `evidence/android/TC008_BulkFavoriteOperations_Android_Pass.gif`
-- **iOS:** `evidence/ios/TC008_BulkFavoriteOperations_iOS_Pass.gif`
+- **Android:** `evidence/android/TC008_BulkDownloadedPapersManagement_Android_Pass.gif`
+- **iOS:** `evidence/ios/TC008_BulkDownloadedPapersManagement_iOS_Pass.gif`
 
 ---
 
@@ -128,8 +128,8 @@ Verify that the Favorites feature behaves correctly at its boundary states: empt
 ### Issue 1:
 **Platform:** Both
 **Severity:** Low
-**Description:** No "Remove all" bulk action is available. User must remove favorites one by one. For power users with 50+ favorites, this is tedious.
-**Recommendation:** Consider adding a "Clear all favorites" option in the Favorites tab menu.
+**Description:** No "Remove all" bulk action is available. User must remove downloaded items one by one. For power users with 20+ downloads, this is tedious.
+**Recommendation:** Consider adding a "Clear all" option in the DOWNLOADED tab menu.
 
 ---
 
@@ -140,7 +140,7 @@ Verify that the Favorites feature behaves correctly at its boundary states: empt
 **Overall Test Status:** [x] PASS [ ] FAIL
 
 **Summary Notes:**
-Boundary value testing across 0, 1, and 3 favorites works correctly on both platforms. Data persists across app restarts. The favorites feature is stable and consistent. No critical issues found; a bulk remove option would improve UX for power users.
+Boundary value testing across 0, 1, and 3 downloaded items works correctly on both platforms. Data persists across app restarts. The DOWNLOADED tab is stable and consistent. No critical issues found; a bulk remove option would improve UX for power users.
 
 ---
 

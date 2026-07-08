@@ -149,4 +149,4 @@ All three intent scenarios (A, B, C) pass correctly. PDF intents are properly fi
 
 **Execution Completed:** 2026-05-21 12:15
 **Review Required:** No
-**Next Steps:** Proceed to TC008 (bulk favorite operations)
+**Next Steps:** Proceed to TC008 (bulk downloaded papers management)

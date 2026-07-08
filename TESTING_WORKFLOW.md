@@ -63,13 +63,13 @@ npx react-native run-ios
 5. Document error handling/validation
 6. **Stop Recording** - Save as `TC002_EmptyQuery_[Platform]_[Result].mp4`
 
-#### TC003: Toggle Favorite Functionality
-1. **Start Recording** - State "Executing TC003 - Toggle Favorite"
-2. From search results, find favorite button/icon
-3. Toggle favorite ON (show visual change)
+#### TC003: Download and Remove a Paper
+1. **Start Recording** - State "Executing TC003 - Download and Remove"
+2. Open a paper's detail view and tap the download button
+3. Navigate to the DOWNLOADED tab (show the item appear)
 4. Navigate away and back to verify persistence
-5. Toggle favorite OFF
-6. **Stop Recording** - Save as `TC003_ToggleFavorite_[Platform]_[Result].mp4`
+5. Tap the trash icon to remove the item
+6. **Stop Recording** - Save as `TC003_DownloadAndRemovePaper_[Platform]_[Result].mp4`
 
 ### Execution Notes:
 - Test on **both Android AND iOS** if possible (or document which platform you tested)

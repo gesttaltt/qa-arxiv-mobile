@@ -9,11 +9,11 @@ This folder contains real test execution evidence for the arXiv Papers Mobile ap
 |------|-----------|-------------|
 | TC001_SearchwithValidKeyword_Android_Pass.gif | TC001 | Search with valid keyword |
 | TC002_SearchwithEmptyQuery_Android_Pass.gif | TC002 | Search with empty input |
-| TC003_TogglePaperasFavorite_Android_Pass.gif | TC003 | Toggle paper as favorite |
+| TC003_DownloadAndRemovePaper_Android_Pass.gif | TC003 | Download a paper and remove it from Downloaded |
 | TC004_SearchOfflineBehavior_Android_Pass.gif | TC004 | Search offline behavior |
 | TC005_PDFDownloadandViewing_Android_Pass.gif | TC005 | PDF download and viewing |
 | TC007_AndroidIntentPDFHandling_Android_Pass.gif | TC007 | Android intent PDF handling |
-| TC008_BulkFavoriteOperations_Android_Pass.gif | TC008 | Bulk favorite operations |
+| TC008_BulkDownloadedPapersManagement_Android_Pass.gif | TC008 | Bulk downloaded papers management |
 | TC009_WiFitoCellularTransition_Android_Pass.gif | TC009 | WiFi to cellular transition |
 | TC011_AccessibilityTalkBackTesting_Android_Pass.gif | TC011 | Accessibility TalkBack testing |
 
@@ -22,11 +22,11 @@ This folder contains real test execution evidence for the arXiv Papers Mobile ap
 |------|-----------|-------------|
 | TC001_SearchwithValidKeyword_iOS_Pass.gif | TC001 | Search with valid keyword |
 | TC002_SearchwithEmptyQuery_iOS_Pass.gif | TC002 | Search with empty input |
-| TC003_TogglePaperasFavorite_iOS_Pass.gif | TC003 | Toggle paper as favorite |
+| TC003_DownloadAndRemovePaper_iOS_Pass.gif | TC003 | Download a paper and remove it from Downloaded |
 | TC004_SearchOfflineBehavior_iOS_Pass.gif | TC004 | Search offline behavior |
 | TC005_PDFDownloadandViewing_iOS_Pass.gif | TC005 | PDF download and viewing |
 | TC006_iOSSafariPDFIntegration_iOS_Pass.gif | TC006 | iOS Safari PDF integration |
-| TC008_BulkFavoriteOperations_iOS_Pass.gif | TC008 | Bulk favorite operations |
+| TC008_BulkDownloadedPapersManagement_iOS_Pass.gif | TC008 | Bulk downloaded papers management |
 | TC009_WiFitoCellularTransition_iOS_Pass.gif | TC009 | WiFi to cellular transition |
 
 ### Screenshots (10 files)
@@ -36,8 +36,8 @@ Evidence directory: `screenshots/`
 |------|---------|
 | TC001_android_search_results.png | Search results for "quantum" on Android |
 | TC002_android_empty_search.png | Empty search validation on Android |
-| TC003_before_favorite.png | Paper detail before favorite toggle |
-| TC003_after_favorite.png | Paper detail after favorite toggle |
+| TC003_before_download.png | Paper detail before download |
+| TC003_after_download.png | Downloaded tab after download |
 | TC004_offline_error.png | Offline error message |
 | TC005_pdf_viewer.png | PDF viewer in action |
 | TC006_safari_pdf.png | PDF opened in Safari on iOS |

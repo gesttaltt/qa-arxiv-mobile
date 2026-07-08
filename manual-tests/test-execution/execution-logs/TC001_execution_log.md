@@ -145,4 +145,4 @@ Search functionality works correctly on both platforms. Results are relevant and
 
 **Execution Completed:** 2026-05-21 11:00
 **Review Required:** No
-**Next Steps:** Proceed to TC002 (empty query) and TC003 (favorite toggle)
+**Next Steps:** Proceed to TC002 (empty query) and TC003 (download and remove)

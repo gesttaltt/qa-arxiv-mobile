@@ -40,7 +40,7 @@ Test at and just inside/outside the edges of each equivalence partition.
 
 | Test Case | Boundary tested |
 |---|---|
-| TC008 – Bulk favorites | 0 items (below min), 1 item (minimum), 3+ items (multiple) |
+| TC008 – Bulk downloaded papers | 0 items (below min), 1 item (minimum), 3+ items (multiple) |
 | Postman – max_results=1 | Minimum meaningful result count |
 | Postman – start=0 vs start=1 | Pagination offset edge |
 | `test_data_validation.py` – field length | Empty string vs single character vs max-length title |
@@ -55,7 +55,7 @@ and attempt invalid ones.
 |---|---|
 | TC004 – Search offline | WiFi active → WiFi disabled → Search attempted → WiFi restored |
 | TC009 – WiFi to Cellular | WiFi → Cellular → Offline → WiFi (four states, six transitions) |
-| TC003 – Toggle favorite | Not-favorited → Favorited → Not-favorited |
+| TC003 – Download/remove | Not-downloaded → Downloaded → Not-downloaded |
 
 ---
 
@@ -116,19 +116,19 @@ Sample defect in this project: `manual-tests/defects/BUG001_sample_defect.md`
 ## 4. SQL Data Validation
 
 A QA tester uses SQL to validate that data shown in the UI matches what is stored in
-the backend database. The arXiv Papers app stores favourites and downloaded paper metadata
+the backend database. The arXiv Papers app stores downloaded paper metadata
 locally (SQLite on device). The queries below illustrate what would be run against that
 local DB or a staging backend.
 
 ```sql
--- Verify a favourited paper was persisted
-SELECT id, title, is_favourite, date_favourited
+-- Verify a downloaded paper was persisted
+SELECT id, title, is_downloaded, date_downloaded
 FROM papers
-WHERE is_favourite = 1;
+WHERE is_downloaded = 1;
 
 -- Confirm no duplicate paper IDs exist after bulk operations (TC008)
 SELECT paper_id, COUNT(*) AS occurrences
-FROM favourites
+FROM downloads
 GROUP BY paper_id
 HAVING COUNT(*) > 1;
 
@@ -138,9 +138,9 @@ WHERE title IS NULL
    OR authors IS NULL
    OR published_date IS NULL;
 
--- Check paper count matches what is displayed in the Favourites tab (UI vs DB reconciliation)
-SELECT COUNT(*) AS db_count FROM favourites WHERE user_id = 1;
--- Expected: matches the number of cards shown in the Favourites tab
+-- Check paper count matches what is displayed in the DOWNLOADED tab (UI vs DB reconciliation)
+SELECT COUNT(*) AS db_count FROM downloads WHERE user_id = 1;
+-- Expected: matches the number of cards shown in the DOWNLOADED tab
 
 -- Validate date format (ISO 8601)
 SELECT id, published_date FROM papers

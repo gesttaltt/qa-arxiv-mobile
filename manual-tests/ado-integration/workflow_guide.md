@@ -35,8 +35,8 @@ Test Plan: arxiv-papers-mobile v1.0
 │   ├── Positive Scenarios (TC001, TC002)
 │   ├── Negative Scenarios (TC004)
 │   └── Performance Tests (TC009)
-├── Favorites Management
-│   ├── Add/Remove Favorites (TC003)
+├── Downloaded Papers Management
+│   ├── Download/Remove (TC003)
 │   └── Persistence Tests (TC008)
 └── PDF Management
     ├── Download Tests (TC005)

@@ -25,7 +25,7 @@
 
 ## Summary
 
-After the user performs a successful search online, if the device loses network connectivity and the user attempts the same (or a new) search, the app displays a "No internet connection" error and shows an empty screen. Previously loaded results are not served from a local cache. Only Favorites data survives offline; search results do not.
+After the user performs a successful search online, if the device loses network connectivity and the user attempts the same (or a new) search, the app displays a "No internet connection" error and shows an empty screen. Previously loaded results are not served from a local cache. Only downloaded papers survive offline; search results do not.
 
 ---
 
@@ -37,7 +37,7 @@ After the user performs a successful search online, if the device loses network 
 | **Priority** | Medium |
 | **Type** | UX / Offline experience |
 
-**Severity rationale:** The current behavior is not a crash — the error message is clear and the app remains interactive. However, the lack of a cached-result fallback means users in transit (underground, airplane mode, poor signal) lose access to results they just had on screen. Favorites are correctly cached, so the infrastructure for local persistence exists; search results are simply not included in it.
+**Severity rationale:** The current behavior is not a crash — the error message is clear and the app remains interactive. However, the lack of a cached-result fallback means users in transit (underground, airplane mode, poor signal) lose access to results they just had on screen. Downloaded papers are correctly cached, so the infrastructure for local persistence exists; search results are simply not included in it.
 
 ---
 
@@ -57,7 +57,7 @@ The app shows an error message ("No internet connection"). The results from step
 The app should display the results from the last successful search for this query, with a clearly visible "Offline — showing cached results" banner. This is consistent with the behavior of apps like Google Scholar and standard RSS readers.
 
 **Acceptable minimum alternative:**
-If full result caching is out of scope, at minimum the error screen should offer a "View saved favorites" shortcut so the user has a navigation path to offline-accessible content.
+If full result caching is out of scope, at minimum the error screen should offer a "View downloaded papers" shortcut so the user has a navigation path to offline-accessible content.
 
 ---
 
@@ -74,7 +74,7 @@ If full result caching is out of scope, at minimum the error screen should offer
 
 ## Root Cause (hypothesis)
 
-The search results are fetched from the arXiv API and rendered directly from the API response, with no write-through to AsyncStorage or SQLite. When the network is unavailable, no local data source is consulted. The `Favorites` feature uses AsyncStorage, confirming the app already has a persistence layer — it is simply not used for search result caching.
+The search results are fetched from the arXiv API and rendered directly from the API response, with no write-through to AsyncStorage or SQLite. When the network is unavailable, no local data source is consulted. The `Downloaded` feature uses local file/AsyncStorage persistence, confirming the app already has a persistence layer — it is simply not used for search result caching.
 
 **Suggested fix:**
 After a successful API response, serialize the results array and store it in AsyncStorage keyed by the query string. On network failure, check AsyncStorage for the query key before rendering the error state. Clear stale cache entries after 24 hours or on each successful fresh load.

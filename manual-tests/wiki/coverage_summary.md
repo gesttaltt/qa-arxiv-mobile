@@ -78,8 +78,8 @@ All test cases properly linked to user stories with bidirectional traceability.
 | US001 – Empty query | TC002 | ✅ Yes | ✅ Yes | `test_search_empty.py`, `features/search.feature` |
 | US001 – Offline search | TC004 | ❌ No | ❌ No | Manual only |
 | US001 – Accessibility | TC011 | ❌ No | ❌ No | Manual only (TalkBack) |
-| US002 – Toggle fav | TC003 | ✅ Partial | ✅ Partial | API: `test_search_api.py` (field contract); BDD: `article_data_contract.feature` scenario 1 |
-| US002 – Bulk favorites | TC008 | ✅ Partial | ✅ Partial | API: `test_search_api.py`; BDD: `article_data_contract.feature` scenario 2 (bulk uniqueness) |
+| US002 – Download/remove | TC003 | ✅ Partial | ✅ Partial | API: `test_search_api.py` (field contract); BDD: `article_data_contract.feature` scenario 1 |
+| US002 – Bulk downloaded papers | TC008 | ✅ Partial | ✅ Partial | API: `test_search_api.py`; BDD: `article_data_contract.feature` scenario 2 (bulk uniqueness) |
 | US003 – PDF download | TC005 | ✅ Partial | ❌ No | API contract: `test_pdf_contract.py` (PDF link presence + URL pattern) |
 | US003 – iOS Safari | TC006 | ✅ Partial | ❌ No | API contract: `test_pdf_contract.py` (abstract link presence + URL pattern) |
 | US003 – Android intent | TC007 | ✅ Partial | ❌ No | API contract: `test_pdf_contract.py` (PDF link href that Android intent consumes) |

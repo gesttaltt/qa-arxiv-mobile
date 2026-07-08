@@ -102,7 +102,7 @@ SQL as a required or strongly preferred skill.
 **Resolution (June 2026):** `automation/tests/test_data_validation.py` validates Atom XML
 response data — field presence, types, and format — simulating what SQL assertions would verify
 against a backend DB. `docs/TESTING_THEORY.md` §4 contains five concrete SQL examples
-(favorites persistence, duplicate detection, NULL field validation, UI-DB reconciliation,
+(downloaded-paper persistence, duplicate detection, NULL field validation, UI-DB reconciliation,
 date format assertion) with commentary.
 
 ---

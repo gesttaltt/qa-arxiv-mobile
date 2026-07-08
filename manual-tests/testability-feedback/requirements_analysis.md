@@ -22,21 +22,21 @@ This document provides comprehensive feedback on requirement testability and sug
 3. Add pagination requirements for large result sets
 4. Define minimum/maximum search term length
 
-### Favorites Management (US002)
+### Downloaded Papers Management (US002)
 **Current Requirements:**
-- Users can mark papers as favorites
-- Favorites persist across app sessions
+- Users can download papers for offline access
+- Downloaded papers persist across app sessions
 
 **Testability Feedback:**
-- ✅ **Functional behavior clear** - Toggle action well-defined
-- ⚠️ **Storage limitations unclear** - No maximum favorites specified
+- ✅ **Functional behavior clear** - Download/remove action well-defined
+- ⚠️ **Storage limitations unclear** - No maximum downloads specified
 - ⚠️ **Sync behavior undefined** - Multi-device scenarios not addressed
 
 **Recommendations:**
-1. Define maximum number of favorites allowed
+1. Define maximum number of downloaded papers allowed
 2. Specify cross-device synchronization requirements
-3. Add bulk operations (select all, clear all favorites)
-4. Define favorite removal confirmation process
+3. Add bulk operations (select all, clear all downloads)
+4. Define download removal confirmation process
 
 ### PDF Management (US003)
 **Current Requirements:**
@@ -92,7 +92,7 @@ This document provides comprehensive feedback on requirement testability and sug
 
 ### High-Value Automation
 1. **Search Functionality** - API response validation
-2. **Favorites Persistence** - Cross-session data validation
+2. **Downloaded Papers Persistence** - Cross-session data validation
 3. **Network Error Handling** - Retry mechanism validation
 
 ### Manual Testing Priority

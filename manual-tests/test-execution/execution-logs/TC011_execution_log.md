@@ -81,14 +81,13 @@ Verify that the core user journeys (search, view result, toggle favourite) are f
 - TalkBack announced the paper title
 - All metadata accessible
 
-### Step 7: Toggle favorite via TalkBack
-**Action:** Locate and tap favorite/star button
+### Step 7: Download via TalkBack
+**Action:** Locate and tap the download button
 **Android Result:** [x] Pass [ ] Fail
 **iOS Result:** N/A [ ] Fail
 **Notes:**
-- TalkBack announced: "Add to favourites, double-tap to activate"
-- After activation: "Remove from favourites"
-- Meaningful label changes -- no "unlabelled"
+- TalkBack announced: "Download, double-tap to activate"
+- Meaningful label -- no "unlabelled"
 
 ### Step 8: Navigate back
 **Action:** Use TalkBack back gesture
@@ -108,7 +107,7 @@ Verify that the core user journeys (search, view result, toggle favourite) are f
 | Search field has descriptive label | [x] Pass [ ] Fail | "Search arXiv papers, text field" |
 | Search button announced correctly | [x] Pass [ ] Fail | "Search button" |
 | Result titles announced (not "image") | [x] Pass [ ] Fail | Titles + authors read clearly |
-| Favorite button has label | [x] Pass [ ] Fail | "Add to/Remove from favourites" |
+| Download button has label | [x] Pass [ ] Fail | "Download" |
 | Focus follows logical order | [x] Pass [ ] Fail | Top-to-bottom, left-to-right |
 | No "unlabelled" elements encountered | [x] Pass [ ] Fail | All elements properly labeled |
 | WCAG 1.1.1 Non-text content | [x] Pass [ ] Fail | Icons have text alternatives |

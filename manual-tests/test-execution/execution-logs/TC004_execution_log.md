@@ -66,7 +66,7 @@ Verify that the app responds gracefully when the user attempts a search with no 
 **iOS Result:** [x] Pass [ ] Fail
 **Notes:**
 - Navigation tabs still functional
-- Favorites tab accessible
+- DOWNLOADED tab accessible
 - Settings/menu accessible
 - No frozen UI elements
 
