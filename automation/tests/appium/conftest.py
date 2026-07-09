@@ -9,10 +9,10 @@ from appium.options.android import UiAutomator2Options
 USE_BROWSERSTACK = os.environ.get("BROWSERSTACK", "false").lower() == "true"
 
 APPIUM_SERVER = os.environ.get("APPIUM_SERVER_URL", "http://127.0.0.1:4723")
-ANDROID_APK = os.environ.get(
-    "ARXIV_APK_PATH",
-    "/tmp/arxiv-mobile-testing/arxiv-papers-mobile/android/app/build/outputs/apk/debug/app-debug.apk",
-)
+# Default targets the fixture APK checked into the repo (automation/appium/), so
+# `pytest -m appium` works locally without building the app from source first.
+_REPO_APK = Path(__file__).resolve().parents[2] / "appium" / "arxiv-papers-v1.0.apk"
+ANDROID_APK = os.environ.get("ARXIV_APK_PATH", str(_REPO_APK))
 DEVICE_NAME = os.environ.get("ANDROID_DEVICE_NAME", "Android Emulator")
 
 BS_SERVER = "https://hub-cloud.browserstack.com/wd/hub"

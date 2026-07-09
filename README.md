@@ -4,7 +4,7 @@
 [![codecov](https://codecov.io/gh/gesttaltt/qa-arxiv-mobile/graph/badge.svg)](https://codecov.io/gh/gesttaltt/qa-arxiv-mobile)
 ![Python](https://img.shields.io/badge/python-3.12-3776AB?logo=python&logoColor=white)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-![Appium](https://img.shields.io/badge/Appium-7%2F7%20passing%20%7C%20BrowserStack-662D91?logo=appium&logoColor=white)
+![Appium](https://img.shields.io/badge/Appium-local_emulator%20%28CI%29-blue?logo=appium&logoColor=white)
 ![BDD](https://img.shields.io/badge/BDD-Gherkin%20%2B%20pytest--bdd-23D96C?logo=cucumber&logoColor=white)
 ![Tests](https://img.shields.io/badge/tests-57%20passing-4CAF50?logo=pytest&logoColor=white)
 
@@ -192,6 +192,19 @@ Also includes:
 - Modern Python tooling: ruff, black, mypy, pytest-cov, pytest-html, pytest-bdd
 - Markdown and YAML linting integration
 - Mock-based SLA tests and API contract validation for the Search and data validation features
+
+### Appium — current status
+
+As of 2026-07-09 the `test-appium` CI job runs against a **local Android emulator** (via
+`reactivecircus/android-emulator-runner`, API 33, Pixel 6 profile) instead of BrowserStack —
+no paid quota required. The job installs Appium + the UiAutomator2 driver, boots the emulator,
+installs the APK checked into the repo (`automation/appium/arxiv-papers-v1.0.apk`), and runs
+the 7 smoke tests against it. This replaces the previous BrowserStack-backed job, which stopped
+running after the free trial expired on 2026-07-08 (see `docs/QA_AUDIT.md` §3.7 for that
+history). The BrowserStack path (`BROWSERSTACK=true`) still exists in `conftest.py` for anyone
+who wants to point the same tests at a real device later. **Check the Actions tab for the
+actual result of the first run against this new setup** rather than trusting the badge alone —
+a first-time CI emulator run can surface environment differences a badge won't capture.
 
 ## Documentation and Testability Feedback
 

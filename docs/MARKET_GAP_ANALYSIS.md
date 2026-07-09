@@ -84,12 +84,19 @@ Appium is the correct and expected tool for mobile UI automation. The POM patter
 `SearchPage`/`DownloadedPage`) demonstrates the same structural thinking as a Selenium Page Object
 framework.
 
-**BrowserStack CI integration (July 2026):** The `test-appium` CI job runs Appium smoke tests
-against a real Samsung Galaxy S22 (Android 12) via BrowserStack App Automate on every push.
-`conftest.py` uses a `BROWSERSTACK=true` env var toggle — same code runs locally (local Appium
-server) or in CI (BrowserStack cloud). Credentials are stored as GitHub Secrets
-(`BROWSERSTACK_USERNAME`, `BROWSERSTACK_ACCESS_KEY`, `BROWSERSTACK_APP_ID`). This closes
-the "tests exist but require a local device" gap and demonstrates real cloud device testing.
+**BrowserStack CI integration (July 2026):** The `test-appium` CI job originally ran Appium
+smoke tests against a real Samsung Galaxy S22 (Android 12) via BrowserStack App Automate on
+every push. `conftest.py` used a `BROWSERSTACK=true` env var toggle — same code runs locally
+(local Appium server) or against BrowserStack cloud. This demonstrated real cloud device
+testing and closed the "tests exist but require a local device" gap.
+
+**Switched to a local emulator (2026-07-09):** the BrowserStack free trial expired on
+2026-07-08, and every CI run afterward errored on setup with `App Automate testing time has
+expired`. Rather than depend on a paid quota, the CI job now boots a local Android emulator
+(API 33, Pixel 6 profile) via `reactivecircus/android-emulator-runner` and installs the APK
+already checked into the repo — no external account needed. The BrowserStack path still exists
+in `conftest.py` as an optional target. See `docs/QA_AUDIT.md` §3.7 for the full history,
+including confirmation of the first real run against the new setup.
 
 ---
 

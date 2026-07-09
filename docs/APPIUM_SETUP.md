@@ -73,15 +73,17 @@ curl http://127.0.0.1:4723/status
 
 ## 4. Configure Environment Variables
 
-The test suite reads three optional env vars — defaults target a local emulator build:
+The test suite reads three optional env vars. Defaults target the fixture APK checked into the
+repo (`automation/appium/arxiv-papers-v1.0.apk`), so `pytest -m appium` works against a local
+emulator with zero configuration — override `ARXIV_APK_PATH` only if testing a different build:
 
 | Variable | Default | Description |
 |---|---|---|
 | `APPIUM_SERVER_URL` | `http://127.0.0.1:4723` | Appium server address |
-| `ARXIV_APK_PATH` | `/tmp/…/app-debug.apk` | Absolute path to the compiled APK |
+| `ARXIV_APK_PATH` | `automation/appium/arxiv-papers-v1.0.apk` (repo-relative) | Absolute path to the APK to install |
 | `ANDROID_DEVICE_NAME` | `Android Emulator` | Name matching `adb devices` output |
 
-Example:
+Example (only needed to point at a different build than the checked-in fixture APK):
 
 ```bash
 export APPIUM_SERVER_URL="http://127.0.0.1:4723"
@@ -153,8 +155,24 @@ pytest automation/tests/ -m "not appium" -v
 
 ### GitHub Actions (`.github/workflows/ci.yml`)
 
-The `test-appium` job runs automatically on every push to `main` or `develop`.
-It requires three repository secrets:
+The `test-appium` job runs automatically on every push to `main` or `develop`, against a
+**local Android emulator** — no external account or secrets required. The job:
+
+1. Installs Appium 2.x + the UiAutomator2 driver via npm.
+2. Boots an API 33 (Pixel 6 profile) emulator using
+   [`reactivecircus/android-emulator-runner`](https://github.com/ReactiveCircus/android-emulator-runner).
+3. Starts a local Appium server and waits for `/status` to respond.
+4. Runs the 7 smoke tests against the APK checked into the repo
+   (`automation/appium/arxiv-papers-v1.0.apk`).
+
+> **History:** this job originally ran against BrowserStack App Automate. It was switched to a
+> local emulator on 2026-07-09 after the BrowserStack free trial expired on 2026-07-08 — see
+> `docs/QA_AUDIT.md` §3.7 for the full timeline, including confirmation of the first real run
+> against this config.
+
+The BrowserStack path is still supported for anyone who wants to point the same tests at a
+real cloud device — set `BROWSERSTACK=true` and the three secrets below, then run the job
+command manually or re-add a BrowserStack step to the workflow:
 
 | Secret | Description |
 |---|---|

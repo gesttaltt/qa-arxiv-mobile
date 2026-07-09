@@ -53,6 +53,6 @@ disclosed placeholders rather than real captures.
 
 - **API + unit tests** — `automation/tests/` (50 tests: integration, SLA, contract, retry logic, pagination, author search)
 - **BDD / Gherkin** — `automation/features/` (`search.feature` + `article_data_contract.feature`) + `automation/tests/bdd/`
-- **Mobile UI (Appium)** — `automation/tests/appium/` (Page Object Model, 7 tests; runs in CI via BrowserStack App Automate — Samsung Galaxy S22, Android 12)
+- **Mobile UI (Appium)** — `automation/tests/appium/` (Page Object Model, 7 tests; runs in CI against a local Android emulator — API 33, Pixel 6 profile, via `reactivecircus/android-emulator-runner`). Replaced the previous BrowserStack-backed job after its free trial expired 2026-07-08; see [QA Audit](QA_AUDIT) §3.7 for that history.
 - **Postman collection** — `automation/postman/arXiv_API.postman_collection.json` (8 requests, Newman CLI)
 - **CI/CD** — GitHub Actions (`.github/workflows/ci.yml`) + Azure Pipelines (`automation/ci/azure-pipelines.yml`)

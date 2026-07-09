@@ -99,7 +99,7 @@ jobs:
           fail_ci_if_error: false
 
   test-appium:
-    name: Appium Tests (BrowserStack)
+    name: Appium Tests (Local Emulator)
     runs-on: ubuntu-latest
     needs: lint
     steps:
@@ -110,25 +110,53 @@ jobs:
           python-version: "3.12"
           cache: "pip"
 
-      - name: Install dependencies
+      - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r automation/requirements.txt
 
-      - name: Run Appium smoke tests on BrowserStack
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+
+      - name: Install Appium server + UiAutomator2 driver
+        run: |
+          npm install -g appium
+          appium driver install uiautomator2
+
+      - name: Run Appium smoke tests on a local Android emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 33
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          script: |
+            appium --log appium.log &
+            for i in $(seq 1 30); do
+              curl -sf http://127.0.0.1:4723/status > /dev/null && break
+              sleep 2
+            done
+            mkdir -p test-results
+            pytest automation/tests/appium/ \
+              -m "appium" \
+              --html=test-results/appium-report.html \
+              --self-contained-html \
+              --junitxml=test-results/appium-results.xml \
+              --reruns 1 --reruns-delay 5 \
+              -s -v
         env:
-          BROWSERSTACK: "true"
-          BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
-          BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
-          BROWSERSTACK_APP_ID: ${{ secrets.BROWSERSTACK_APP_ID }}
+          ARXIV_APK_PATH: ${{ github.workspace }}/automation/appium/arxiv-papers-v1.0.apk
+          APPIUM_SERVER_URL: "http://127.0.0.1:4723"
+          ANDROID_DEVICE_NAME: "Android Emulator"
+
+      - name: Collect Appium server log
+        if: always()
         run: |
           mkdir -p test-results
-          pytest automation/tests/appium/ \
-            -m "appium" \
-            --html=test-results/appium-report.html \
-            --self-contained-html \
-            -s -v
-        continue-on-error: true
+          cp appium.log test-results/ 2>/dev/null || true
 
       - name: Collect hierarchy dumps
         if: always()

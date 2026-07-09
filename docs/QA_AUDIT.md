@@ -3,7 +3,7 @@
 **Project:** qa-arxiv-mobile  
 **Author:** Jonathan Verdun  
 **Audit Date:** 2026-04-23  
-**Last Updated:** 2026-06-26  
+**Last Updated:** 2026-07-09  
 **Primary Target:** iOS Mobile (React Native)  
 **Secondary Target:** Android  
 
@@ -15,7 +15,7 @@ This audit reviews the current state of the QA project for the `arxiv-papers-mob
 
 Issues identified in the April 2026 initial audit have been progressively resolved. As of July 2026, 10 of 11 test cases have been executed on Android (TC006 is iOS-only and was never executed — no macOS/Xcode/iOS Simulator was available). iOS execution across all test cases remains outstanding; the "iOS" evidence files in `evidence/ios/` are disclosed placeholders (the Android recording with a "Pending macOS environment" banner), not real captures. 30 evidence files exist in total (10 genuine Android GIFs, 8 iOS placeholder GIFs, 11 screenshots — 5 genuine, 6 mislabeled/synthetic — 1 suite summary); all Android execution logs contain real tester data, and the `TESTING_CHECKLIST.md` has been completed in full and corrected to reflect the iOS gap honestly. All 7 issues found during Android execution are formally documented as BUG001–BUG007.
 
-The automation layer has been substantially expanded: 57 automated tests across API integration and BDD/Gherkin scenarios, plus 7 Appium tests running on BrowserStack App Automate (Samsung Galaxy S22); 100% coverage on `utils.py` enforced as a CI gate (`--cov-fail-under=100`); page objects excluded from coverage (require real device — validated by Appium tests in CI); GitHub Actions pipeline fully green with lint, type checking, and coverage gates.
+The automation layer has been substantially expanded: 57 automated tests across API integration and BDD/Gherkin scenarios, plus 7 Appium tests wired into CI via BrowserStack App Automate (Samsung Galaxy S22) — though as of 2026-07-08 the BrowserStack free trial expired and the Appium job has errored on every run since (see §3.7); 100% coverage on `utils.py` enforced as a CI gate (`--cov-fail-under=100`); page objects excluded from coverage (require real device — previously validated by Appium tests in CI, now blocked on trial renewal); GitHub Actions pipeline shows green overall, but that includes a masked Appium failure via `continue-on-error: true` — lint, type checking, and coverage gates are genuinely blocking and green.
 
 Remaining gaps: iOS execution is zero across all 11 test cases — no macOS/Xcode/iOS Simulator was available, and this is disclosed rather than papered over with fabricated evidence; TC010 in particular has no iOS file at all, not even a placeholder; no macOS CI stage exists for iOS simulator execution.
 
@@ -134,8 +134,48 @@ The following improvements have been made since the initial audit:
 - **`TestPerformanceBaseline`**: replaced the real-HTTP SLA test with mock-based tests that simulate 0.5 s (passes) and 3.5 s (fails) responses, validating the assertion logic rather than third-party API latency.
 - **`TestArticleDataContract`**: replaced the old hardcoded dict assertion with 4 real API contract tests (`id`, `title`, `authors`, `published`) that would catch API schema changes before the UI is even involved.
 - **BDD / Gherkin**: `automation/features/search.feature` (5 scenarios including Scenario Outline, `test_search.py`) and `automation/features/article_data_contract.feature` (2 scenarios, `test_article_data.py`) — 7 scenarios total via pytest-bdd 7.3.0.
-- **Honest coverage (100%)**: `utils.py` 100% covered by 4 retry-logic unit tests — no mocks inflating the figure. Page objects (`BasePage`, `SearchPage`, `DownloadedPage`) are excluded from coverage measurement; they are verified by Appium tests on BrowserStack. `--cov-fail-under=100` enforces the gate on measurable code.
+- **Honest coverage (100%)**: `utils.py` 100% covered by 4 retry-logic unit tests — no mocks inflating the figure. Page objects (`BasePage`, `SearchPage`, `DownloadedPage`) are excluded from coverage measurement; they are verified by Appium tests. `--cov-fail-under=100` enforces the gate on measurable code.
 - **Codecov**: `.codecov.yml` added; coverage badge reflects the live 100% figure.
+
+### 3.7 Appium / BrowserStack — trial expired, then switched to a local emulator (2026-07-09)
+
+The `test-appium` CI job and the README/docs previously stated "7/7 passing" as a settled fact.
+Checking the actual CI job logs (not just the green checkmark) showed this is no longer true:
+the **BrowserStack free trial expired on 2026-07-08**, and the three CI runs since then
+(`28975476664`, `28977744230`, `28978305601`) all error out identically:
+
+```
+WebDriverException: App Automate testing time has expired. Contact BrowserStack Support
+at https://www.browserstack.com/contact for extending your Free Trial.
+========================= 1 warning, 7 errors in 1.12s =========================
+##[error]Process completed with exit code 1.
+```
+
+The GitHub Actions job still shows a green checkmark because the `test-appium` step in
+`.github/workflows/ci.yml` uses `continue-on-error: true` — this masks the failure at the
+job-summary level rather than failing CI, but it does **not** mean the tests passed. The
+README's Appium badge was a static shields.io badge (hardcoded text, not wired to live CI
+state), so it kept reading "7/7 passing" through three failing runs without anyone noticing
+until the raw job logs were checked.
+
+**Last confirmed-passing run on BrowserStack:** 2026-07-07 (commit `37496aa`, which is when the
+"7/7 passing" badge was originally added — accurate at the time it was written, stale since the
+trial ran out the next day).
+
+**Resolution applied (2026-07-09):** rather than wait on a paid BrowserStack renewal, the
+`test-appium` CI job (`.github/workflows/ci.yml`) was switched to run against a **local Android
+emulator** via `reactivecircus/android-emulator-runner` (API 33, Pixel 6 profile) — no external
+account or quota required. The job boots the emulator, starts a local Appium server, and
+installs the APK already checked into the repo (`automation/appium/arxiv-papers-v1.0.apk`).
+`conftest.py`'s default APK path was also updated to point at that checked-in file so the same
+tests run locally with zero setup (`ARXIV_APK_PATH` env var still overrides it). The
+BrowserStack code path (`BROWSERSTACK=true`) was left intact in `conftest.py` as an optional
+alternate target, but it is no longer what CI runs by default. The `continue-on-error: true`
+that was masking the BrowserStack failure was removed — this job is now allowed to fail loudly.
+
+Following the same rule as the iOS disclosure (§2): this section will not be updated to claim
+"passing" until a real CI run against the new emulator config has been observed and confirmed —
+check the Actions tab for the actual result rather than trusting this document or the badge.
 
 ---
 
@@ -303,6 +343,7 @@ The standalone `ruff.toml` has been removed and its configuration has been merge
 | Formal defect reports | 7 / 7 (BUG001–BUG007 — all execution issues documented, Android only) |
 | iOS-specific test cases | 1 (TC006) — designed, not executed |
 | Automation tests using correct framework | 64 — 57 API/unit/BDD + 7 Appium (Selenium replaced) |
+| Appium tests currently passing in CI | Unconfirmed — CI switched to a local emulator 2026-07-09 (§3.7); pending first observed run. Last confirmed pass on BrowserStack: 2026-07-07 |
 | Selenium-based tests (wrong framework) | 0 |
 | Config fragmentation (ruff) | Resolved — consolidated in `pyproject.toml` |
 | Code coverage | 100% on `utils.py` (10 statements) — page objects excluded (require real device); gate at `--cov-fail-under=100` |
@@ -340,8 +381,8 @@ The standalone `ruff.toml` has been removed and its configuration has been merge
 | `automation/tests/test_data_validation.py` | Atom XML data validation | Complete |
 | `automation/features/search.feature` | BDD Gherkin scenarios (TC001, TC002, Outline × 3) | Complete |
 | `automation/tests/bdd/test_search.py` | pytest-bdd step definitions | Complete |
-| `automation/tests/appium/test_search_smoke.py` | Appium UI test (search) | 5/5 passing — BrowserStack (Samsung Galaxy S22, Android 12) |
-| `automation/tests/appium/test_downloaded_smoke.py` | Appium UI test (DOWNLOADED tab) | 2/2 passing — BrowserStack (Samsung Galaxy S22, Android 12) |
+| `automation/tests/appium/test_search_smoke.py` | Appium UI test (search) | 5 tests — CI-wired against a local Android emulator since 2026-07-09; result unconfirmed until first run observed (§3.7) |
+| `automation/tests/appium/test_downloaded_smoke.py` | Appium UI test (DOWNLOADED tab) | 2 tests — CI-wired against a local Android emulator since 2026-07-09; result unconfirmed until first run observed (§3.7) |
 | `automation/ci/azure-pipelines.yml` | CI pipeline | Standard ADO syntax; UnitTests + IntegrationTests jobs; `--cov-fail-under=100` gate; no iOS stage |
 | `.github/workflows/ci.yml` | GitHub Actions CI | Functional |
 | `pyproject.toml` | Project config + ruff config | Consolidated (ruff.toml removed) |
