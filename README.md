@@ -4,7 +4,7 @@
 [![codecov](https://codecov.io/gh/gesttaltt/qa-arxiv-mobile/graph/badge.svg)](https://codecov.io/gh/gesttaltt/qa-arxiv-mobile)
 ![Python](https://img.shields.io/badge/python-3.12-3776AB?logo=python&logoColor=white)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-![Appium](https://img.shields.io/badge/Appium-local_emulator%20%28CI%29-blue?logo=appium&logoColor=white)
+![Appium](https://img.shields.io/badge/Appium-BrowserStack%20%28best--effort%29-blue?logo=appium&logoColor=white)
 ![BDD](https://img.shields.io/badge/BDD-Gherkin%20%2B%20pytest--bdd-23D96C?logo=cucumber&logoColor=white)
 ![Tests](https://img.shields.io/badge/tests-57%20passing-4CAF50?logo=pytest&logoColor=white)
 
@@ -195,16 +195,15 @@ Also includes:
 
 ### Appium — current status
 
-As of 2026-07-09 the `test-appium` CI job runs against a **local Android emulator** (via
-`reactivecircus/android-emulator-runner`, API 33, Pixel 6 profile) instead of BrowserStack —
-no paid quota required. The job installs Appium + the UiAutomator2 driver, boots the emulator,
-installs the APK checked into the repo (`automation/appium/arxiv-papers-v1.0.apk`), and runs
-the 7 smoke tests against it. This replaces the previous BrowserStack-backed job, which stopped
-running after the free trial expired on 2026-07-08 (see `docs/QA_AUDIT.md` §3.7 for that
-history). The BrowserStack path (`BROWSERSTACK=true`) still exists in `conftest.py` for anyone
-who wants to point the same tests at a real device later. **Check the Actions tab for the
-actual result of the first run against this new setup** rather than trusting the badge alone —
-a first-time CI emulator run can surface environment differences a badge won't capture.
+The `test-appium` CI job runs against **BrowserStack App Automate** and is marked
+`continue-on-error: true` — it does **not** block merges, and a green checkmark on the job does
+**not** mean the 7 Appium tests actually passed. This is disclosed on purpose: BrowserStack's
+free trial expired 2026-07-08, so the job errors on setup until the trial/plan is renewed. A
+2026-07-09 attempt to replace it with a local Android emulator
+(`reactivecircus/android-emulator-runner`) was reverted 2026-07-14 after it hung for 6 hours in
+CI without ever booting, rather than failing fast — see `docs/QA_AUDIT.md` §3.7 for the full
+history of both attempts. **Check the job's actual log in the Actions tab** for the real
+pass/fail state; last confirmed-passing run on BrowserStack was 2026-07-07.
 
 ## Documentation and Testability Feedback
 

@@ -90,13 +90,14 @@ every push. `conftest.py` used a `BROWSERSTACK=true` env var toggle — same cod
 (local Appium server) or against BrowserStack cloud. This demonstrated real cloud device
 testing and closed the "tests exist but require a local device" gap.
 
-**Switched to a local emulator (2026-07-09):** the BrowserStack free trial expired on
-2026-07-08, and every CI run afterward errored on setup with `App Automate testing time has
-expired`. Rather than depend on a paid quota, the CI job now boots a local Android emulator
-(API 33, Pixel 6 profile) via `reactivecircus/android-emulator-runner` and installs the APK
-already checked into the repo — no external account needed. The BrowserStack path still exists
-in `conftest.py` as an optional target. See `docs/QA_AUDIT.md` §3.7 for the full history,
-including confirmation of the first real run against the new setup.
+**Local emulator attempt, then reverted (2026-07-09 – 2026-07-14):** the BrowserStack free trial
+expired on 2026-07-08, and every CI run afterward errored on setup with `App Automate testing
+time has expired`. A local Android emulator (API 33, Pixel 6 profile) via
+`reactivecircus/android-emulator-runner` was tried as a paid-quota-free replacement, but it
+failed to boot in GitHub-hosted CI across two attempts — the second hung for the full 6-hour job
+timeout — leaving `main`'s CI red for 5 days. The job was reverted to BrowserStack on 2026-07-14
+as the known-working target, now with `continue-on-error: true` disclosed explicitly rather than
+silently masking failures. See `docs/QA_AUDIT.md` §3.7 for the full history.
 
 ---
 

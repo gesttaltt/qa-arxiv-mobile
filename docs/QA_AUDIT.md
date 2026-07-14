@@ -177,6 +177,27 @@ Following the same rule as the iOS disclosure (§2): this section will not be up
 "passing" until a real CI run against the new emulator config has been observed and confirmed —
 check the Actions tab for the actual result rather than trusting this document or the badge.
 
+**Update (2026-07-09, same day): local emulator attempt failed too.** The first real CI run
+(`29019581286`) failed — `reactivecircus/android-emulator-runner` couldn't get the emulator
+ready (`adb` exit code 224) and the integration-test job failed independently in the same run.
+A follow-up fix granting KVM device permissions (`24cbe94`) was pushed, but the resulting run
+(`29020941976`) never booted the emulator either — it ran for the full 6-hour CI job timeout
+and was cancelled (`The job has exceeded the maximum execution time of 6h0m0s`), rather than
+failing fast. **This left CI red on `main` from 2026-07-09 through 2026-07-14** (5 days) with
+no working Appium path in either direction.
+
+**Resolution applied (2026-07-14):** reverted `test-appium` to BrowserStack, since it is a
+known-working target (last confirmed pass 2026-07-07) rather than an unreliable one (local
+emulator never successfully booted in CI across two attempts). `continue-on-error: true` was
+restored,
+but unlike the original masking (§3.7 above, before the 2026-07-09 fix), this time it is
+disclosed explicitly in the workflow file, the README, and this document: **a green
+`test-appium` job does not mean the 7 Appium tests passed** — it means the job didn't block the
+pipeline. The BrowserStack trial must be renewed (or a genuinely reliable local-device CI setup
+found) before this job's result can be trusted again. The local-emulator code path was removed
+from `ci.yml`; `docs/APPIUM_SETUP.md` still documents how to run against a local emulator
+manually for anyone with a working Android SDK setup outside CI.
+
 ---
 
 ## 4. Test Case Design Issues

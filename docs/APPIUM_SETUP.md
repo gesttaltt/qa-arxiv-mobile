@@ -155,24 +155,10 @@ pytest automation/tests/ -m "not appium" -v
 
 ### GitHub Actions (`.github/workflows/ci.yml`)
 
-The `test-appium` job runs automatically on every push to `main` or `develop`, against a
-**local Android emulator** — no external account or secrets required. The job:
-
-1. Installs Appium 2.x + the UiAutomator2 driver via npm.
-2. Boots an API 33 (Pixel 6 profile) emulator using
-   [`reactivecircus/android-emulator-runner`](https://github.com/ReactiveCircus/android-emulator-runner).
-3. Starts a local Appium server and waits for `/status` to respond.
-4. Runs the 7 smoke tests against the APK checked into the repo
-   (`automation/appium/arxiv-papers-v1.0.apk`).
-
-> **History:** this job originally ran against BrowserStack App Automate. It was switched to a
-> local emulator on 2026-07-09 after the BrowserStack free trial expired on 2026-07-08 — see
-> `docs/QA_AUDIT.md` §3.7 for the full timeline, including confirmation of the first real run
-> against this config.
-
-The BrowserStack path is still supported for anyone who wants to point the same tests at a
-real cloud device — set `BROWSERSTACK=true` and the three secrets below, then run the job
-command manually or re-add a BrowserStack step to the workflow:
+The `test-appium` job runs automatically on every push to `main` or `develop`, against
+**BrowserStack App Automate**, and is marked `continue-on-error: true` — it does not block the
+pipeline, and a green checkmark on the job does **not** mean the 7 tests actually passed (see
+the disclosure note below).
 
 | Secret | Description |
 |---|---|
@@ -187,6 +173,16 @@ curl -u "USER:KEY" \
   -X POST "https://api-cloud.browserstack.com/app-automate/upload" \
   -F "file=@automation/appium/arxiv-papers-v1.0.apk"
 ```
+
+> **History and current disclosure:** BrowserStack's free trial expired 2026-07-08, so this job
+> errors on setup until the trial/plan is renewed. A 2026-07-09 attempt to replace it with a
+> local Android emulator (`reactivecircus/android-emulator-runner`) failed twice in CI — the
+> second attempt hung for the full 6-hour job timeout without ever booting — leaving `main`'s CI
+> red for 5 days. It was reverted to BrowserStack on 2026-07-14 as the known-working (if
+> currently unfunded) option. See `docs/QA_AUDIT.md` §3.7 for the full timeline. To actually run
+> these tests today: renew the BrowserStack trial, or follow §§1–6 above to run them locally
+> against your own emulator (`BROWSERSTACK` unset, `ARXIV_APK_PATH` pointing at
+> `automation/appium/arxiv-papers-v1.0.apk`).
 
 ### Azure Pipelines (`automation/ci/azure-pipelines.yml`)
 
