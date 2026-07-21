@@ -41,6 +41,9 @@ coverage.xml
 .coverage
 htmlcov/
 
+# AI assistant memory (local-only, not for the public repo)
+memory/
+
 # Node
 node_modules/
 npm-debug.log*
