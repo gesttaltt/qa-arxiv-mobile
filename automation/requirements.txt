@@ -1,6 +1,6 @@
 # Core testing dependencies
 Appium-Python-Client==4.3.0
-selenium==4.27.1
+selenium==4.46.0
 pytest==9.1.1
 requests==2.32.3
 # pytest-trx==0.3.2 (Not on PyPI, used in Azure Pipelines only)
