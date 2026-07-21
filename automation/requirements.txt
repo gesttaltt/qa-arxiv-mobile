@@ -19,5 +19,5 @@ yamllint==1.38.0
 # Additional testing utilities
 pytest-mock==3.14.0
 pytest-bdd==7.3.0
-pytest-rerunfailures==15.0
+pytest-rerunfailures==16.4
 types-requests
