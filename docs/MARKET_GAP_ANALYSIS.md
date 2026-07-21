@@ -240,7 +240,7 @@ collaboration between QA and non-technical stakeholders. Gherkin + a test framew
 
 **Current state (June 2026):** `automation/features/search.feature` contains 5 Gherkin
 scenarios (TC001 valid search, TC002 empty query, Scenario Outline × 3 academic keywords).
-`automation/tests/bdd/test_search.py` implements step definitions using pytest-bdd 7.3.0.
+`automation/tests/bdd/test_search.py` implements step definitions using pytest-bdd 8.1.0.
 `docs/TESTING_THEORY.md` §9 explains BDD methodology and maps each scenario to a User Story.
 
 ---

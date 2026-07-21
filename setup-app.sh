@@ -26,8 +26,7 @@ cd "$TEMP_DIR"
 if [ ! -d "$APP_DIR" ]; then
     echo ""
     echo "Cloning arXiv Papers Mobile repository..."
-    git clone https://github.com/lopespm/arxiv-papers-mobile.git
-    if [ $? -eq 0 ]; then
+    if git clone https://github.com/lopespm/arxiv-papers-mobile.git; then
         echo "Repository cloned successfully"
     else
         echo "ERROR: Failed to clone repository"
@@ -59,8 +58,7 @@ fi
 
 # Install npm dependencies
 echo "Installing npm packages..."
-npm install
-if [ $? -eq 0 ]; then
+if npm install; then
     echo "npm dependencies installed"
 else
     echo "ERROR: Failed to install npm dependencies"
@@ -76,8 +74,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     if command -v pod &> /dev/null; then
         echo "Installing iOS dependencies..."
         cd ios
-        pod install
-        if [ $? -eq 0 ]; then
+        if pod install; then
             echo "iOS pods installed successfully"
         else
             echo "WARNING: Failed to install iOS pods - you may need to run 'pod install' manually"

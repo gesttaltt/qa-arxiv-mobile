@@ -133,7 +133,7 @@ The following improvements have been made since the initial audit:
 - **`automation/tests/test_utils.py`**: 4 mock-based unit tests covering the retry logic — success path, 1-retry, 2-retry backoff, and exhausted-retries branches. All branches covered without real network calls.
 - **`TestPerformanceBaseline`**: replaced the real-HTTP SLA test with mock-based tests that simulate 0.5 s (passes) and 3.5 s (fails) responses, validating the assertion logic rather than third-party API latency.
 - **`TestArticleDataContract`**: replaced the old hardcoded dict assertion with 4 real API contract tests (`id`, `title`, `authors`, `published`) that would catch API schema changes before the UI is even involved.
-- **BDD / Gherkin**: `automation/features/search.feature` (5 scenarios including Scenario Outline, `test_search.py`) and `automation/features/article_data_contract.feature` (2 scenarios, `test_article_data.py`) — 7 scenarios total via pytest-bdd 7.3.0.
+- **BDD / Gherkin**: `automation/features/search.feature` (5 scenarios including Scenario Outline, `test_search.py`) and `automation/features/article_data_contract.feature` (2 scenarios, `test_article_data.py`) — 7 scenarios total via pytest-bdd 8.1.0.
 - **Honest coverage (100%)**: `utils.py` 100% covered by 4 retry-logic unit tests — no mocks inflating the figure. Page objects (`BasePage`, `SearchPage`, `DownloadedPage`) are excluded from coverage measurement; they are verified by Appium tests. `--cov-fail-under=100` enforces the gate on measurable code.
 - **Codecov**: `.codecov.yml` added; coverage badge reflects the live 100% figure.
 
