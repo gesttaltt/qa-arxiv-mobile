@@ -144,20 +144,6 @@ This document links:
 | US003 | Download and View PDFs | As a user, I want to download and open PDF versions of papers so that I can read them offline or in external viewers. | TC005, TC006, TC007 |
 | US004 | Network Connectivity | As a user, I want the app to handle network state changes gracefully so that I can continue using the app without data loss or crashes when connectivity changes. | TC009, TC010 |
 
-## QA Methodology & SDLC Integration
-
-### Testing Lifecycle
-- **Requirements Analysis**: Participate in story refinement and acceptance criteria definition
-- **Test Planning**: Create comprehensive test plans aligned with sprint goals
-- **Test Design**: Develop test cases covering functional, usability, and edge cases
-- **Test Execution**: Manual execution with detailed defect reporting
-- **Defect Management**: Track issues through resolution using ADO work items
-
-### Traceability Framework
-- Forward Traceability: Requirements → Test Cases → Test Results
-- Backward Traceability: Defects → Test Cases → Requirements
-- Bi-directional linking maintained in Azure DevOps
-
 ## Requirement Reviews & Testability Feedback
 
 ### Participation in Story Refinement
@@ -213,17 +199,6 @@ Found under:
 - `manual-tests/wiki/coverage_summary.md`
 
 These emulate how feedback and progress would be captured in a live ADO Wiki environment.
-
-## Project Scope and Objectives
-
-This repository demonstrates comprehensive QA practices applied to the arxiv-papers-mobile application:
-
-- Manual testing methodology for mobile applications across iOS and Android platforms
-- Azure DevOps integration for test case management and requirement traceability
-- SDLC-aware testing strategies with emphasis on collaboration and documentation
-- Test automation collaboration framework supporting manual testing efforts
-
-The testing framework is designed to ensure high-quality mobile application delivery through systematic validation of functional requirements, platform-specific behaviors, and user experience consistency.
 
 ## ✅ Real Mobile Test Execution
 
