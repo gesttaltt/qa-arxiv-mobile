@@ -187,9 +187,10 @@ The `test-appium` CI job runs against **BrowserStack App Automate** and is marke
 free trial expired 2026-07-08, so the job errors on setup until the trial/plan is renewed. A
 2026-07-09 attempt to replace it with a local Android emulator
 (`reactivecircus/android-emulator-runner`) was reverted 2026-07-14 after it hung for 6 hours in
-CI without ever booting, rather than failing fast — see `docs/QA_AUDIT.md` §3.7 for the full
-history of both attempts. **Check the job's actual log in the Actions tab** for the real
-pass/fail state; last confirmed-passing run on BrowserStack was 2026-07-07.
+CI — the emulator booted fine, but a script bug left the job stuck in cleanup instead of failing
+fast — see `docs/QA_AUDIT.md` §3.7 for the full history of both attempts. **Check the job's
+actual log in the Actions tab** for the real pass/fail state; last confirmed-passing run on
+BrowserStack was 2026-07-07.
 
 ## Documentation and Testability Feedback
 

@@ -103,8 +103,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: lint
     # Best-effort: BrowserStack requires an active trial/plan (ours expired 2026-07-08), and
-    # the local-emulator alternative tried on 2026-07-09 hung for 6h in GitHub-hosted CI without
-    # ever booting (see docs/QA_AUDIT.md §3.7). continue-on-error is intentional and disclosed —
+    # the local-emulator alternative tried on 2026-07-09 hung for 6h in GitHub-hosted CI — the
+    # emulator itself booted fine, but a script bug left the job stuck in cleanup instead of
+    # failing fast (see docs/QA_AUDIT.md §3.7). continue-on-error is intentional and disclosed —
     # a green run here does NOT confirm the 7 Appium tests actually passed; check the job log.
     continue-on-error: true
     steps:
