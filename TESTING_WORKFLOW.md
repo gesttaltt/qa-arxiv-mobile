@@ -1,5 +1,12 @@
 # 📋 Real Mobile Testing Workflow
 
+> **Historical planning document.** This was written *before* execution, as the step-by-step
+> plan to follow. Execution is now complete and diverged from this plan in scope and tooling
+> (11 test cases were executed, not 3; evidence is GIF via `adb screenrecord`, not Loom/OBS/mp4).
+> For the actual results, see [`TESTING_CHECKLIST.md`](TESTING_CHECKLIST.md) (real, per-TC
+> outcomes) and `manual-tests/test-execution/` (logs and evidence). Kept here as a record of the
+> original process, not as current instructions.
+
 This is your step-by-step guide to execute real manual testing on the arXiv Papers Mobile app and update this repository with verifiable evidence.
 
 ## 🎯 Overview
