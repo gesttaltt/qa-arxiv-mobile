@@ -8,7 +8,7 @@
   "variable": [
     {
       "key": "baseUrl",
-      "value": "http://export.arxiv.org/api/query",
+      "value": "https://export.arxiv.org/api/query",
       "type": "string"
     }
   ],
@@ -243,7 +243,7 @@
             "exec": [
               "// Fetch all:bengio total first, store it for comparison in the test script.",
               "pm.sendRequest({",
-              "    url: 'http://export.arxiv.org/api/query?search_query=all:bengio&start=0&max_results=1',",
+              "    url: 'https://export.arxiv.org/api/query?search_query=all:bengio&start=0&max_results=1',",
               "    method: 'GET'",
               "}, function (err, res) {",
               "    const match = res.text().match(/<opensearch:totalResults>(\\d+)<\\/opensearch:totalResults>/);",

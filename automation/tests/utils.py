@@ -4,7 +4,7 @@ import time
 
 import requests
 
-ARXIV_BASE_URL = "http://export.arxiv.org/api/query"
+ARXIV_BASE_URL = "https://export.arxiv.org/api/query"
 
 
 def arxiv_get(
