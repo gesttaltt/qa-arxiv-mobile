@@ -93,11 +93,14 @@ testing and closed the "tests exist but require a local device" gap.
 **Local emulator attempt, then reverted (2026-07-09 – 2026-07-14):** the BrowserStack free trial
 expired on 2026-07-08, and every CI run afterward errored on setup with `App Automate testing
 time has expired`. A local Android emulator (API 33, Pixel 6 profile) via
-`reactivecircus/android-emulator-runner` was tried as a paid-quota-free replacement, but it
-failed to boot in GitHub-hosted CI across two attempts — the second hung for the full 6-hour job
-timeout — leaving `main`'s CI red for 5 days. The job was reverted to BrowserStack on 2026-07-14
-as the known-working target, now with `continue-on-error: true` disclosed explicitly rather than
-silently masking failures. See `docs/QA_AUDIT.md` §3.7 for the full history.
+`reactivecircus/android-emulator-runner` was tried as a paid-quota-free replacement. The first
+attempt failed on missing KVM permissions (`adb` exit code 224). A follow-up fix granted them,
+and the emulator then booted successfully (~2m17s) — but a shell syntax error in the custom
+test-runner script left the job stuck in cleanup instead of failing fast, consuming the full
+6-hour job timeout and leaving `main`'s CI red for 5 days. The job was reverted to BrowserStack
+on 2026-07-14 as the known-working target, now with `continue-on-error: true` disclosed
+explicitly rather than silently masking failures. See `docs/QA_AUDIT.md` §3.7 for the full
+history.
 
 ---
 

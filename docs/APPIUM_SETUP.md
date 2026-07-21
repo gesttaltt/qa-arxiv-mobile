@@ -177,12 +177,13 @@ curl -u "USER:KEY" \
 > **History and current disclosure:** BrowserStack's free trial expired 2026-07-08, so this job
 > errors on setup until the trial/plan is renewed. A 2026-07-09 attempt to replace it with a
 > local Android emulator (`reactivecircus/android-emulator-runner`) failed twice in CI — the
-> second attempt hung for the full 6-hour job timeout without ever booting — leaving `main`'s CI
-> red for 5 days. It was reverted to BrowserStack on 2026-07-14 as the known-working (if
-> currently unfunded) option. See `docs/QA_AUDIT.md` §3.7 for the full timeline. To actually run
-> these tests today: renew the BrowserStack trial, or follow §§1–6 above to run them locally
-> against your own emulator (`BROWSERSTACK` unset, `ARXIV_APK_PATH` pointing at
-> `automation/appium/arxiv-papers-v1.0.apk`).
+> first on missing KVM permissions, the second booted the emulator fine (~2m17s) but then hung
+> for the full 6-hour job timeout because a shell syntax error in the test-runner script left the
+> job stuck in cleanup instead of failing fast — leaving `main`'s CI red for 5 days. It was
+> reverted to BrowserStack on 2026-07-14 as the known-working (if currently unfunded) option. See
+> `docs/QA_AUDIT.md` §3.7 for the full timeline. To actually run these tests today: renew the
+> BrowserStack trial, or follow §§1–6 above to run them locally against your own emulator
+> (`BROWSERSTACK` unset, `ARXIV_APK_PATH` pointing at `automation/appium/arxiv-papers-v1.0.apk`).
 
 ### Azure Pipelines (`automation/ci/azure-pipelines.yml`)
 
