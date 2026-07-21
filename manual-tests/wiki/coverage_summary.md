@@ -45,8 +45,8 @@ Comprehensive test coverage analysis for arxiv-papers-mobile application focusin
 - **Critical**: 0
 - **High**: 0
 - **Medium**: 0
-- **Low**: 7
-- **Defect Reports Filed**: 7 (BUG001–BUG007, in `manual-tests/defects/`)
+- **Low**: 6
+- **Defect Reports Filed**: 6 real reports from execution (BUG002–BUG007, in `manual-tests/defects/`). BUG001 in the same folder is a pre-execution format template (severity "Major," never observed) — see the banner in that file; not counted here.
 
 ### Test Execution Summary
 

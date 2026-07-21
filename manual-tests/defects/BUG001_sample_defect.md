@@ -1,11 +1,26 @@
 # BUG001 – Infinite spinner on search when network is unavailable
 
+> **Format template, not a real finding.** This file predates actual test execution
+> (dated 2026-04-01; real execution ran 2026-05-21) and was written to demonstrate the
+> defect-report structure before any testing had happened. Its evidence fields say
+> "(placeholder)" because no such files were ever created. **It contradicts what TC004
+> actually showed** — see
+> [`execution-logs/TC004_execution_log.md`](../test-execution/execution-logs/TC004_execution_log.md):
+> the real app shows a clear error message within ~5s, never freezes, and remains fully
+> navigable offline. The one real, low-severity issue TC004 did surface (no cached
+> results shown offline) is documented separately as
+> [`BUG004`](BUG004_no_cached_search_results_offline.md). Kept here — rather than deleted
+> — as a visible record that it's a template, following the same disclose-don't-delete
+> approach used for the placeholder iOS evidence elsewhere in this repo. Counted
+> separately from the 6 real defect reports (BUG002–BUG007) everywhere the total is
+> cited.
+
 **Defect ID:** BUG001  
 **Linked Test Case:** TC004 – Search offline behavior  
 **User Story:** US001 – Search for Academic Papers  
 **Reported by:** QA Tester  
 **Date reported:** 2026-04-01  
-**Status:** Open
+**Status:** Closed — superseded by BUG004; this report does not reflect actual app behavior
 
 ---
 

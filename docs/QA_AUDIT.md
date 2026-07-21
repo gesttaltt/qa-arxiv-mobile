@@ -13,7 +13,9 @@
 
 This audit reviews the current state of the QA project for the `arxiv-papers-mobile` React Native application. The project demonstrates solid foundational intent — ADO-style traceability, structured manual test cases, and CI/CD pipeline integration.
 
-Issues identified in the April 2026 initial audit have been progressively resolved. As of July 2026, 10 of 11 test cases have been executed on Android (TC006 is iOS-only and was never executed — no macOS/Xcode/iOS Simulator was available). iOS execution across all test cases remains outstanding; the "iOS" evidence files in `evidence/ios/` are disclosed placeholders (the Android recording with a "Pending macOS environment" banner), not real captures. 30 evidence files exist in total (10 genuine Android GIFs, 8 iOS placeholder GIFs, 11 screenshots — 5 genuine, 6 mislabeled/synthetic — 1 suite summary); all Android execution logs contain real tester data, and the `TESTING_CHECKLIST.md` has been completed in full and corrected to reflect the iOS gap honestly. All 7 issues found during Android execution are formally documented as BUG001–BUG007.
+Issues identified in the April 2026 initial audit have been progressively resolved. As of July 2026, 10 of 11 test cases have been executed on Android (TC006 is iOS-only and was never executed — no macOS/Xcode/iOS Simulator was available). iOS execution across all test cases remains outstanding; the "iOS" evidence files in `evidence/ios/` are disclosed placeholders (the Android recording with a "Pending macOS environment" banner), not real captures. 30 evidence files exist in total (10 genuine Android GIFs, 8 iOS placeholder GIFs, 11 screenshots — 5 genuine, 6 mislabeled/synthetic — 1 suite summary); all Android execution logs contain real tester data, and the `TESTING_CHECKLIST.md` has been completed in full and corrected to reflect the iOS gap honestly. All 6 issues found during Android execution are formally documented as BUG002–BUG007. (BUG001,
+in the same folder, is a pre-execution format template dated before real testing started and
+contradicts what TC004 actually showed — see §2.5 below and the banner in that file.)
 
 The automation layer has been substantially expanded: 57 automated tests across API integration and BDD/Gherkin scenarios, plus 7 Appium tests wired into CI via BrowserStack App Automate (Samsung Galaxy S22) — though as of 2026-07-08 the BrowserStack free trial expired and the Appium job has errored on every run since (see §3.7); 100% coverage on `utils.py` enforced as a CI gate (`--cov-fail-under=100`); page objects excluded from coverage (require real device — previously validated by Appium tests in CI, now blocked on trial renewal); GitHub Actions pipeline shows green overall, but that includes a masked Appium failure via `continue-on-error: true` — lint, type checking, and coverage gates are genuinely blocking and green.
 
@@ -95,11 +97,35 @@ Evidence for TC010 (offline data persistence) has a dedicated, genuine Android r
 
 ### 2.3 Execution Summary — RESOLVED
 
-`execution-summary.md` reflects real test results: 10/11 executed, platform coverage for each TC, observed performance values (App Launch Time < 2 s, Search Response Time < 3 s), 7 issues found, and a quality assessment based on actual outcomes.
+`execution-summary.md` reflects real test results: 10/11 executed, platform coverage for each TC, observed performance values (App Launch Time < 2 s, Search Response Time < 3 s), 6 issues found, and a quality assessment based on actual outcomes.
 
 ### 2.4 TESTING_CHECKLIST.md — RESOLVED
 
 All phases completed and checked: setup (2026-05-21), all 11 TC execution steps, evidence collection (30 files), execution logs, traceability updates, and final summary. All checkboxes closed.
+
+### 2.5 BUG001 — found to be a pre-execution template, not a real finding (2026-07-21)
+
+`manual-tests/defects/BUG001_sample_defect.md` (filename literally "sample_defect") is dated
+2026-04-01 — before real execution began on 2026-05-21 — and was counted alongside BUG002–BUG007
+as one of "7 defect reports" everywhere that total was cited. Comparing it against
+`execution-logs/TC004_execution_log.md` shows it describes behavior that never actually
+occurred: BUG001 claims an infinite spinner and a total UI freeze requiring force-close, while
+the real TC004 execution log states the app shows a clear error message within ~5s, never
+freezes, and stays fully navigable offline. BUG001's own evidence fields point at
+`BUG001_spinner_offline.mp4` and `BUG001_spinner_screenshot.png`, both marked "(placeholder)" —
+neither file exists in the repo. Its "Root Cause" section is a speculative hypothesis, not an
+observation. The one real, low-severity issue TC004 did surface (no cached results shown
+offline) is already correctly captured in `BUG004_no_cached_search_results_offline.md`.
+
+Also notable: BUG001 self-reports "Severity: Major," while all 6 real defects (BUG002–BUG007)
+are "Minor" — yet `coverage_summary.md` had tallied "Low: 7," meaning even the severity rollup
+never actually reconciled BUG001 against its own stated severity field.
+
+**Resolution applied:** rather than delete it — the same disclose-don't-delete approach used for
+the placeholder iOS evidence — BUG001 now carries a banner marking it as a format template that
+contradicts real execution, with a pointer to BUG004 for the actual finding. All "7 defect
+reports" counts across README.md, this document, `MARKET_GAP_ANALYSIS.md`, and
+`coverage_summary.md` were corrected to "6 real defect reports (BUG002–BUG007)."
 
 ---
 
@@ -370,7 +396,7 @@ The standalone `ruff.toml` has been removed and its configuration has been merge
 | Test cases with real execution logs | 11 / 11 (100%) |
 | Test cases with genuine Android GIF/screenshot evidence | 10 / 11 (TC006 is iOS-only, not executed) |
 | Test cases with genuine iOS evidence | 0 / 11 (no macOS/Xcode/iOS Simulator available) |
-| Formal defect reports | 7 / 7 (BUG001–BUG007 — all execution issues documented, Android only) |
+| Formal defect reports | 6 / 6 (BUG002–BUG007 — all execution issues documented, Android only; BUG001 is a pre-execution template, see §2.5) |
 | iOS-specific test cases | 1 (TC006) — designed, not executed |
 | Automation tests using correct framework | 64 — 57 API/unit/BDD + 7 Appium (Selenium replaced) |
 | Appium tests currently passing in CI | Unconfirmed — CI switched to a local emulator 2026-07-09 (§3.7); pending first observed run. Last confirmed pass on BrowserStack: 2026-07-07 |
@@ -402,7 +428,8 @@ The standalone `ruff.toml` has been removed and its configuration has been merge
 | `manual-tests/testability_notes.md` | Live feedback | Complete — 3 real observations |
 | `manual-tests/testability-feedback/requirements_analysis.md` | QA feedback | Complete |
 | `manual-tests/ado-integration/workflow_guide.md` | ADO guide | Complete |
-| `manual-tests/defects/BUG001–BUG007` (7 files) | Defect reports | Complete — all 7 execution issues formally documented |
+| `manual-tests/defects/BUG002–BUG007` (6 files) | Defect reports | Complete — all 6 execution issues formally documented |
+| `manual-tests/defects/BUG001_sample_defect.md` | Pre-execution format template | Not a real finding — see §2.5 |
 | `automation/tests/utils.py` | Shared HTTP helper with 429 retry | Complete — 100% branch coverage |
 | `automation/tests/test_utils.py` | Unit tests for retry logic | Complete — 4 mock-based tests |
 | `automation/tests/test_search_api.py` | API tests (search, performance, article data contract, sanity) | Complete |

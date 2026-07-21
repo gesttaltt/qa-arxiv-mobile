@@ -39,7 +39,7 @@ on the same profile:
 | Traceability matrix | `manual-tests/traceability-matrix.csv` — Automation Notes column | Strong |
 | Testability feedback | `manual-tests/testability-feedback/` | Good |
 | ADO wiki documentation | `manual-tests/wiki/coverage_summary.md` | Good |
-| Defect reports | `manual-tests/defects/BUG001–BUG007` (7 reports) | Strong |
+| Defect reports | `manual-tests/defects/BUG002–BUG007` (6 real reports; BUG001 is a pre-execution template) | Strong |
 | API test automation (Python/pytest) | `automation/tests/` — 57 tests, 100% coverage on utils.py | Strong |
 | BDD / Gherkin automation | `automation/features/` (search + article_data_contract) + `tests/bdd/` | Strong |
 | Mobile UI automation (Appium) | `automation/pages/` POM + `tests/appium/` smoke tests | Good |
@@ -189,10 +189,12 @@ lifecycle with ADO states (§3), SQL data validation patterns (§4), performance
 **Market demand:** All job descriptions reference defect tracking (JIRA), defect lifecycle,
 and the ability to write clear, reproducible bug reports.
 
-**Resolution (June 2026):** Seven defect reports filed in `manual-tests/defects/BUG001–BUG007`,
+**Resolution (June 2026):** Six defect reports filed in `manual-tests/defects/BUG002–BUG007`,
 each following ADO/JIRA format: title, environment, severity/priority, steps to reproduce,
-actual vs expected, and attachments. All 7 issues found during TC execution are formally
-documented. BUG007 specifically covers a WCAG 2.1 AA accessibility gap.
+actual vs expected, and attachments. All 6 issues found during TC execution are formally
+documented. BUG007 specifically covers a WCAG 2.1 AA accessibility gap. (BUG001, in the same
+folder, is a pre-execution format template that contradicts what TC004 actually showed — see
+`docs/QA_AUDIT.md` §2.5.)
 
 ---
 
@@ -257,7 +259,7 @@ scenarios (TC001 valid search, TC002 empty query, Scenario Outline × 3 academic
 | 1 | Appium mobile automation (smoke test + POM) | ✅ Done |
 | 2 | Expand test cases to TC001–TC011 (negative/edge/accessibility) | ✅ Done |
 | 3 | ISTQB/testing theory doc | ✅ Done (`docs/TESTING_THEORY.md`) |
-| 4 | Formal defect reports (BUG001–BUG007) | ✅ Done |
+| 4 | Formal defect reports (BUG002–BUG007; BUG001 is a pre-execution template) | ✅ Done |
 | 5 | iOS platform coverage notes + placeholder GIFs disclosed honestly | ✅ Done (documentation only — actual iOS execution still not started) |
 | 6 | GitHub Actions CI workflow with full quality gates | ✅ Done |
 | 7 | SQL / data validation | ✅ Done (`test_data_validation.py` + theory §4) |
