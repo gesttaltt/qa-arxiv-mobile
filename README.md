@@ -4,7 +4,7 @@
 [![codecov](https://codecov.io/gh/gesttaltt/qa-arxiv-mobile/graph/badge.svg)](https://codecov.io/gh/gesttaltt/qa-arxiv-mobile)
 ![Python](https://img.shields.io/badge/python-3.12-3776AB?logo=python&logoColor=white)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-![Appium](https://img.shields.io/badge/Appium-BrowserStack%20%28best--effort%29-blue?logo=appium&logoColor=white)
+![Appium](https://img.shields.io/badge/Appium-Local%20Emulator%20%28unconfirmed%29-blue?logo=appium&logoColor=white)
 ![BDD](https://img.shields.io/badge/BDD-Gherkin%20%2B%20pytest--bdd-23D96C?logo=cucumber&logoColor=white)
 ![Tests](https://img.shields.io/badge/tests-57%20passing-4CAF50?logo=pytest&logoColor=white)
 
@@ -26,7 +26,7 @@ This repository contains a complete QA portfolio applied to the open-source [arx
 | **Defect Reporting** | 6 real defect reports from execution (BUG002–BUG007) with reproduction steps, severity, and fix suggestions; BUG001 is a pre-execution format template, kept and marked as such |
 | **CI/CD** | GitHub Actions pipeline with linting (Black, Ruff, mypy, markdownlint), pytest quality gates, and green badge; Azure Pipelines config included for ADO environments |
 | **Accessibility** | TC011 TalkBack navigation; WCAG 2.1 AA gap identified in BUG007 (`accessibilityRole` missing) |
-| **Test Automation** | pytest API layer (57 tests, 100% coverage on utils.py); BDD scenarios in Gherkin (pytest-bdd); Page Object Model (Appium on BrowserStack); mock-based SLA tests; API contract validation |
+| **Test Automation** | pytest API layer (57 tests, 100% coverage on utils.py); BDD scenarios in Gherkin (pytest-bdd); Page Object Model (Appium on a local Android emulator); mock-based SLA tests; API contract validation |
 | **Documentation** | ADO-style wiki, traceability matrix, execution logs, testability feedback notes |
 
 ---
@@ -173,7 +173,7 @@ Also includes:
 - `automation/features/search.feature`: Gherkin scenarios (TC001, TC002) with Scenario Outline for parametrised runs
 - `automation/features/article_data_contract.feature`: Gherkin scenarios (TC003, TC008) validating API data requirements for article display and bulk uniqueness
 - `automation/tests/bdd/test_search.py`, `test_article_data.py`: pytest-bdd step definitions; shared Given step and `result` fixture extracted to `bdd/conftest.py`
-- `automation/pages/`: Page Object Model layer (SearchPage, DownloadedPage) for Appium tests on BrowserStack
+- `automation/pages/`: Page Object Model layer (SearchPage, DownloadedPage) for Appium tests on a local Android emulator
 - `automation/postman/arXiv_API.postman_collection.json`: Postman collection — 8 requests covering TC001, TC002, EP (author field, pagination offset, cross-request `au:` vs `all:` comparison via `pm.collectionVariables`), BVA (max\_results boundary, pagination edge), and Error Guessing (special characters); run with Newman CLI or Postman Collection Runner
 - Modern Python tooling: ruff, black, mypy, pytest-cov, pytest-html, pytest-bdd
 - Markdown and YAML linting integration
@@ -181,15 +181,16 @@ Also includes:
 
 ### Appium — current status
 
-The `test-appium` CI job runs against **BrowserStack App Automate** and is marked
-`continue-on-error: true` — it does **not** block merges, and a green checkmark on the job does
-**not** mean the 7 Appium tests actually passed. This is disclosed on purpose: BrowserStack's
-free trial expired 2026-07-08, so the job errors on setup until the trial/plan is renewed. A
-2026-07-09 attempt to replace it with a local Android emulator
-(`reactivecircus/android-emulator-runner`) was reverted 2026-07-14 after it hung for 6 hours in
-CI — the emulator booted fine, but a script bug left the job stuck in cleanup instead of failing
-fast — see `docs/QA_AUDIT.md` §3.7 for the full history of both attempts. **Check the job's
-actual log in the Actions tab** for the real pass/fail state; last confirmed-passing run on
+The `test-appium` CI job runs against a **local Android emulator**
+(`reactivecircus/android-emulator-runner`, API 33, Pixel 6), replacing BrowserStack App Automate
+whose free trial expired 2026-07-08. A first attempt at this same switch on 2026-07-09 was
+reverted after hanging for 6 hours — the emulator booted fine, but a shell syntax error in an
+inline CI script left the job stuck in cleanup instead of failing fast. This retry (2026-07-22)
+moves that script to a standalone, syntax-checked file
+(`automation/ci/run_appium_emulator.sh`) and adds `timeout-minutes: 15` to the job so a repeat
+bug fails fast instead of hanging — see `docs/QA_AUDIT.md` §3.7 for the full history.
+**Unconfirmed until a real CI run has been observed** — check the job's actual log in the
+Actions tab rather than trusting this doc or the badge above; last confirmed-passing run on
 BrowserStack was 2026-07-07.
 
 ## Documentation and Testability Feedback
@@ -271,13 +272,13 @@ This demonstrates **genuine QA work** with verifiable evidence on a real React N
 - Configured an Android emulator testing environment from scratch (Android SDK CLI, KVM acceleration, API 28 Google Play image) and captured all test evidence with `adb screenrecord` — no Android Studio required
 - Filed 6 defect reports (BUG002–BUG007) covering functional gaps, UX improvements, and a WCAG 2.1 AA accessibility violation (`accessibilityRole` missing on result cards, identified via TalkBack navigation)
 - Built API test coverage at two layers: a Postman collection (8 requests, `pm.test()` assertions) covering TC001, TC002, Equivalence Partitioning (author field, pagination offset, cross-request `au:` vs `all:` comparison using `pm.sendRequest` + `pm.collectionVariables`), Boundary Value Analysis (max\_results, pagination edge), and Error Guessing (XSS injection); and 57 pytest tests for CI — API integration, mock-based SLA validation, article data contract tests (TC003, TC005–TC007), and retry-logic unit tests (100% coverage on utils.py)
-- Authored a GitHub Actions CI pipeline running on every push — Python linting (Black, Ruff, mypy), pytest with `--cov-fail-under=100` quality gate, Codecov coverage reporting, Markdown/YAML validation, and Appium smoke tests on BrowserStack App Automate (Samsung Galaxy S22, Android 12); mirrored as Azure Pipelines config for ADO environments
+- Authored a GitHub Actions CI pipeline running on every push — Python linting (Black, Ruff, mypy), pytest with `--cov-fail-under=100` quality gate, Codecov coverage reporting, Markdown/YAML validation, and Appium smoke tests on a local Android emulator (previously validated against real hardware via BrowserStack App Automate, Samsung Galaxy S22, Android 12); mirrored as Azure Pipelines config for ADO environments
 - Implemented BDD scenarios in Gherkin using pytest-bdd: two feature files — `search.feature` (TC001, TC002, Scenario Outline across three academic domains) and `article_data_contract.feature` (TC003, TC008, validating API field completeness for article display and bulk uniqueness); shared Given step and `result` fixture extracted to `bdd/conftest.py` to eliminate duplication across modules
 - Maintained full test traceability linking 4 user stories to 11 test cases, screen recordings, screenshots, and defect tickets in a single auditable repository
 
 ### LinkedIn one-liner
 
-> Built an end-to-end QA portfolio on a real React Native app — 11 manual test cases, 57 automated tests (API, BDD/Gherkin, Appium POM on BrowserStack), Postman collection, 6 defect reports, ADO traceability, and a GitHub Actions CI pipeline with Codecov coverage gate.
+> Built an end-to-end QA portfolio on a real React Native app — 11 manual test cases, 57 automated tests (API, BDD/Gherkin, Appium POM on a local Android emulator), Postman collection, 6 defect reports, ADO traceability, and a GitHub Actions CI pipeline with Codecov coverage gate.
 
 ### Platform coverage — how to frame it
 

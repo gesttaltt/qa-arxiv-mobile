@@ -233,6 +233,21 @@ a short `timeout-minutes` on the job so a future script bug fails in minutes, no
 local-emulator code path was removed from `ci.yml`; `docs/APPIUM_SETUP.md` still documents how to
 run against a local emulator manually for anyone with a working Android SDK setup outside CI.
 
+**Retry applied (2026-07-22), on branch `ci/appium-local-emulator-retry`:** switched `test-appium`
+back to the local emulator, addressing exactly the two gaps identified above. The inline
+`script: |` block that caused the original shell syntax error was replaced with a standalone,
+version-controlled file (`automation/ci/run_appium_emulator.sh`), checked with `bash -n` and
+`dash -n` before commit (the original failure's error came from `/usr/bin/sh`, i.e. dash, so both
+were checked) — this also makes the polling-loop failure explicit (`exit 1` if Appium never comes
+up within 60s, instead of silently falling through to pytest). `timeout-minutes: 15` was added to
+the job so a repeat bug fails within 15 minutes instead of the default 6-hour job ceiling.
+`continue-on-error: true` was **not** carried over — since branch protection on `main` is not
+enabled, a failing job here doesn't block anything, so there is no reason to mask the result. This
+was done on a feature branch specifically to validate via a PR's CI run before touching `main`,
+after the 2026-07-09 incident's lesson about pushing straight to `main` under time pressure.
+Following the same rule as every other entry in this section: **this will not be marked "passing"
+until a real CI run has been observed** — check the Actions tab for the actual result.
+
 ---
 
 ## 4. Test Case Design Issues

@@ -99,15 +99,18 @@ jobs:
           fail_ci_if_error: false
 
   test-appium:
-    name: Appium Tests (BrowserStack)
+    name: Appium Tests (Local Emulator)
     runs-on: ubuntu-latest
     needs: lint
-    # Best-effort: BrowserStack requires an active trial/plan (ours expired 2026-07-08), and
-    # the local-emulator alternative tried on 2026-07-09 hung for 6h in GitHub-hosted CI — the
-    # emulator itself booted fine, but a script bug left the job stuck in cleanup instead of
-    # failing fast (see docs/QA_AUDIT.md §3.7). continue-on-error is intentional and disclosed —
-    # a green run here does NOT confirm the 7 Appium tests actually passed; check the job log.
-    continue-on-error: true
+    # Retry of the 2026-07-09 attempt (see docs/QA_AUDIT.md §3.7). That attempt's emulator boot
+    # (KVM + reactivecircus/android-emulator-runner) worked fine — the failure was a shell syntax
+    # error in an inline `script: |` block, which then left the action's shutdown routine hanging
+    # for the full 6h default job timeout instead of failing fast. Fixed here by moving the runner
+    # script to a standalone, bash-checked file (automation/ci/run_appium_emulator.sh) and adding
+    # timeout-minutes as a hard ceiling so a repeat bug fails in minutes, not hours.
+    # continue-on-error is intentionally NOT set — this run's pass/fail should be trusted; do not
+    # add it back without updating this comment and QA_AUDIT.md §3.7 to disclose the masking.
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v7
 
@@ -116,25 +119,46 @@ jobs:
           python-version: "3.12"
           cache: "pip"
 
-      - name: Install dependencies
+      - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r automation/requirements.txt
 
-      - name: Run Appium smoke tests on BrowserStack
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+
+      - name: Install Appium server + UiAutomator2 driver
+        run: |
+          npm install -g appium
+          appium driver install uiautomator2
+
+      - name: Enable KVM group perms
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Run Appium smoke tests on a local Android emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 33
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          script: bash automation/ci/run_appium_emulator.sh
         env:
-          BROWSERSTACK: "true"
-          BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
-          BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
-          BROWSERSTACK_APP_ID: ${{ secrets.BROWSERSTACK_APP_ID }}
+          ARXIV_APK_PATH: ${{ github.workspace }}/automation/appium/arxiv-papers-v1.0.apk
+          APPIUM_SERVER_URL: "http://127.0.0.1:4723"
+          ANDROID_DEVICE_NAME: "Android Emulator"
+
+      - name: Collect Appium server log
+        if: always()
         run: |
           mkdir -p test-results
-          pytest automation/tests/appium/ \
-            -m "appium" \
-            --html=test-results/appium-report.html \
-            --self-contained-html \
-            --junitxml=test-results/appium-results.xml \
-            -s -v
+          cp appium.log test-results/ 2>/dev/null || true
 
       - name: Collect hierarchy dumps
         if: always()
