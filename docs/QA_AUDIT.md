@@ -3,7 +3,7 @@
 **Project:** qa-arxiv-mobile  
 **Author:** Jonathan Verdun  
 **Audit Date:** 2026-04-23  
-**Last Updated:** 2026-07-09  
+**Last Updated:** 2026-07-24  
 **Primary Target:** iOS Mobile (React Native)  
 **Secondary Target:** Android  
 
@@ -17,7 +17,7 @@ Issues identified in the April 2026 initial audit have been progressively resolv
 in the same folder, is a pre-execution format template dated before real testing started and
 contradicts what TC004 actually showed — see §2.5 below and the banner in that file.)
 
-The automation layer has been substantially expanded: 57 automated tests across API integration and BDD/Gherkin scenarios, plus 7 Appium tests wired into CI via BrowserStack App Automate (Samsung Galaxy S22) — though as of 2026-07-08 the BrowserStack free trial expired and the Appium job has errored on every run since (see §3.7); 100% coverage on `utils.py` enforced as a CI gate (`--cov-fail-under=100`); page objects excluded from coverage (require real device — previously validated by Appium tests in CI, now blocked on trial renewal); GitHub Actions pipeline shows green overall, but that includes a masked Appium failure via `continue-on-error: true` — lint, type checking, and coverage gates are genuinely blocking and green.
+The automation layer has been substantially expanded: 57 automated tests across API integration and BDD/Gherkin scenarios, plus 7 Appium tests wired into CI. The BrowserStack path used through early July hit an expired free trial and was replaced (2026-07-09, reverted 2026-07-14, retried 2026-07-22) with a local Android emulator run via `reactivecircus/android-emulator-runner` — see §3.7 for the full history. As of this writing the 2026-07-22 retry (branch `ci/appium-local-emulator-retry`, PR #20) has not yet had a completed CI run observed (the first attempt was cancelled mid-run when the PR was closed before the Appium/integration jobs finished); the job no longer carries `continue-on-error: true`, so once observed its result can be trusted directly. 100% coverage on `utils.py` enforced as a CI gate (`--cov-fail-under=100`); page objects excluded from coverage (require real device — verified by Appium tests once their CI result is confirmed); lint, type checking, and coverage gates are genuinely blocking and green regardless of the Appium job's outcome.
 
 Remaining gaps: iOS execution is zero across all 11 test cases — no macOS/Xcode/iOS Simulator was available, and this is disclosed rather than papered over with fabricated evidence; TC010 in particular has no iOS file at all, not even a placeholder; no macOS CI stage exists for iOS simulator execution.
 
