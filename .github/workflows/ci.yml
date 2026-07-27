@@ -142,7 +142,7 @@ jobs:
       - name: Run Appium smoke tests on a local Android emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 33
+          api-level: 30
           target: google_apis
           arch: x86
           profile: pixel_6
