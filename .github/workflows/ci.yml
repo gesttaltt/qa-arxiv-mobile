@@ -147,7 +147,7 @@ jobs:
           arch: x86
           profile: pixel_6
           disable-animations: true
-          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -no-snapshot-save
           script: bash automation/ci/run_appium_emulator.sh
         env:
           ARXIV_APK_PATH: ${{ github.workspace }}/automation/appium/arxiv-papers-v1.0.apk
