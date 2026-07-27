@@ -10,6 +10,11 @@
 set -euo pipefail
 
 appium --log appium.log &
+appium_pid=$!
+# A leftover Appium server still holding the emulator connection is what
+# hung the emulator-runner action's shutdown step (adb "stop: Not
+# implemented" -> indefinite hang) even after the pytest run finished.
+trap 'kill "$appium_pid" 2>/dev/null || true' EXIT
 
 appium_ready=""
 for _ in $(seq 1 30); do
