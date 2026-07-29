@@ -72,7 +72,7 @@ prerequisites.
 
 ---
 
-### 3.2 UI Automation Framework — RESOLVED (via Appium + BrowserStack)
+### 3.2 UI Automation Framework — RESOLVED (via Appium, local Android emulator)
 
 **Market demand:** Tietoevry Junior QE: "implement simple automated test cases using UI Test
 Automation tools like Selenium, Cypress or Playwright." EPAM campus program lists Selenium,
@@ -102,11 +102,17 @@ on 2026-07-14 as the known-working target, now with `continue-on-error: true` di
 explicitly rather than silently masking failures. See `docs/QA_AUDIT.md` §3.7 for the full
 history.
 
-**Local emulator retried (2026-07-22):** the root cause was the inline shell script, not the
-emulator itself, so `test-appium` was switched back to the local emulator on a feature branch —
-this time with the runner script extracted to `automation/ci/run_appium_emulator.sh` (checked
-with `bash -n`/`dash -n`) and `timeout-minutes: 15` on the job as a hard ceiling. Unconfirmed
-until a real CI run is observed; see `docs/QA_AUDIT.md` §3.7.
+**Local emulator retried (2026-07-22), confirmed passing (2026-07-27):** the root cause was the
+inline shell script, not the emulator itself, so `test-appium` was switched back to the local
+emulator on a feature branch — this time with the runner script extracted to
+`automation/ci/run_appium_emulator.sh` (checked with `bash -n`/`dash -n`) and
+`timeout-minutes: 15` on the job as a hard ceiling. Getting a real green run took three more
+fixes, each found via a real CI run's raw log rather than assumed: `api-level: 33` has no
+published `x86` system image (downgraded to API 30), the emulator-runner action hung saving a
+snapshot on teardown (`-no-snapshot-save`), and the runner script's background Appium server was
+never killed, blocking clean shutdown (fixed with an `EXIT` trap). Run `30263026791` went fully
+green — 7/7 in 5m33s — and PR #20 merged to `main` 2026-07-29. `test-appium` no longer targets
+BrowserStack by default; see `docs/QA_AUDIT.md` §3.7 for the full history.
 
 ---
 
@@ -272,7 +278,7 @@ scenarios (TC001 valid search, TC002 empty query, Scenario Outline × 3 academic
 | 8 | Response time / SLA assertion (mock-based) | ✅ Done (`TestPerformanceBaseline`) |
 | 9 | Accessibility TC (TalkBack) + defect | ✅ Done (TC011, BUG007) |
 | 10 | BDD / Gherkin scenarios (pytest-bdd) | ✅ Done (added beyond original scope) |
-| 11 | 100% coverage on utils.py; pages excluded (real device coverage via BrowserStack) | ✅ Done (Codecov badge) |
+| 11 | 100% coverage on utils.py; pages excluded (verified passing by Appium on a local emulator) | ✅ Done (Codecov badge) |
 | 12 | Postman collection (8 requests + pm.test() assertions) | ✅ Done (`automation/postman/`) |
 
 ### Remaining
@@ -294,10 +300,10 @@ These areas are solid and should be maintained — they already match or exceed 
 - **GitHub Actions CI/CD** — full quality gate pipeline, green badge on `main`
 - **Python automation with pytest** — parametrised, typed, BDD, CI-integrated; 57 tests
 - **BDD / Gherkin** — feature file + pytest-bdd step definitions; mapped to User Stories
-- **Appium / POM** — SearchPage, DownloadedPage with BasePage; locators verified from source; screenshot-on-failure; BrowserStack CI
+- **Appium / POM** — SearchPage, DownloadedPage with BasePage; locators verified from source; screenshot-on-failure; local-emulator CI, confirmed passing
 - **Testability feedback** — requirements analysis and feedback notes show QA mindset beyond execution
 - **Code quality gates** — Black, Ruff, mypy, yamllint, markdownlint all blocking in CI
-- **Coverage tooling** — Codecov integration; 100% on utils.py (honest — pages excluded, verified by Appium on BrowserStack); `--cov-fail-under=100` gate
+- **Coverage tooling** — Codecov integration; 100% on utils.py (honest — pages excluded, verified passing by Appium on a local emulator); `--cov-fail-under=100` gate
 - **ISTQB theory** — TESTING_THEORY.md maps every TC to Foundation Level concepts
 
 ---

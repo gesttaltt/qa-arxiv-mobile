@@ -53,8 +53,8 @@ Comprehensive test coverage analysis for arxiv-papers-mobile application focusin
 - **Manual test cases**: 10 executed on Android, 10 passed; 1 (TC006, iOS-only) not executed — no macOS/Xcode/iOS Simulator available
 - **Automated API + unit tests**: 50 passing (pytest, runs in CI on every push)
 - **BDD scenarios**: 7 passing (pytest-bdd, Gherkin feature files: search + article_data_contract)
-- **Total automated**: 57 (excludes 7 Appium tests — run in CI via BrowserStack; 1 @slow excluded from regular CI runs)
-- **Code coverage**: 100% on `automation/tests/utils.py` (10 statements, retry logic); page objects excluded — require real device, verified by Appium tests on BrowserStack; gate at `--cov-fail-under=100`
+- **Total automated**: 57 (excludes 7 Appium tests — run in CI on a local Android emulator, confirmed passing; 1 @slow excluded from regular CI runs)
+- **Code coverage**: 100% on `automation/tests/utils.py` (11 statements, retry logic); page objects excluded — require real device, verified passing by Appium tests on a local emulator; gate at `--cov-fail-under=100`
 - **CI pipeline**: GitHub Actions — green badge on `main`
 - **Average manual execution time**: ~15 minutes per test case
 
@@ -64,7 +64,7 @@ All test cases properly linked to user stories with bidirectional traceability.
 
 - Total User Stories: **4** (US001–US004)
 - Manual Test Cases: **11** (TC001–TC011)
-- Automated Test Cases: **57** (50 API/unit + 7 BDD, excludes 7 Appium — run on BrowserStack)
+- Automated Test Cases: **57** (50 API/unit + 7 BDD, excludes 7 Appium — run on a local Android emulator)
 - Traceability Matrix: ✅ Present (`manual-tests/traceability-matrix.csv`)
 - CI Pipeline: ✅ GitHub Actions (`.github/workflows/ci.yml` — active, green badge)
 - ADO Pipeline: ✅ Azure Pipelines config (`automation/ci/azure-pipelines.yml`)

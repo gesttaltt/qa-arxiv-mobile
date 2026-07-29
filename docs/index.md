@@ -53,6 +53,6 @@ disclosed placeholders rather than real captures.
 
 - **API + unit tests** — `automation/tests/` (50 tests: integration, SLA, contract, retry logic, pagination, author search)
 - **BDD / Gherkin** — `automation/features/` (`search.feature` + `article_data_contract.feature`) + `automation/tests/bdd/`
-- **Mobile UI (Appium)** — `automation/tests/appium/` (Page Object Model, 7 tests; CI job now targets a local Android emulator, retried 2026-07-22 after a 2026-07-09 attempt hung for 6 hours on a script bug — unconfirmed until a real CI run is observed). See [QA Audit](QA_AUDIT) §3.7 for the full history; last confirmed pass was on BrowserStack, 2026-07-07.
+- **Mobile UI (Appium)** — `automation/tests/appium/` (Page Object Model, 7 tests; CI job targets a local Android emulator — confirmed passing 2026-07-27, run `30263026791`, 7/7 in 5m33s). See [QA Audit](QA_AUDIT) §3.7 for the full history.
 - **Postman collection** — `automation/postman/arXiv_API.postman_collection.json` (8 requests, Newman CLI)
 - **CI/CD** — GitHub Actions (`.github/workflows/ci.yml`) + Azure Pipelines (`automation/ci/azure-pipelines.yml`)

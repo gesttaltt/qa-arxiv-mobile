@@ -302,7 +302,7 @@ that the test controls entirely.
 |---|---|---|---|
 | **Unit** | `test_utils.py` | < 15 s | No |
 | **Integration** | `test_search_*.py`, `test_data_validation.py`, `test_pdf_contract.py`, `test_advanced_search.py` | ~80 s | No |
-| **E2E** | `tests/appium/test_search_smoke.py`, `test_downloaded_smoke.py` | Minutes | Yes (BrowserStack) |
+| **E2E** | `tests/appium/test_search_smoke.py`, `test_downloaded_smoke.py` | Minutes | Yes (local Android emulator in CI) |
 
 ### Coverage scope — honest over inflated
 
@@ -327,8 +327,8 @@ def test_retries_once_on_429_then_succeeds(mock_sleep, mock_get):
 | Scope | Coverage | Gate |
 |---|---|---|
 | `automation/tests/utils.py` (retry logic) | **100%** | `--cov-fail-under=100` in CI |
-| `automation/pages/` (POM) | excluded | verified by Appium tests on BrowserStack |
+| `automation/pages/` (POM) | excluded | verified passing by Appium tests on a local emulator |
 
 The `--cov-fail-under=100` gate is preserved — it applies to the measurable, device-independent
-code. Page objects are validated by real Appium tests running against a Samsung Galaxy S22 on
-BrowserStack App Automate, not by mocks.
+code. Page objects are validated by real Appium tests running against a local Android emulator in
+CI (confirmed passing 2026-07-27), not by mocks.
