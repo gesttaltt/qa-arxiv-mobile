@@ -102,6 +102,12 @@ on 2026-07-14 as the known-working target, now with `continue-on-error: true` di
 explicitly rather than silently masking failures. See `docs/QA_AUDIT.md` §3.7 for the full
 history.
 
+**Local emulator retried (2026-07-22):** the root cause was the inline shell script, not the
+emulator itself, so `test-appium` was switched back to the local emulator on a feature branch —
+this time with the runner script extracted to `automation/ci/run_appium_emulator.sh` (checked
+with `bash -n`/`dash -n`) and `timeout-minutes: 15` on the job as a hard ceiling. Unconfirmed
+until a real CI run is observed; see `docs/QA_AUDIT.md` §3.7.
+
 ---
 
 ### 3.3 SQL / Database Testing — RESOLVED

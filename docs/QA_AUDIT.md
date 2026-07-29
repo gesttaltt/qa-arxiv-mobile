@@ -3,7 +3,7 @@
 **Project:** qa-arxiv-mobile  
 **Author:** Jonathan Verdun  
 **Audit Date:** 2026-04-23  
-**Last Updated:** 2026-07-09  
+**Last Updated:** 2026-07-24  
 **Primary Target:** iOS Mobile (React Native)  
 **Secondary Target:** Android  
 
@@ -17,7 +17,7 @@ Issues identified in the April 2026 initial audit have been progressively resolv
 in the same folder, is a pre-execution format template dated before real testing started and
 contradicts what TC004 actually showed — see §2.5 below and the banner in that file.)
 
-The automation layer has been substantially expanded: 57 automated tests across API integration and BDD/Gherkin scenarios, plus 7 Appium tests wired into CI via BrowserStack App Automate (Samsung Galaxy S22) — though as of 2026-07-08 the BrowserStack free trial expired and the Appium job has errored on every run since (see §3.7); 100% coverage on `utils.py` enforced as a CI gate (`--cov-fail-under=100`); page objects excluded from coverage (require real device — previously validated by Appium tests in CI, now blocked on trial renewal); GitHub Actions pipeline shows green overall, but that includes a masked Appium failure via `continue-on-error: true` — lint, type checking, and coverage gates are genuinely blocking and green.
+The automation layer has been substantially expanded: 57 automated tests across API integration and BDD/Gherkin scenarios, plus 7 Appium tests wired into CI. The BrowserStack path used through early July hit an expired free trial and was replaced (2026-07-09, reverted 2026-07-14, retried 2026-07-22) with a local Android emulator run via `reactivecircus/android-emulator-runner` — see §3.7 for the full history. The 2026-07-22 retry (branch `ci/appium-local-emulator-retry`, PR #20) is **confirmed passing as of 2026-07-27** (run `30263026791`, 7/7 in 5m33s) after fixing two further issues found via the real CI logs: API 33 has no published `x86` system image (downgraded to API 30), and the emulator-runner action's teardown hung on a leftover background Appium server the script never killed. 100% coverage on `utils.py` enforced as a CI gate (`--cov-fail-under=100`); page objects excluded from coverage (require real device — now verified passing by Appium tests in CI); lint, type checking, and coverage gates are genuinely blocking and green regardless of the Appium job's outcome.
 
 Remaining gaps: iOS execution is zero across all 11 test cases — no macOS/Xcode/iOS Simulator was available, and this is disclosed rather than papered over with fabricated evidence; TC010 in particular has no iOS file at all, not even a placeholder; no macOS CI stage exists for iOS simulator execution.
 
@@ -233,6 +233,47 @@ a short `timeout-minutes` on the job so a future script bug fails in minutes, no
 local-emulator code path was removed from `ci.yml`; `docs/APPIUM_SETUP.md` still documents how to
 run against a local emulator manually for anyone with a working Android SDK setup outside CI.
 
+**Retry applied (2026-07-22), on branch `ci/appium-local-emulator-retry`:** switched `test-appium`
+back to the local emulator, addressing exactly the two gaps identified above. The inline
+`script: |` block that caused the original shell syntax error was replaced with a standalone,
+version-controlled file (`automation/ci/run_appium_emulator.sh`), checked with `bash -n` and
+`dash -n` before commit (the original failure's error came from `/usr/bin/sh`, i.e. dash, so both
+were checked) — this also makes the polling-loop failure explicit (`exit 1` if Appium never comes
+up within 60s, instead of silently falling through to pytest). `timeout-minutes: 15` was added to
+the job so a repeat bug fails within 15 minutes instead of the default 6-hour job ceiling.
+`continue-on-error: true` was **not** carried over — since branch protection on `main` is not
+enabled, a failing job here doesn't block anything, so there is no reason to mask the result. This
+was done on a feature branch specifically to validate via a PR's CI run before touching `main`,
+after the 2026-07-09 incident's lesson about pushing straight to `main` under time pressure.
+Following the same rule as every other entry in this section: **this will not be marked "passing"
+until a real CI run has been observed** — check the Actions tab for the actual result.
+
+**Update (2026-07-27): confirmed passing, after two more issues surfaced by real CI runs.**
+The first observed run on this branch (`30249363693`) failed in 56s with `Warning: Failed to find
+package 'system-images;android-33;google_apis;x86'` — Google stopped publishing 32-bit `x86`
+system images after API 30, so `arch: x86` (needed because the test APK only ships `armeabi-v7a`
+and `x86` native slices) had no matching image at API 33. Fixed by downgrading `api-level: 33` to
+`api-level: 30`, the last level with an `x86` image (`94259ef`).
+
+The next run (`30260803251`) got much further — the emulator booted and all 7 tests passed
+(`7 passed in 213.89s`) — but the job still hit the `timeout-minutes: 15` ceiling: the
+emulator-runner action's built-in "Terminate Emulator" step hung trying to save a `default_boot`
+snapshot on kill, a known issue in that action. Fixed with `-no-snapshot-save` in
+`emulator-options` (`352f912`); since `force-avd-creation: true` means no cached AVD is ever
+reused, saving a snapshot on exit was pure dead weight anyway.
+
+The next run (`30261942791`) still hung the same way even with snapshot-save disabled —
+`USER_INFO | Snapshots have been disabled...` then `ERROR | stop: Not implemented` followed by
+nothing for ~9.5 minutes until cancellation. This matches a well-documented
+`android-emulator-runner` failure mode
+([issue #385](https://github.com/ReactiveCircus/android-emulator-runner/issues/385)): a leftover
+process still holding the emulator connection blocks clean shutdown. Root cause here was
+`automation/ci/run_appium_emulator.sh` backgrounding `appium --log appium.log &` and never
+killing it — fixed by trapping the PID on `EXIT` (`6cd4c9f`).
+
+With all three fixes applied, run `30263026791` went fully green: `Appium Tests (Local Emulator)`
+passed in 5m33s, 7/7 tests, no timeout. PR #20 is ready to merge.
+
 ---
 
 ## 4. Test Case Design Issues
@@ -399,7 +440,7 @@ The standalone `ruff.toml` has been removed and its configuration has been merge
 | Formal defect reports | 6 / 6 (BUG002–BUG007 — all execution issues documented, Android only; BUG001 is a pre-execution template, see §2.5) |
 | iOS-specific test cases | 1 (TC006) — designed, not executed |
 | Automation tests using correct framework | 64 — 57 API/unit/BDD + 7 Appium (Selenium replaced) |
-| Appium tests currently passing in CI | Unconfirmed — CI switched to a local emulator 2026-07-09 (§3.7); pending first observed run. Last confirmed pass on BrowserStack: 2026-07-07 |
+| Appium tests currently passing in CI | Yes — confirmed 2026-07-27, run `30263026791`, 7/7 in 5m33s on a local emulator (§3.7) |
 | Selenium-based tests (wrong framework) | 0 |
 | Config fragmentation (ruff) | Resolved — consolidated in `pyproject.toml` |
 | Code coverage | 100% on `utils.py` (10 statements) — page objects excluded (require real device); gate at `--cov-fail-under=100` |
@@ -438,8 +479,8 @@ The standalone `ruff.toml` has been removed and its configuration has been merge
 | `automation/tests/test_data_validation.py` | Atom XML data validation | Complete |
 | `automation/features/search.feature` | BDD Gherkin scenarios (TC001, TC002, Outline × 3) | Complete |
 | `automation/tests/bdd/test_search.py` | pytest-bdd step definitions | Complete |
-| `automation/tests/appium/test_search_smoke.py` | Appium UI test (search) | 5 tests — CI-wired against a local Android emulator since 2026-07-09; result unconfirmed until first run observed (§3.7) |
-| `automation/tests/appium/test_downloaded_smoke.py` | Appium UI test (DOWNLOADED tab) | 2 tests — CI-wired against a local Android emulator since 2026-07-09; result unconfirmed until first run observed (§3.7) |
+| `automation/tests/appium/test_search_smoke.py` | Appium UI test (search) | 5 tests — CI-wired against a local Android emulator; confirmed passing 2026-07-27 (§3.7) |
+| `automation/tests/appium/test_downloaded_smoke.py` | Appium UI test (DOWNLOADED tab) | 2 tests — CI-wired against a local Android emulator; confirmed passing 2026-07-27 (§3.7) |
 | `automation/ci/azure-pipelines.yml` | CI pipeline | Standard ADO syntax; UnitTests + IntegrationTests jobs; `--cov-fail-under=100` gate; no iOS stage |
 | `.github/workflows/ci.yml` | GitHub Actions CI | Functional |
 | `pyproject.toml` | Project config + ruff config | Consolidated (ruff.toml removed) |

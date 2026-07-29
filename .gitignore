@@ -61,4 +61,3 @@ Thumbs.db
 
 # Tool installers
 *.tar.gz
-automation/appium/*.apk

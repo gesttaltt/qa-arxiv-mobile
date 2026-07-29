@@ -53,6 +53,6 @@ disclosed placeholders rather than real captures.
 
 - **API + unit tests** — `automation/tests/` (50 tests: integration, SLA, contract, retry logic, pagination, author search)
 - **BDD / Gherkin** — `automation/features/` (`search.feature` + `article_data_contract.feature`) + `automation/tests/bdd/`
-- **Mobile UI (Appium)** — `automation/tests/appium/` (Page Object Model, 7 tests; CI job targets BrowserStack App Automate and is `continue-on-error: true` — best-effort only, since the free trial expired 2026-07-08 and a local-emulator replacement got stuck in a 6-hour job timeout after a script bug, not an emulator boot failure). See [QA Audit](QA_AUDIT) §3.7 for the full history; last confirmed pass on BrowserStack was 2026-07-07.
+- **Mobile UI (Appium)** — `automation/tests/appium/` (Page Object Model, 7 tests; CI job now targets a local Android emulator, retried 2026-07-22 after a 2026-07-09 attempt hung for 6 hours on a script bug — unconfirmed until a real CI run is observed). See [QA Audit](QA_AUDIT) §3.7 for the full history; last confirmed pass was on BrowserStack, 2026-07-07.
 - **Postman collection** — `automation/postman/arXiv_API.postman_collection.json` (8 requests, Newman CLI)
 - **CI/CD** — GitHub Actions (`.github/workflows/ci.yml`) + Azure Pipelines (`automation/ci/azure-pipelines.yml`)
