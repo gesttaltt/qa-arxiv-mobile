@@ -274,6 +274,21 @@ killing it — fixed by trapping the PID on `EXIT` (`6cd4c9f`).
 With all three fixes applied, run `30263026791` went fully green: `Appium Tests (Local Emulator)`
 passed in 5m33s, 7/7 tests, no timeout. PR #20 is ready to merge.
 
+### 3.8 `test-integration`'s `continue-on-error: true` — undisclosed masking, found 2026-07-29
+
+An open-ended bug hunt across `automation/` (2026-07-29) found that `.github/workflows/ci.yml`'s
+`test-integration` job has carried `continue-on-error: true` without a single mention of it
+anywhere in this document, the README, or the workflow file itself — a direct contradiction of
+the disclosure standard this section applies everywhere else (§3.7, and the iOS-evidence
+disclosure in §2). A green "Integration Tests" checkmark could not be trusted without reading the
+raw step log, and nothing told a reader that.
+
+**Resolution applied (2026-07-29):** kept `continue-on-error: true` — these tests hit the real
+arXiv API directly, so an upstream outage or rate-limit that outlasts the built-in
+`--reruns 2 --reruns-delay 60` shouldn't fail this repo's own CI — but added an explicit comment
+in `ci.yml` disclosing exactly that, following the same rule as `test-appium`/BrowserStack: masking
+is only acceptable when it's disclosed everywhere a reader would look.
+
 ---
 
 ## 4. Test Case Design Issues

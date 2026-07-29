@@ -14,10 +14,10 @@ def arxiv_get(
     backoff: float = 5.0,
 ) -> requests.Response:
     """GET the arXiv API with automatic retry on 429 rate-limit responses."""
-    for attempt in range(retries):
+    response = requests.get(ARXIV_BASE_URL, params=params, timeout=timeout)
+    for attempt in range(1, retries):
+        if response.status_code != 429:
+            return response
+        time.sleep(backoff * attempt)
         response = requests.get(ARXIV_BASE_URL, params=params, timeout=timeout)
-        if response.status_code == 429 and attempt < retries - 1:
-            time.sleep(backoff * (attempt + 1))
-            continue
-        return response
-    return response  # pragma: no cover — unreachable for retries > 0
+    return response

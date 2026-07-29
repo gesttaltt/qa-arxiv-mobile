@@ -28,7 +28,7 @@ class TestDownloadedSmoke:
         page = DownloadedPage(android_driver)
         page.open()
         assert (
-            page.is_empty_label_displayed() or len(page.get_current_items()) >= 0
+            page.is_empty_label_displayed() or len(page.get_current_items()) > 0
         ), "TC003 FAIL: DOWNLOADED tab unreachable after tap — possible crash"
 
     def test_downloaded_tab_is_empty_on_fresh_install(self, android_driver) -> None:

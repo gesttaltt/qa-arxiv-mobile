@@ -181,6 +181,11 @@ jobs:
     name: Integration Tests (arXiv API)
     runs-on: ubuntu-latest
     needs: lint
+    # continue-on-error is intentional and disclosed here (see docs/QA_AUDIT.md §3.8): these
+    # tests hit the real, third-party arXiv API directly (not mocked), so an upstream outage or
+    # rate-limit that outlasts the built-in --reruns 2 --reruns-delay 60 shouldn't be reported as
+    # a bug in this repo's own code. A green checkmark on this job does not guarantee the arXiv
+    # API was reachable and well-behaved during this run — check the raw step log for that.
     continue-on-error: true
     steps:
       - uses: actions/checkout@v7
@@ -200,7 +205,6 @@ jobs:
           mkdir -p test-results
           pytest automation/tests/ \
             -m "not appium and not slow" \
-            --ignore=automation/tests/test_pom_unit.py \
             --ignore=automation/tests/test_utils.py \
             --html=test-results/report.html \
             --self-contained-html \

@@ -56,7 +56,12 @@ class SearchPage(BasePage):
         """Return True if the search field is still accessible (app not crashed)."""
         wait = self._wait(timeout)
         try:
-            field = wait.until(EC.presence_of_element_located(self._SEARCH_INPUT))
+            try:
+                field = wait.until(EC.presence_of_element_located(self._SEARCH_INPUT))
+            except Exception:
+                field = wait.until(
+                    EC.presence_of_element_located(self._SEARCH_INPUT_XPATH)
+                )
+            return field.is_displayed()
         except Exception:
-            field = wait.until(EC.presence_of_element_located(self._SEARCH_INPUT_XPATH))
-        return field.is_displayed()
+            return False
