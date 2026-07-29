@@ -135,7 +135,9 @@ jobs:
 
       - name: Enable KVM group perms
         run: |
-          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo tee /etc/udev/rules.d/99-kvm4all.rules > /dev/null <<'EOF'
+          KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"
+          EOF
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
@@ -147,7 +149,9 @@ jobs:
           arch: x86
           profile: pixel_6
           disable-animations: true
-          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -no-snapshot-save
+          emulator-options: >-
+            -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+            -no-snapshot-save
           script: bash automation/ci/run_appium_emulator.sh
         env:
           ARXIV_APK_PATH: ${{ github.workspace }}/automation/appium/arxiv-papers-v1.0.apk
