@@ -159,12 +159,120 @@ stages:
             condition: always()
 
   - stage: AppiumSmoke
-    displayName: 'Appium Mobile Smoke Tests (BrowserStack)'
+    displayName: 'Appium Mobile Smoke Tests'
     dependsOn: Testing
-    condition: and(succeeded(), eq(variables['BROWSERSTACK_ENABLED'], 'true'))
+    condition: succeeded()
     jobs:
+      # NOT YET VERIFIED — no Azure DevOps project is connected to this repo, so this job has
+      # never had a real pipeline run observed, unlike ci.yml's equivalent (GitHub Actions,
+      # confirmed passing 2026-07-29, see docs/QA_AUDIT.md §3.7). It mirrors ci.yml's local
+      # Android emulator approach as closely as ADO YAML allows, reusing the same
+      # automation/ci/run_appium_emulator.sh script, but it also carries a real, disclosed risk
+      # that ci.yml's approach didn't: Microsoft-hosted Ubuntu agents' KVM/nested-virtualization
+      # support is not guaranteed the way GitHub-hosted runners' is, and without it the emulator
+      # either fails to boot or runs too slowly to be useful. Following this project's own rule
+      # (§3.7, §2): do not treat this job as passing, or even as bootable, until a real ADO run
+      # has been observed — check the actual pipeline run, not this comment.
+      - job: AppiumLocalEmulator
+        displayName: 'Appium Android Smoke Tests — Local Emulator (unverified, see comment above)'
+        timeoutInMinutes: 20
+        steps:
+          - checkout: self
+
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: '$(pythonVersion)'
+              addToPath: true
+
+          - script: |
+              python -m pip install --upgrade pip
+              pip install -r automation/requirements.txt
+            displayName: 'Install Python dependencies'
+
+          - script: |
+              npm install -g appium
+              appium driver install uiautomator2
+            displayName: 'Install Appium server + UiAutomator2 driver'
+
+          - script: |
+              sudo tee /etc/udev/rules.d/99-kvm4all.rules > /dev/null <<'EOF'
+              KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"
+              EOF
+              sudo udevadm control --reload-rules
+              sudo udevadm trigger --name-match=kvm
+            displayName: 'Enable KVM group perms'
+
+          - script: |
+              set -euo pipefail
+              export ANDROID_HOME="${ANDROID_HOME:-$ANDROID_SDK_ROOT}"
+              SDKMANAGER="$(find "$ANDROID_HOME" -name sdkmanager -type f | head -1)"
+              yes | "$SDKMANAGER" --licenses > /dev/null
+              "$SDKMANAGER" --install platform-tools emulator \
+                "system-images;android-30;google_apis;x86" > /dev/null
+              AVDMANAGER="$(find "$ANDROID_HOME" -name avdmanager -type f | head -1)"
+              echo "no" | "$AVDMANAGER" create avd --name test --device pixel \
+                --package "system-images;android-30;google_apis;x86" --force
+            displayName: 'Install Android emulator + create AVD (API 30, x86)'
+
+          - script: |
+              set -euo pipefail
+              export ANDROID_HOME="${ANDROID_HOME:-$ANDROID_SDK_ROOT}"
+              "$ANDROID_HOME/emulator/emulator" -avd test -no-window \
+                -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none \
+                -no-snapshot-save &
+              echo $! > emulator.pid
+              "$ANDROID_HOME/platform-tools/adb" wait-for-device
+              booted=""
+              for _ in $(seq 1 60); do
+                status="$("$ANDROID_HOME/platform-tools/adb" shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')"
+                if [ "$status" = "1" ]; then
+                  booted=1
+                  break
+                fi
+                sleep 5
+              done
+              if [ -z "$booted" ]; then
+                echo "Emulator did not report sys.boot_completed within 5 minutes" >&2
+                exit 1
+              fi
+            displayName: 'Boot the emulator'
+
+          - script: bash automation/ci/run_appium_emulator.sh
+            displayName: 'Run Appium smoke tests'
+            env:
+              ARXIV_APK_PATH: '$(Build.SourcesDirectory)/automation/appium/arxiv-papers-v1.0.apk'
+              APPIUM_SERVER_URL: 'http://127.0.0.1:4723'
+              ANDROID_DEVICE_NAME: 'Android Emulator'
+
+          - script: |
+              export ANDROID_HOME="${ANDROID_HOME:-$ANDROID_SDK_ROOT}"
+              "$ANDROID_HOME/platform-tools/adb" -s emulator-5554 emu kill || true
+              [ -f emulator.pid ] && kill "$(cat emulator.pid)" 2>/dev/null
+              true
+            displayName: 'Terminate emulator'
+            condition: always()
+
+          - task: PublishTestResults@2
+            inputs:
+              testResultsFormat: 'JUnit'
+              testResultsFiles: 'test-results/appium-results.xml'
+              failTaskOnFailedTests: true
+              testRunTitle: 'Appium Smoke — Local Emulator'
+            condition: always()
+
+          - task: PublishBuildArtifacts@1
+            inputs:
+              pathToPublish: 'test-results'
+              artifactName: 'Appium Smoke Report (Local Emulator)'
+            displayName: 'Publish Appium HTML report'
+            condition: always()
+
+      # Optional real-device path, same as the local emulator's counterpart in conftest.py's
+      # BROWSERSTACK=true toggle. Disabled by default (BrowserStack's free trial expired
+      # 2026-07-08, see docs/QA_AUDIT.md §3.7) — only useful again with a paid/renewed account.
       - job: AppiumBrowserStack
-        displayName: 'Appium Android Smoke Tests — BrowserStack App Automate'
+        displayName: 'Appium Android Smoke Tests — BrowserStack App Automate (optional)'
+        condition: eq(variables['BROWSERSTACK_ENABLED'], 'true')
         steps:
           - checkout: self
 
@@ -205,6 +313,6 @@ stages:
           - task: PublishBuildArtifacts@1
             inputs:
               pathToPublish: 'test-results'
-              artifactName: 'Appium Smoke Report'
+              artifactName: 'Appium Smoke Report (BrowserStack)'
             displayName: 'Publish Appium HTML report'
             condition: always()

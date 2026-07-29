@@ -289,6 +289,33 @@ arXiv API directly, so an upstream outage or rate-limit that outlasts the built-
 in `ci.yml` disclosing exactly that, following the same rule as `test-appium`/BrowserStack: masking
 is only acceptable when it's disclosed everywhere a reader would look.
 
+### 3.9 `azure-pipelines.yml`'s Appium stage never migrated off BrowserStack — found 2026-07-29
+
+The same bug hunt found that `automation/ci/azure-pipelines.yml`'s `AppiumSmoke` stage still
+exclusively targeted BrowserStack App Automate (trial expired 2026-07-08, §3.7) — it was never
+updated when `ci.yml` moved to a local Android emulator. It didn't produce a false-green result
+(the stage's `condition` required a `BROWSERSTACK_ENABLED` variable that's never defined anywhere
+in this repo, so it simply never ran), but it meant enabling it would hit the exact same expired-
+trial failure `ci.yml` already fixed, and the two pipelines this repo claims to keep equivalent
+(README: "mirrored as Azure Pipelines config for ADO environments") had quietly diverged.
+
+**Resolution applied (2026-07-29):** rewrote the `AppiumSmoke` stage's default job
+(`AppiumLocalEmulator`) to install the Android SDK, emulator, and API 30 `x86` system image via
+`sdkmanager`/`avdmanager`, boot the emulator, and run the same
+`automation/ci/run_appium_emulator.sh` script `ci.yml` uses — now the stage's default `condition`
+runs unconditionally (`succeeded()`), same as `ci.yml`. The BrowserStack path was kept as a second,
+opt-in job (`AppiumBrowserStack`, still gated behind `BROWSERSTACK_ENABLED`) rather than deleted,
+matching `conftest.py`'s existing `BROWSERSTACK=true` toggle.
+
+**This is disclosed as unverified, following this document's own rule (§3.7, §2): no Azure DevOps
+project is connected to this repo, so `AppiumLocalEmulator` has never had a real pipeline run
+observed** — unlike `ci.yml`'s equivalent, which is confirmed passing (§3.7). It also carries a
+risk `ci.yml` didn't: Microsoft-hosted Ubuntu agents' KVM/nested-virtualization support for
+Azure Pipelines is not documented as guaranteed the way GitHub-hosted runners' is (which required
+its own dedicated fix, `Enable KVM group perms`, on the GitHub Actions side) — without it, the
+emulator would fail to boot or run too slowly to be useful. Do not mark this "passing" — or even
+"bootable" — until someone with an ADO project observes a real run.
+
 ---
 
 ## 4. Test Case Design Issues
