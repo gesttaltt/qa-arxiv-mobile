@@ -4,7 +4,7 @@
 [![codecov](https://codecov.io/gh/gesttaltt/qa-arxiv-mobile/graph/badge.svg)](https://codecov.io/gh/gesttaltt/qa-arxiv-mobile)
 ![Python](https://img.shields.io/badge/python-3.12-3776AB?logo=python&logoColor=white)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-![Appium](https://img.shields.io/badge/Appium-Local%20Emulator%20%28unconfirmed%29-blue?logo=appium&logoColor=white)
+![Appium](https://img.shields.io/badge/Appium-7%2F7%20passing%20(local%20emulator)-4CAF50?logo=appium&logoColor=white)
 ![BDD](https://img.shields.io/badge/BDD-Gherkin%20%2B%20pytest--bdd-23D96C?logo=cucumber&logoColor=white)
 ![Tests](https://img.shields.io/badge/tests-57%20passing-4CAF50?logo=pytest&logoColor=white)
 
@@ -182,16 +182,17 @@ Also includes:
 ### Appium — current status
 
 The `test-appium` CI job runs against a **local Android emulator**
-(`reactivecircus/android-emulator-runner`, API 33, Pixel 6), replacing BrowserStack App Automate
+(`reactivecircus/android-emulator-runner`, API 30, Pixel 6), replacing BrowserStack App Automate
 whose free trial expired 2026-07-08. A first attempt at this same switch on 2026-07-09 was
 reverted after hanging for 6 hours — the emulator booted fine, but a shell syntax error in an
-inline CI script left the job stuck in cleanup instead of failing fast. This retry (2026-07-22)
-moves that script to a standalone, syntax-checked file
-(`automation/ci/run_appium_emulator.sh`) and adds `timeout-minutes: 15` to the job so a repeat
-bug fails fast instead of hanging — see `docs/QA_AUDIT.md` §3.7 for the full history.
-**Unconfirmed until a real CI run has been observed** — check the job's actual log in the
-Actions tab rather than trusting this doc or the badge above; last confirmed-passing run on
-BrowserStack was 2026-07-07.
+inline CI script left the job stuck in cleanup instead of failing fast. The 2026-07-22 retry
+moved that script to a standalone, syntax-checked file (`automation/ci/run_appium_emulator.sh`)
+and added `timeout-minutes: 15` to the job so a repeat bug fails fast instead of hanging, but hit
+two further issues before going green: API 33 has no published `x86` system image (Google only
+ships `x86_64` past API 30), and the emulator-runner action hung on teardown because the script's
+background Appium server was never killed, leaving a process holding the emulator connection open.
+**Confirmed passing 2026-07-27** — [run 30263026791](https://github.com/gesttaltt/qa-arxiv-mobile/actions/runs/30263026791),
+job `Appium Tests (Local Emulator)`, 7/7 in 5m33s. See `docs/QA_AUDIT.md` §3.7 for the full history.
 
 ## Documentation and Testability Feedback
 

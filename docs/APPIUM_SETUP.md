@@ -156,7 +156,7 @@ pytest automation/tests/ -m "not appium" -v
 ### GitHub Actions (`.github/workflows/ci.yml`)
 
 The `test-appium` job runs automatically on every push to `main` or `develop`, against a
-**local Android emulator** (`reactivecircus/android-emulator-runner`, API 33, Pixel 6) started
+**local Android emulator** (`reactivecircus/android-emulator-runner`, API 30, Pixel 6) started
 directly in the CI runner — no external account or secrets required. The runner script lives at
 `automation/ci/run_appium_emulator.sh` rather than inline in the workflow YAML, and the job has
 `timeout-minutes: 15` as a hard ceiling.
@@ -167,13 +167,14 @@ directly in the CI runner — no external account or secrets required. The runne
 > permissions, the second booted the emulator fine (~2m17s) but then hung for the full 6-hour job
 > timeout because a shell syntax error in an inline test-runner script left the job stuck in
 > cleanup instead of failing fast — leaving `main`'s CI red for 5 days. It was reverted to
-> BrowserStack on 2026-07-14. This retry (2026-07-22) fixes the root cause — the script is now a
-> standalone file, checked with `bash -n`/`dash -n` before commit — and adds `timeout-minutes` so
-> a repeat bug fails in minutes, not hours. See `docs/QA_AUDIT.md` §3.7 for the full timeline.
-> **Unconfirmed until a real CI run has been observed** — check the Actions tab rather than
-> trusting this doc. To run against BrowserStack instead (e.g. for real-device validation), set
-> `BROWSERSTACK=true` plus the three secrets below and point the job at that path manually — it is
-> no longer wired into `ci.yml` by default.
+> BrowserStack on 2026-07-14. This retry (2026-07-22) fixed that root cause — the script is now a
+> standalone file, checked with `bash -n`/`dash -n` before commit — and added `timeout-minutes` so
+> a repeat bug fails in minutes, not hours; two further issues (no `x86` system image at API 33,
+> and a leftover background Appium process hanging emulator teardown) surfaced and were fixed via
+> real CI runs before it went green. See `docs/QA_AUDIT.md` §3.7 for the full timeline.
+> **Confirmed passing 2026-07-27** — run `30263026791`, 7/7 in 5m33s. To run against BrowserStack
+> instead (e.g. for real-device validation), set `BROWSERSTACK=true` plus the three secrets below
+> and point the job at that path manually — it is no longer wired into `ci.yml` by default.
 
 | Secret (optional, BrowserStack path only) | Description |
 |---|---|
