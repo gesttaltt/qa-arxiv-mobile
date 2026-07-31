@@ -42,23 +42,18 @@ stages:
 
           - script: black --check --diff automation/
             displayName: 'Python formatting (Black)'
-            continueOnError: true
 
           - script: ruff check automation/ --output-format=junit --output-file=ruff-results.xml
             displayName: 'Python linting (Ruff)'
-            continueOnError: true
 
           - script: mypy automation/ --junit-xml=mypy-results.xml
             displayName: 'Python type checking (MyPy)'
-            continueOnError: false
 
-          - script: yamllint automation/ci/ -f parsable > yamllint-results.txt || true
+          - script: yamllint automation/ci/ -f parsable > yamllint-results.txt
             displayName: 'YAML linting'
-            continueOnError: true
 
-          - script: markdownlint-cli2 "**/*.md" "!node_modules" || true
+          - script: markdownlint-cli2 "**/*.md" "!node_modules"
             displayName: 'Markdown linting'
-            continueOnError: true
 
           - task: PublishTestResults@2
             inputs:
@@ -157,6 +152,22 @@ stages:
               artifactName: 'Integration Test Report'
             displayName: 'Publish HTML report'
             condition: always()
+
+      - job: PostmanTests
+        displayName: 'Postman / Newman (arXiv API contract)'
+        steps:
+          - checkout: self
+
+          - script: npm install -g newman
+            displayName: 'Install Newman'
+
+          - script: |
+              newman run automation/postman/arXiv_API.postman_collection.json \
+                --timeout-request 60000 || \
+              (echo "First run failed, retrying after 30s..." && sleep 30 && \
+                newman run automation/postman/arXiv_API.postman_collection.json \
+                  --timeout-request 60000)
+            displayName: 'Run Postman collection'
 
   - stage: AppiumSmoke
     displayName: 'Appium Mobile Smoke Tests'

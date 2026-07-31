@@ -289,6 +289,33 @@ arXiv API directly, so an upstream outage or rate-limit that outlasts the built-
 in `ci.yml` disclosing exactly that, following the same rule as `test-appium`/BrowserStack: masking
 is only acceptable when it's disclosed everywhere a reader would look.
 
+### 3.9a Two more `ci.yml`/`azure-pipelines.yml` divergences — found and fixed 2026-07-31
+
+An open-ended bug hunt across territory not covered by the 2026-07-29 review (`automation/`)
+turned up two real, undisclosed divergences in `automation/ci/azure-pipelines.yml`, both hiding
+behind the "mirrored"/"equivalent" language used for this pipeline in the README and §5.3:
+
+1. **Lint/style steps were silently non-blocking, contradicting §5.3's own "equivalent quality
+   gates" claim.** `ci.yml`'s lint job has no `continue-on-error` anywhere — Black, Ruff, mypy,
+   yamllint, and markdownlint all fail the job on a nonzero exit. `azure-pipelines.yml` had
+   `continueOnError: true` on Black, Ruff, yamllint, and markdownlint (only mypy was blocking),
+   and the yamllint/markdownlint scripts additionally appended `|| true`, which would have kept
+   masking failures even if `continueOnError` were fixed. §5.3 asserted these were "non-blocking
+   by design (developer aid, not gates)" in the same breath as claiming the two pipelines enforce
+   "equivalent quality gates" — self-contradictory, since GitHub Actions blocks on exactly these
+   checks. **Fix:** removed `continueOnError: true` and the `|| true` script suffixes from all
+   four steps; they now fail the build the same way their GitHub Actions counterparts do.
+2. **`azure-pipelines.yml` had no Postman/Newman stage at all.** `ci.yml` runs a dedicated
+   `postman` job contract-testing the 8 requests in
+   `automation/postman/arXiv_API.postman_collection.json`, with a manual retry-after-30s on
+   failure. The Azure pipeline had no equivalent job anywhere — API contract testing simply
+   didn't exist on that side, undisclosed in README, §5.3, or the file inventory (§9). **Fix:**
+   added a `PostmanTests` job to the `Testing` stage running the same collection with the same
+   retry logic.
+
+Neither fix has been observed in a real ADO run — same caveat as §3.9 below: no Azure DevOps
+project is connected to this repo.
+
 ### 3.9 `azure-pipelines.yml`'s Appium stage never migrated off BrowserStack — found 2026-07-29
 
 The same bug hunt found that `automation/ci/azure-pipelines.yml`'s `AppiumSmoke` stage still
@@ -355,6 +382,8 @@ The pipeline now uses `PublishBuildArtifacts@1` (a built-in ADO task) to publish
 ### 5.3 Quality Gates — RESOLVED
 
 The Azure Pipelines `pytest` and `mypy` steps now use `continueOnError: false`, meaning test failures and type errors correctly fail the build. Style and lint steps remain non-blocking by design (developer aid, not gates). Both pipelines now enforce equivalent quality gates: the GitHub Actions pipeline has Black, Ruff, mypy, yamllint, markdownlint, and `pytest --cov-fail-under=100` as blocking steps; the Azure Pipelines Testing stage mirrors this with `-m "not appium and not slow"` and `--cov-fail-under=100` on the same pytest invocation.
+
+**Correction (2026-07-31):** the "Both pipelines now enforce equivalent quality gates" claim above was false — see §3.9a. `continueOnError: true` (plus `|| true` on two of them) was still masking Black/Ruff/yamllint/markdownlint failures on the Azure side while those same checks were hard-blocking on GitHub Actions. Fixed; see §3.9a for what changed.
 
 ### 5.4 No iOS Build or Test Stage
 
@@ -456,6 +485,8 @@ The standalone `ruff.toml` has been removed and its configuration has been merge
 | ~~5~~ | ~~Replace `- task: Checkout@1` with `- checkout: self`~~ | ~~`azure-pipelines.yml`~~ — **DONE** |
 | ~~6~~ | ~~Replace `PublishHtmlReport@1` with `PublishBuildArtifacts@1`~~ | ~~`azure-pipelines.yml`~~ — **DONE** |
 | ~~7~~ | ~~Set `continueOnError: false` on `pytest` and `mypy` steps~~ | ~~`azure-pipelines.yml`~~ — **DONE** |
+| ~~15~~ | ~~Remove `continueOnError: true` / `\|\| true` masking on Black, Ruff, yamllint, markdownlint so they block like their GitHub Actions counterparts~~ | ~~`azure-pipelines.yml`~~ — **DONE (2026-07-31, §3.9a)** |
+| ~~16~~ | ~~Add missing Postman/Newman contract-test stage~~ | ~~`azure-pipelines.yml`~~ — **DONE (2026-07-31, §3.9a)** |
 | 8 | Add macOS agent pool stage for iOS build and simulator test execution | `azure-pipelines.yml` |
 
 #### Priority 3 — Coverage Expansion (Future Sprint)
@@ -487,7 +518,7 @@ The standalone `ruff.toml` has been removed and its configuration has been merge
 | Config fragmentation (ruff) | Resolved — consolidated in `pyproject.toml` |
 | Code coverage | 100% on `utils.py` (10 statements) — page objects excluded (require real device); gate at `--cov-fail-under=100` |
 | CI quality gates functional (GitHub Actions) | Full — lint + type check + pytest + `--cov-fail-under=100`; all blocking |
-| CI quality gates functional (Azure Pipelines) | Full — `pytest` and `mypy` blocking; `--cov-fail-under=100` and marker filter match GitHub Actions; style/lint non-blocking |
+| CI quality gates functional (Azure Pipelines) | Full — matches GitHub Actions: Black, Ruff, mypy, yamllint, markdownlint, `pytest --cov-fail-under=100` all blocking (fixed 2026-07-31, see §3.9a); Postman/Newman stage added same day |
 | CI stages covering macOS / Xcode | 0 |
 | ADO pipeline tasks using correct syntax | Yes — `checkout: self` and `PublishBuildArtifacts@1` in all stages |
 | Feature coverage (US001 Search) | 100% executed |
@@ -523,7 +554,7 @@ The standalone `ruff.toml` has been removed and its configuration has been merge
 | `automation/tests/bdd/test_search.py` | pytest-bdd step definitions | Complete |
 | `automation/tests/appium/test_search_smoke.py` | Appium UI test (search) | 5 tests — CI-wired against a local Android emulator; confirmed passing 2026-07-27 (§3.7) |
 | `automation/tests/appium/test_downloaded_smoke.py` | Appium UI test (DOWNLOADED tab) | 2 tests — CI-wired against a local Android emulator; confirmed passing 2026-07-27 (§3.7) |
-| `automation/ci/azure-pipelines.yml` | CI pipeline | Standard ADO syntax; UnitTests + IntegrationTests jobs; `--cov-fail-under=100` gate; no iOS stage |
+| `automation/ci/azure-pipelines.yml` | CI pipeline | Standard ADO syntax; UnitTests + IntegrationTests + PostmanTests jobs; `--cov-fail-under=100` gate; lint/style steps blocking (match GitHub Actions, §3.9a); no iOS stage |
 | `.github/workflows/ci.yml` | GitHub Actions CI | Functional |
 | `pyproject.toml` | Project config + ruff config | Consolidated (ruff.toml removed) |
 | `Makefile` | Common task targets | Complete |
