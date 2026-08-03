@@ -9,7 +9,7 @@ pytest-html==4.2.0
 pytest-xdist==3.8.0
 
 # Linting and code quality
-ruff==0.16.0
+ruff==0.16.1
 black==26.5.1
 mypy==2.3.0
 
