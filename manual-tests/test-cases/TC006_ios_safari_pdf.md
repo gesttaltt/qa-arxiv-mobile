@@ -44,3 +44,8 @@ a broken state on return.
   Document which behaviour the app uses on the tested iOS version.  
 - If the arXiv link requires a redirect (`arxiv.org/pdf/xxxx`), verify Safari follows it
   without an SSL or certificate error.
+- **Execution blocker beyond hardware (found 2026-08-07):** this test case exercises the PDF
+  download/hand-off flow, which depends on native file download/management — functionality the
+  target app's own README lists as not yet ported to iOS at all (see `docs/QA_AUDIT.md` §3.10).
+  Getting macOS/Xcode access would not by itself make this TC executable; the app would need an
+  iOS download implementation first. Kept as designed, not executed, pending that.
