@@ -13,6 +13,12 @@ so no iOS execution ever took place. Every file under `ios/` is either:
 This is disclosed here, in `docs/MARKET_GAP_ANALYSIS.md` §3.5, and in each affected
 execution log, so the limitation is visible wherever the evidence is referenced.
 
+> **Scope note (2026-08-07):** 5 test cases (TC012–TC016) were added after this evidence set
+> was collected. They have **no evidence at all** — not even a placeholder — because they have
+> not been executed on any platform yet. All counts below ("11 test cases", "10/11", "0/11")
+> describe the original 11-TC suite only; the current full suite is 16 TCs (see
+> `manual-tests/traceability-matrix.csv`).
+
 ## Current Contents
 
 ### Android GIF Recordings (10 files) — genuine

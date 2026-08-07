@@ -34,7 +34,7 @@ on the same profile:
 
 | Area | Evidence in Repo | Strength |
 |---|---|---|
-| Manual test cases (ADO-style) | `manual-tests/test-cases/TC001–TC011` (11 TCs) | Strong |
+| Manual test cases (ADO-style) | `manual-tests/test-cases/TC001–TC016` (16 TCs; 10 executed, 6 designed/pending) | Strong |
 | Execution logs with evidence | `manual-tests/test-execution/` — 28 GIFs + screenshots | Strong |
 | Traceability matrix | `manual-tests/traceability-matrix.csv` — Automation Notes column | Strong |
 | Testability feedback | `manual-tests/testability-feedback/` | Good |
@@ -150,10 +150,10 @@ variable for easy environment switching. Run via Newman CLI:
 **Market demand:** MentorMate Senior QA Mobile posting requires "Android and iOS" coverage.
 Every mobile QA job description reviewed listed both platforms.
 
-**Current state (July 2026):** iOS execution is at 0/11 test cases — no macOS/Xcode/iOS
+**Current state (August 2026):** iOS execution is at 0/16 test cases — no macOS/Xcode/iOS
 Simulator was ever available. 8 test cases have a placeholder GIF in `evidence/ios/` (the
-Android recording with a "Pending macOS environment" banner overlaid); TC006, TC010, and
-TC011 have no iOS file at all. Two screenshots (`TC001_ios_search_results.png`,
+Android recording with a "Pending macOS environment" banner overlaid); TC006, TC010, TC011,
+and the 5 test cases added 2026-08-07 (TC012–TC016) have no iOS file at all. Two screenshots (`TC001_ios_search_results.png`,
 `TC006_safari_pdf.png`) are synthetic text mockups, not real captures. All execution logs
 mark iOS as "N/A — Not Executed" rather than claiming a pass, and this is cross-referenced
 in `evidence/README.md`, the traceability docs, and `TESTING_CHECKLIST.md`.
@@ -176,10 +176,14 @@ hardware.
 **Market demand:** Junior QA testers are expected to apply test design techniques:
 Equivalence Partitioning and Boundary Value Analysis. ISTQB Foundation Level formalizes these.
 
-**Resolution (June 2026):** TC001–TC011 cover functional, integration, performance,
-accessibility, and negative paths. `docs/TESTING_THEORY.md` §2 maps each TC to ISTQB design
-techniques (EP, BVA, State Transition, Decision Table, Error Guessing). API parametrised tests
-cover boundary values and edge cases in `test_search_api.py` and `test_data_validation.py`.
+**Resolution (June 2026, expanded August 2026):** TC001–TC016 cover functional, integration,
+performance, accessibility, and negative paths. `docs/TESTING_THEORY.md` §2 maps each TC to
+ISTQB design techniques (EP, BVA, State Transition, Decision Table, Error Guessing). API
+parametrised tests cover boundary values and edge cases in `test_search_api.py` and
+`test_data_validation.py`. TC012–TC016 (added 2026-08-07) close specific gaps this document
+had flagged as unaddressed: download cancellation, storage-full handling, network loss on an
+in-flight request, network throttling, and server rate-limit/error responses — all designed,
+none yet executed.
 
 ---
 
@@ -287,7 +291,8 @@ scenarios (TC001 valid search, TC002 empty query, Scenario Outline × 3 academic
 |---|---|---|---|
 | 1 | iOS Appium fixture (requires macOS + Xcode) | High | Medium |
 | 2 | macOS CI stage for iOS simulator | High | Low (hardware constraint) |
-| 3 | Execute all 11 manual test cases on a real iOS device/simulator (currently 0/11 — placeholder evidence only) | High | High — this is the single biggest gap against "Android and iOS" job requirements |
+| 3 | Execute all 16 manual test cases on a real iOS device/simulator (currently 0/16 — placeholder evidence only for the original 8) | High | High — this is the single biggest gap against "Android and iOS" job requirements |
+| 4 | Execute TC012–TC016 on Android (designed 2026-08-07, not yet run on any platform) | Medium | Medium — closes real functional gaps (download cancel, storage full, network resilience) independent of the iOS gap |
 
 ---
 
@@ -295,7 +300,7 @@ scenarios (TC001 valid search, TC002 empty query, Scenario Outline × 3 academic
 
 These areas are solid and should be maintained — they already match or exceed what employers ask for:
 
-- **ADO-style documentation** — 11 test cases, execution logs, wiki, traceability matrix with Automation Notes
+- **ADO-style documentation** — 16 test cases (10 executed), execution logs, wiki, traceability matrix with Automation Notes
 - **Azure DevOps CI/CD** — `azure-pipelines.yml` with standard syntax, critical steps blocking
 - **GitHub Actions CI/CD** — full quality gate pipeline, green badge on `main`
 - **Python automation with pytest** — parametrised, typed, BDD, CI-integrated; 57 tests
