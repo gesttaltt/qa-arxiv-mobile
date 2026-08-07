@@ -8,6 +8,11 @@ Android recording with a "Pending macOS environment" banner overlaid — not rea
 evidence. See [`evidence/README.md`](evidence/README.md) for the full breakdown, including
 which screenshots are genuine vs. mislabeled/synthetic.
 
+> **Scope note (2026-08-07):** 5 test cases (TC012–TC016) were added after this document's
+> 2026-05-21 execution session and have no evidence of any kind yet — they are intentionally
+> not listed in the table below, which is a record of that session. See
+> `manual-tests/traceability-matrix.csv` for the current full list (16 TCs).
+
 ## 🎯 Real Execution Status Overview
 
 | Test Case ID | Description | Android Status | iOS Status | Evidence Collected |

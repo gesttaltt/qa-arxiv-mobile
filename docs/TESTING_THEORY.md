@@ -11,7 +11,7 @@ Use this document to explain test design decisions in interviews.
 |---|---|
 | **Requirement Analysis** | `manual-tests/testability-feedback/requirements_analysis.md` |
 | **Test Planning** | `TESTING_WORKFLOW.md`, `TESTING_CHECKLIST.md` |
-| **Test Case Design** | `manual-tests/test-cases/TC001–TC011` |
+| **Test Case Design** | `manual-tests/test-cases/TC001–TC016` |
 | **Test Environment Setup** | `setup-app.sh`, `docs/APPIUM_SETUP.md` |
 | **Test Execution** | `manual-tests/test-execution/`, `automation/tests/` |
 | **Test Closure** | `manual-tests/wiki/coverage_summary.md`, `manual-tests/test-execution/execution-summary.md` |
@@ -41,6 +41,7 @@ Test at and just inside/outside the edges of each equivalence partition.
 | Test Case | Boundary tested |
 |---|---|
 | TC008 – Bulk downloaded papers | 0 items (below min), 1 item (minimum), 3+ items (multiple) |
+| TC015 – Slow network throttling | < 1 Mbps bandwidth boundary with induced latency, vs. the ≤ 5 s baseline in TC001 |
 | Postman – max_results=1 | Minimum meaningful result count |
 | Postman – start=0 vs start=1 | Pagination offset edge |
 | `test_data_validation.py` – field length | Empty string vs single character vs max-length title |
@@ -56,6 +57,7 @@ and attempt invalid ones.
 | TC004 – Search offline | WiFi active → WiFi disabled → Search attempted → WiFi restored |
 | TC009 – WiFi to Cellular | WiFi → Cellular → Offline → WiFi (four states, six transitions) |
 | TC003 – Download/remove | Not-downloaded → Downloaded → Not-downloaded |
+| TC014 – Airplane mode mid-request | Online → Request in flight → Airplane mode enabled → Error shown → Airplane mode disabled → Retry succeeds |
 
 ---
 
@@ -76,6 +78,9 @@ Use experience and intuition to predict likely failure points not covered by oth
 |---|---|
 | TC004 – Offline search | App hangs instead of showing error (infinite spinner) |
 | TC005 – PDF drop mid-download | Corrupt partial file left on device |
+| TC012 – Cancel in-progress download | No cancel control exists at all (confirmed — see BUG003) |
+| TC013 – Storage full | Crash or silent no-op instead of a clear error on failed write |
+| TC016 – 429/503 from arXiv | Server error rendered indistinguishably from "no results found" |
 | Postman – Special characters | Server 500 on unescaped `<script>` in query param |
 | TC007 – No viewer installed | Unhandled `ActivityNotFoundException` crash on Android |
 
@@ -194,8 +199,8 @@ See `manual-tests/test-cases/TC011_accessibility_talkback.md`.
 
 | Type | Examples in this project |
 |---|---|
-| **Functional** | TC001–TC005, TC008–TC009 |
-| **Non-functional (Performance)** | TC009; `TestPerformanceBaseline` in `test_search_api.py` (mock-based SLA validation) |
+| **Functional** | TC001–TC005, TC008–TC009, TC012–TC014, TC016 |
+| **Non-functional (Performance)** | TC009, TC015; `TestPerformanceBaseline` in `test_search_api.py` (mock-based SLA validation) |
 | **Non-functional (Accessibility)** | TC011 |
 | **Regression** | Re-running TC001–TC003 after any build change |
 | **Smoke** | Appium tests in `automation/tests/appium/` |

@@ -5,6 +5,11 @@
 **Tester:** QA Team  
 **Environment:** React Native App - Android (Emulator). iOS was not executed — no macOS/Xcode/iOS Simulator was available.
 
+> **Scope note (2026-08-07):** 5 additional test cases (TC012–TC016) were added to the suite
+> after this execution period ended — they are not reflected in the "Total Test Cases" figures
+> below, which describe the 2026-05-21 session only. See `manual-tests/traceability-matrix.csv`
+> for the current full total (16) and `docs/QA_AUDIT.md` §1.3/§1.4 for what TC012–TC016 close.
+
 ---
 
 ## 🎯 Execution Overview

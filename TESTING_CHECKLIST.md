@@ -4,6 +4,11 @@
 **Tester:** Jonathan Verdun
 **Platform(s):** [x] Android [ ] iOS (designed but not executed — no macOS/Xcode/iOS Simulator available)
 
+> **Scope note (2026-08-07):** 5 test cases (TC012–TC016) were designed after this checklist's
+> 2026-05-21 execution run and are **not** included below — this document tracks that specific
+> run only. They are unexecuted on any platform; see `manual-tests/traceability-matrix.csv` for
+> the current full suite (16 TCs).
+
 ---
 
 ## Phase 1: Setup ⏱️ (15-20 min)

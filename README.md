@@ -21,7 +21,7 @@ This repository contains a complete QA portfolio applied to the open-source [arx
 | Area | Details |
 |------|---------|
 | **Mobile Testing** | Manual execution on Android emulator (API 28) with `adb screenrecord`; offline, network, and accessibility scenarios |
-| **Test Design** | 11 ADO-format test cases covering functional, edge-case, and platform-specific flows |
+| **Test Design** | 16 ADO-format test cases covering functional, edge-case, and platform-specific flows (10 executed on Android, 6 designed and pending execution — TC006 iOS gap plus 5 new scenarios added 2026-08-07) |
 | **Traceability** | Bi-directional: User Stories → Test Cases → Evidence → Defects (CSV matrix + linked wiki) |
 | **Defect Reporting** | 6 real defect reports from execution (BUG002–BUG007) with reproduction steps, severity, and fix suggestions; BUG001 is a pre-execution format template, kept and marked as such |
 | **CI/CD** | GitHub Actions pipeline with linting (Black, Ruff, mypy, markdownlint), pytest quality gates, and green badge; Azure Pipelines config included for ADO environments |
@@ -53,7 +53,7 @@ This repository contains a complete QA portfolio applied to the open-source [arx
 
 ```
 manual-tests/
-├── test-cases/              # 11 ADO-format test cases
+├── test-cases/              # 16 ADO-format test cases (10 executed, 6 designed/pending)
 ├── ado-integration/         # Azure DevOps workflow examples
 ├── testability-feedback/    # Requirement analysis and feedback
 ├── wiki/                   # ADO-style documentation
@@ -114,6 +114,11 @@ Located in `manual-tests/test-cases/` - Following ADO test case format
 | TC009 | WiFi to cellular transition  | US004      | Android  | ✅ Passed (iOS not executed) |
 | TC010 | Offline data persistence     | US004      | Android  | ✅ Passed (iOS not executed) |
 | TC011 | Accessibility TalkBack       | US001/2/3  | Android  | ✅ Passed   |
+| TC012 | Cancel an in-progress PDF download | US003 | Both     | ⏸ Not Executed (design formalizes known gap BUG003) |
+| TC013 | PDF download with device storage full | US003 | Both  | ⏸ Not Executed (added 2026-08-07) |
+| TC014 | Airplane mode mid-search-request | US001  | Both     | ⏸ Not Executed (added 2026-08-07) |
+| TC015 | Slow network throttling (< 1 Mbps) | US004 | Both     | ⏸ Not Executed (added 2026-08-07) |
+| TC016 | Server error responses (429 / 503) | US001 | Both     | ⏸ Not Executed (added 2026-08-07) |
 
 ### Test Case Structure (ADO Format)
 Each test case includes:
@@ -139,10 +144,10 @@ This document links:
 
 | ID | Title | Description | Test Cases |
 |----|-------|-------------|------------|
-| US001 | Search for Academic Papers | As a user, I want to search for academic papers by keyword so that I can find relevant research. | TC001, TC002, TC004, TC011 |
+| US001 | Search for Academic Papers | As a user, I want to search for academic papers by keyword so that I can find relevant research. | TC001, TC002, TC004, TC011, TC014, TC016 |
 | US002 | Manage Downloaded Papers | As a user, I want to download and manage papers for offline access so that I can read them without an internet connection. | TC003, TC008 |
-| US003 | Download and View PDFs | As a user, I want to download and open PDF versions of papers so that I can read them offline or in external viewers. | TC005, TC006, TC007 |
-| US004 | Network Connectivity | As a user, I want the app to handle network state changes gracefully so that I can continue using the app without data loss or crashes when connectivity changes. | TC009, TC010 |
+| US003 | Download and View PDFs | As a user, I want to download and open PDF versions of papers so that I can read them offline or in external viewers. | TC005, TC006, TC007, TC012, TC013 |
+| US004 | Network Connectivity | As a user, I want the app to handle network state changes gracefully so that I can continue using the app without data loss or crashes when connectivity changes. | TC009, TC010, TC015 |
 
 ## Requirement Reviews & Testability Feedback
 
@@ -269,17 +274,17 @@ This demonstrates **genuine QA work** with verifiable evidence on a real React N
 
 ### CV bullets (ready to adapt)
 
-- Designed 11 manual test cases for a React Native mobile app following ADO enterprise standards, and executed 10 of them on Android with verified evidence (the 11th, iOS Safari integration, is fully designed but not yet executed — no macOS/Xcode access): bi-directional traceability (User Stories → Test Cases → Evidence → Defects), structured execution logs, and defect reports with severity classification and remediation suggestions
+- Designed 16 manual test cases for a React Native mobile app following ADO enterprise standards, and executed 10 of them on Android with verified evidence (the remaining 6 — iOS Safari integration plus 5 edge-case scenarios added 2026-08-07: download cancellation, storage-full handling, mid-flight network loss, network throttling, server rate-limit errors — are fully designed but not yet executed): bi-directional traceability (User Stories → Test Cases → Evidence → Defects), structured execution logs, and defect reports with severity classification and remediation suggestions
 - Configured an Android emulator testing environment from scratch (Android SDK CLI, KVM acceleration, API 28 Google Play image) and captured all test evidence with `adb screenrecord` — no Android Studio required
 - Filed 6 defect reports (BUG002–BUG007) covering functional gaps, UX improvements, and a WCAG 2.1 AA accessibility violation (`accessibilityRole` missing on result cards, identified via TalkBack navigation)
 - Built API test coverage at two layers: a Postman collection (8 requests, `pm.test()` assertions) covering TC001, TC002, Equivalence Partitioning (author field, pagination offset, cross-request `au:` vs `all:` comparison using `pm.sendRequest` + `pm.collectionVariables`), Boundary Value Analysis (max\_results, pagination edge), and Error Guessing (XSS injection); and 57 pytest tests for CI — API integration, mock-based SLA validation, article data contract tests (TC003, TC005–TC007), and retry-logic unit tests (100% coverage on utils.py)
 - Authored a GitHub Actions CI pipeline running on every push — Python linting (Black, Ruff, mypy), pytest with `--cov-fail-under=100` quality gate, Codecov coverage reporting, Markdown/YAML validation, and Appium smoke tests on a local Android emulator (previously validated against real hardware via BrowserStack App Automate, Samsung Galaxy S22, Android 12); mirrored as Azure Pipelines config for ADO environments
 - Implemented BDD scenarios in Gherkin using pytest-bdd: two feature files — `search.feature` (TC001, TC002, Scenario Outline across three academic domains) and `article_data_contract.feature` (TC003, TC008, validating API field completeness for article display and bulk uniqueness); shared Given step and `result` fixture extracted to `bdd/conftest.py` to eliminate duplication across modules
-- Maintained full test traceability linking 4 user stories to 11 test cases, screen recordings, screenshots, and defect tickets in a single auditable repository
+- Maintained full test traceability linking 4 user stories to 16 test cases, screen recordings, screenshots, and defect tickets in a single auditable repository
 
 ### LinkedIn one-liner
 
-> Built an end-to-end QA portfolio on a real React Native app — 11 manual test cases, 57 automated tests (API, BDD/Gherkin, Appium POM on a local Android emulator), Postman collection, 6 defect reports, ADO traceability, and a GitHub Actions CI pipeline with Codecov coverage gate.
+> Built an end-to-end QA portfolio on a real React Native app — 16 manual test cases (10 executed), 57 automated tests (API, BDD/Gherkin, Appium POM on a local Android emulator), Postman collection, 6 defect reports, ADO traceability, and a GitHub Actions CI pipeline with Codecov coverage gate.
 
 ### Platform coverage — how to frame it
 
