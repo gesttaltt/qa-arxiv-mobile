@@ -13,13 +13,13 @@
 
 This audit reviews the current state of the QA project for the `arxiv-papers-mobile` React Native application. The project demonstrates solid foundational intent — ADO-style traceability, structured manual test cases, and CI/CD pipeline integration.
 
-Issues identified in the April 2026 initial audit have been progressively resolved. As of July 2026, 10 of 11 test cases have been executed on Android (TC006 is iOS-only and was never executed — no macOS/Xcode/iOS Simulator was available). iOS execution across all test cases remains outstanding; the "iOS" evidence files in `evidence/ios/` are disclosed placeholders (the Android recording with a "Pending macOS environment" banner), not real captures. 30 evidence files exist in total (10 genuine Android GIFs, 8 iOS placeholder GIFs, 11 screenshots — 5 genuine, 6 mislabeled/synthetic — 1 suite summary); all Android execution logs contain real tester data, and the `TESTING_CHECKLIST.md` has been completed in full and corrected to reflect the iOS gap honestly. All 6 issues found during Android execution are formally documented as BUG002–BUG007. (BUG001,
+Issues identified in the April 2026 initial audit have been progressively resolved. As of August 2026, 10 of 16 test cases have been executed on Android (TC006 is iOS-only and was never executed — no macOS/Xcode/iOS Simulator was available; TC012–TC016 were added 2026-08-07 to close previously-flagged coverage gaps — download cancellation, storage-full handling, mid-flight network loss, network throttling, server 429/503 errors — and are designed but not yet executed on any platform). iOS execution across all test cases remains outstanding; the "iOS" evidence files in `evidence/ios/` are disclosed placeholders (the Android recording with a "Pending macOS environment" banner), not real captures. 30 evidence files exist in total (10 genuine Android GIFs, 8 iOS placeholder GIFs, 11 screenshots — 5 genuine, 6 mislabeled/synthetic — 1 suite summary); all Android execution logs contain real tester data, and the `TESTING_CHECKLIST.md` has been completed in full and corrected to reflect the iOS gap honestly. All 6 issues found during Android execution are formally documented as BUG002–BUG007. (BUG001,
 in the same folder, is a pre-execution format template dated before real testing started and
 contradicts what TC004 actually showed — see §2.5 below and the banner in that file.)
 
 The automation layer has been substantially expanded: 57 automated tests across API integration and BDD/Gherkin scenarios, plus 7 Appium tests wired into CI. The BrowserStack path used through early July hit an expired free trial and was replaced (2026-07-09, reverted 2026-07-14, retried 2026-07-22) with a local Android emulator run via `reactivecircus/android-emulator-runner` — see §3.7 for the full history. The 2026-07-22 retry (branch `ci/appium-local-emulator-retry`, PR #20) is **confirmed passing as of 2026-07-27** (run `30263026791`, 7/7 in 5m33s) after fixing two further issues found via the real CI logs: API 33 has no published `x86` system image (downgraded to API 30), and the emulator-runner action's teardown hung on a leftover background Appium server the script never killed. 100% coverage on `utils.py` enforced as a CI gate (`--cov-fail-under=100`); page objects excluded from coverage (require real device — now verified passing by Appium tests in CI); lint, type checking, and coverage gates are genuinely blocking and green regardless of the Appium job's outcome.
 
-Remaining gaps: iOS execution is zero across all 11 test cases — no macOS/Xcode/iOS Simulator was available, and this is disclosed rather than papered over with fabricated evidence; TC010 in particular has no iOS file at all, not even a placeholder; no macOS CI stage exists for iOS simulator execution.
+Remaining gaps: iOS execution is zero across all 16 test cases — no macOS/Xcode/iOS Simulator was available, and this is disclosed rather than papered over with fabricated evidence; TC010 in particular has no iOS file at all, not even a placeholder; no macOS CI stage exists for iOS simulator execution. TC012–TC016 are also zero-executed on Android — designed 2026-08-07, not yet run.
 
 ---
 
@@ -27,7 +27,7 @@ Remaining gaps: iOS execution is zero across all 11 test cases — no macOS/Xcod
 
 ### 1.1 Test Case Specification Files Status
 
-All 11 test cases are defined and have specification files:
+All 16 test cases are defined and have specification files:
 
 | Test Case | Feature Area | Priority | Has Spec File |
 |-----------|-------------|----------|---------------|
@@ -42,6 +42,11 @@ All 11 test cases are defined and have specification files:
 | TC009 | WiFi to Cellular transition | Medium | Yes |
 | TC010 | Offline data persistence | High | Yes |
 | TC011 | Accessibility — TalkBack | Low | Yes |
+| TC012 | Cancel an in-progress PDF download | Medium | Yes (added 2026-08-07, not executed) |
+| TC013 | PDF download with device storage full | Medium | Yes (added 2026-08-07, not executed) |
+| TC014 | Airplane mode mid-search-request | Medium | Yes (added 2026-08-07, not executed) |
+| TC015 | Slow network throttling (< 1 Mbps) | Low | Yes (added 2026-08-07, not executed) |
+| TC016 | Server error responses (429 / 503) | Medium | Yes (added 2026-08-07, not executed) |
 
 ### 1.2 iOS-Specific Coverage is Near Zero
 
@@ -64,17 +69,22 @@ Only TC006 is designated iOS-only. No existing test case covers any of the follo
 
 TC005 (PDF download and viewing) and TC007 (Android intent handling) have been executed on Android and passed with genuine GIF and screenshot evidence. TC006 (iOS Safari PDF integration) has **not** been executed — no macOS/Xcode/iOS Simulator was available, and its "evidence" is a disclosed placeholder (unrelated Android recording) and a synthetic mockup screenshot, not real captures.
 
-Remaining gap: no test case covers cancellation of an in-progress download or behavior when the device storage is full. TC006 needs a real execution pass once iOS hardware access exists.
+**Gap addressed 2026-08-07:** TC012 (cancel an in-progress download) and TC013 (device storage
+full) now exist as specification files. Both are design-only — TC012 formalizes a gap already
+observed as BUG003 (no cancel control exists), and neither has been executed yet. TC006 still
+needs a real execution pass once iOS hardware access exists.
 
 ### 1.4 Network and Offline Scenarios — Executed
 
 TC004 (offline search), TC009 (WiFi-to-cellular transition), and TC010 (offline data persistence) have all been executed on Android and passed — downloaded papers and cached detail views were verified offline. TC010 has a dedicated, genuine Android GIF; it has no iOS evidence at all, placeholder or otherwise. None of these three were executed on iOS.
 
-The following scenarios remain unaddressed by any test case:
+**Gap addressed 2026-08-07:** the three scenarios below now have specification files —
+TC014 (airplane mode mid-request), TC015 (< 1 Mbps throttling), and TC016 (429/503 errors).
+All three are design-only: written but not yet executed on any platform.
 
-- Airplane mode triggered during an active in-flight search request
-- Slow network simulation (< 1 Mbps throttling)
-- Server-side 429 / 503 error responses under load
+- Airplane mode triggered during an active in-flight search request → **TC014**
+- Slow network simulation (< 1 Mbps throttling) → **TC015**
+- Server-side 429 / 503 error responses under load → **TC016**
 
 ---
 
@@ -515,8 +525,8 @@ item is closed because the design work is done, not because the checks have been
 
 | Dimension | State |
 |-----------|-------|
-| Test cases with specification files | 11 / 11 (100%) |
-| Test cases with real execution logs | 11 / 11 (100%) |
+| Test cases with specification files | 16 / 16 (100%) |
+| Test cases with real execution logs | 11 / 16 (69%) — TC001–TC011 have real execution logs; TC012–TC016 (added 2026-08-07) do not, since they have not been executed |
 | Test cases with genuine Android GIF/screenshot evidence | 10 / 11 (TC006 is iOS-only, not executed) |
 | Test cases with genuine iOS evidence | 0 / 11 (no macOS/Xcode/iOS Simulator available) |
 | Formal defect reports | 6 / 6 (BUG002–BUG007 — all execution issues documented, Android only; BUG001 is a pre-execution template, see §2.5) |
@@ -541,7 +551,8 @@ item is closed because the design work is done, not because the checks have been
 
 | File | Purpose | Completeness |
 |------|---------|--------------|
-| `manual-tests/test-cases/TC001-TC011` (11 files) | Test specs | All present; iOS preconditions missing in cross-platform TCs |
+| `manual-tests/test-cases/TC001-TC011` (11 files) | Test specs | All present; iOS preconditions added 2026-08-07 |
+| `manual-tests/test-cases/TC012-TC016` (5 files) | Test specs | Added 2026-08-07 to close gaps in §1.3/§1.4; design-only, not yet executed |
 | `manual-tests/test-execution/execution-logs/TC001-TC011` (11 files) | Execution records | Complete — real tester data, step results, and observations |
 | `manual-tests/test-execution/execution-summary.md` | Sprint summary | Complete — real results, performance data, 7 issues noted |
 | `manual-tests/test-execution/traceability-with-evidence.md` | Evidence links | Complete — real file paths for all 30 evidence files |
