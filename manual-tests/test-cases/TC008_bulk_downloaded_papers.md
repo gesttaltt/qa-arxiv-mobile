@@ -15,6 +15,7 @@ returns the list to a clean empty state.
 
 **Preconditions:**  
 - App is installed and running.  
+- iOS testing: iPhone simulator or device running iOS 15 or later (Xcode 15+ if using Simulator).  
 - DOWNLOADED tab is empty (fresh install or manually cleared).  
 - Internet connectivity is active.
 

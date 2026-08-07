@@ -14,6 +14,7 @@ case where no PDF is available without crashing or showing misleading UI.
 
 **Preconditions:**  
 - App is installed and running.  
+- iOS testing: iPhone simulator or device running iOS 15 or later (Xcode 15+ if using Simulator).  
 - Device has internet connectivity.  
 - Device has sufficient storage (≥ 50 MB free).  
 - A search result is visible on screen.

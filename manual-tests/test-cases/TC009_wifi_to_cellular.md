@@ -23,6 +23,8 @@ device switches from WiFi to mobile data (and back) during active use.
 **Preconditions:**  
 - Physical device with an active SIM (cellular data enabled) **or** network-condition
   simulation tool (e.g., Android Emulator network settings / iOS Network Link Conditioner).  
+- iOS testing: iPhone simulator or device running iOS 15 or later (Xcode 15+, with Additional
+  Tools for Xcode installed for Network Link Conditioner).  
 - App is installed and running; internet connectivity is active (WiFi).
 
 ---

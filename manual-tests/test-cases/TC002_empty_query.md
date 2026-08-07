@@ -5,6 +5,7 @@ Verify that the app handles empty search submissions gracefully.
 
 **Preconditions:**  
 - App is open on Android **or** iOS.  
+- iOS testing: iPhone simulator or device running iOS 15 or later (Xcode 15+ if using Simulator).  
 - No text has been entered in the search field.
 
 **Test Steps:**  
@@ -20,6 +21,14 @@ Verify that the app handles empty search submissions gracefully.
 |------|------------------------------------|-----------|
 | 1    | Validation prevents empty search   |           |
 | 2    | No crash or blank screen appears   |           |
+
+---
+
+**Accessibility Validation (WCAG 2.1 AA):**
+
+| # | Check | Expected Outcome | Pass/Fail |
+|---|---|---|---|
+| A1 | Enable TalkBack/VoiceOver and repeat the empty-search submission | The validation message is announced automatically without extra navigation (live-region / assertive announcement) — WCAG 2.1 SC 4.1.3 |  |
 
 ---
 
