@@ -13,13 +13,13 @@
 
 This audit reviews the current state of the QA project for the `arxiv-papers-mobile` React Native application. The project demonstrates solid foundational intent — ADO-style traceability, structured manual test cases, and CI/CD pipeline integration.
 
-Issues identified in the April 2026 initial audit have been progressively resolved. As of August 2026, 10 of 16 test cases have been executed on Android (TC006 is iOS-only and was never executed — no macOS/Xcode/iOS Simulator was available; TC012–TC016 were added 2026-08-07 to close previously-flagged coverage gaps — download cancellation, storage-full handling, mid-flight network loss, network throttling, server 429/503 errors — and are designed but not yet executed on any platform). iOS execution across all test cases remains outstanding; the "iOS" evidence files in `evidence/ios/` are disclosed placeholders (the Android recording with a "Pending macOS environment" banner), not real captures. 30 evidence files exist in total (10 genuine Android GIFs, 8 iOS placeholder GIFs, 11 screenshots — 5 genuine, 6 mislabeled/synthetic — 1 suite summary); all Android execution logs contain real tester data, and the `TESTING_CHECKLIST.md` has been completed in full and corrected to reflect the iOS gap honestly. All 6 issues found during Android execution are formally documented as BUG002–BUG007. (BUG001,
+Issues identified in the April 2026 initial audit have been progressively resolved. As of August 2026, 10 of 16 test cases have been executed on Android (TC006 is iOS-only and was never executed — no macOS/Xcode/iOS Simulator was available, **and, as found 2026-08-07 and detailed in §3.10, the target app itself has no working iOS build regardless**; TC012–TC016 were added 2026-08-07 to close previously-flagged coverage gaps — download cancellation, storage-full handling, mid-flight network loss, network throttling, server 429/503 errors — and are designed but not yet executed on any platform). iOS execution across all test cases remains outstanding; the "iOS" evidence files in `evidence/ios/` are disclosed placeholders (the Android recording with a "Pending macOS environment" banner), not real captures. 30 evidence files exist in total (10 genuine Android GIFs, 8 iOS placeholder GIFs, 11 screenshots — 5 genuine, 6 mislabeled/synthetic — 1 suite summary); all Android execution logs contain real tester data, and the `TESTING_CHECKLIST.md` has been completed in full and corrected to reflect the iOS gap honestly. All 6 issues found during Android execution are formally documented as BUG002–BUG007. (BUG001,
 in the same folder, is a pre-execution format template dated before real testing started and
 contradicts what TC004 actually showed — see §2.5 below and the banner in that file.)
 
 The automation layer has been substantially expanded: 57 automated tests across API integration and BDD/Gherkin scenarios, plus 7 Appium tests wired into CI. The BrowserStack path used through early July hit an expired free trial and was replaced (2026-07-09, reverted 2026-07-14, retried 2026-07-22) with a local Android emulator run via `reactivecircus/android-emulator-runner` — see §3.7 for the full history. The 2026-07-22 retry (branch `ci/appium-local-emulator-retry`, PR #20) is **confirmed passing as of 2026-07-27** (run `30263026791`, 7/7 in 5m33s) after fixing two further issues found via the real CI logs: API 33 has no published `x86` system image (downgraded to API 30), and the emulator-runner action's teardown hung on a leftover background Appium server the script never killed. 100% coverage on `utils.py` enforced as a CI gate (`--cov-fail-under=100`); page objects excluded from coverage (require real device — now verified passing by Appium tests in CI); lint, type checking, and coverage gates are genuinely blocking and green regardless of the Appium job's outcome.
 
-Remaining gaps: iOS execution is zero across all 16 test cases — no macOS/Xcode/iOS Simulator was available, and this is disclosed rather than papered over with fabricated evidence; TC010 in particular has no iOS file at all, not even a placeholder; no macOS CI stage exists for iOS simulator execution. TC012–TC016 are also zero-executed on Android — designed 2026-08-07, not yet run.
+Remaining gaps: iOS execution is zero across all 16 test cases — no macOS/Xcode/iOS Simulator was available **and the target app has no working iOS build to test against regardless (§3.10)**, and this is disclosed rather than papered over with fabricated evidence; TC010 in particular has no iOS file at all, not even a placeholder; no macOS CI stage exists for iOS simulator execution. TC012–TC016 are also zero-executed on Android — designed 2026-08-07, not yet run.
 
 ---
 
@@ -67,7 +67,7 @@ Only TC006 is designated iOS-only. No existing test case covers any of the follo
 
 ### 1.3 PDF Management — Executed
 
-TC005 (PDF download and viewing) and TC007 (Android intent handling) have been executed on Android and passed with genuine GIF and screenshot evidence. TC006 (iOS Safari PDF integration) has **not** been executed — no macOS/Xcode/iOS Simulator was available, and its "evidence" is a disclosed placeholder (unrelated Android recording) and a synthetic mockup screenshot, not real captures.
+TC005 (PDF download and viewing) and TC007 (Android intent handling) have been executed on Android and passed with genuine GIF and screenshot evidence. TC006 (iOS Safari PDF integration) has **not** been executed — no macOS/Xcode/iOS Simulator was available, and its "evidence" is a disclosed placeholder (unrelated Android recording) and a synthetic mockup screenshot, not real captures. Independent of hardware access, TC006 tests a PDF handoff flow that depends on file download/management — the exact native functionality the target app's own README lists as not yet ported to iOS (§3.10).
 
 **Gap addressed 2026-08-07:** TC012 (cancel an in-progress download) and TC013 (device storage
 full) now exist as specification files. Both are design-only — TC012 formalizes a gap already
@@ -353,6 +353,51 @@ its own dedicated fix, `Enable KVM group perms`, on the GitHub Actions side) —
 emulator would fail to boot or run too slowly to be useful. Do not mark this "passing" — or even
 "bootable" — until someone with an ADO project observes a real run.
 
+### 3.10 iOS gap re-examined: the root cause isn't just "no macOS access" — found 2026-08-07
+
+Every iOS-related disclosure in this project (§1.2, §3.4, §5.4, the README, and
+`docs/MARKET_GAP_ANALYSIS.md` §3.5) has framed the iOS gap as blocked on hardware: "no
+macOS/Xcode/iOS Simulator was available." While investigating whether GitHub Actions'
+`macos-latest` runners could remove that blocker for free (they can — see below), reading the
+target app's own README (`lopespm/arxiv-papers-mobile`) surfaced a more fundamental issue that
+predates and is independent of this project's hardware access:
+
+> "ArXiv Papers is a mobile application to search, download and save arXiv papers. Developed
+> using a react native / redux framework and **is currently available for Android smartphone and
+> tablet devices**."
+>
+> Under "Next steps": "**iOS version**: since most of the logic would be common, a good portion
+> of the app could be reused. The layouts and design would have to be revised and **it would also
+> need the corresponding native modules, such as file download and management**."
+
+The target app has never had a working iOS build. The `ios/` folder present in its repository
+(`Podfile`, `.xcodeproj`, `.xcworkspace`, and even an unused `arxiv-mobile-tvOS` target) is
+React Native's default scaffold output, not an implemented, tested iOS app — the README's own
+Install & Run section only documents `npm run android`, and the Firebase config step explicitly
+targets `android/app/`. Critically, the author names **file download and management** — the
+core feature exercised by TC003, TC005, TC006, TC008, TC009, TC010, TC012, and TC013 — as
+specifically unported.
+
+**What this changes:** getting macOS/Xcode access (a real, solvable problem — GitHub Actions'
+`macos-latest` runners are free and unlimited on public repositories, and Appium's XCUITest
+driver needs no code signing for Simulator-only testing, so no paid Apple Developer account is
+required either) would **not**, by itself, make TC003/005/006/008–010/012/013 executable on iOS,
+because the underlying app was never built to support the feature those test cases exercise on
+that platform. Only the search-only flows (TC001, TC002, TC004, TC011-equivalent VoiceOver,
+TC014, TC016) have any plausible chance of running against a from-scratch iOS build, and even
+that is unverified — no one has attempted building `ios/` against a current Xcode toolchain, and
+`react: ^16.2.0` / `react-native: ^0.86.0` in its `package.json` suggests the scaffold predates
+recent React Native's architecture, which could mean further build breakage unrelated to the
+missing native modules.
+
+**Resolution applied (2026-08-07):** every iOS-gap statement in this project is corrected to
+name both causes — hardware access AND the target app's incomplete iOS port — rather than only
+the hardware one. This does not change any Pass/Fail status (iOS was already 0/16 executed); it
+corrects *why*, which matters for anyone deciding whether "get a Mac" is actually the next
+action here. No macOS CI spike has been attempted as of this writing — §3.5 of
+`docs/MARKET_GAP_ANALYSIS.md` documents the free-runner path as available and unattempted, not
+as validated.
+
 ---
 
 ## 4. Test Case Design Issues
@@ -397,7 +442,7 @@ The Azure Pipelines `pytest` and `mypy` steps now use `continueOnError: false`, 
 
 ### 5.4 No iOS Build or Test Stage
 
-The pipeline runs on `ubuntu-latest` only. There is no macOS agent pool, Xcode build step, iOS simulator test step, or iOS-specific test results publishing.
+The pipeline runs on `ubuntu-latest` only. There is no macOS agent pool, Xcode build step, iOS simulator test step, or iOS-specific test results publishing. Note (§3.10): a macOS agent pool alone would not close this gap — the target app has no working iOS build to run in one.
 
 ### 5.5 `pytest --trx` Flag Depends on Plugin Not Documented — RESOLVED
 
@@ -528,7 +573,7 @@ item is closed because the design work is done, not because the checks have been
 | Test cases with specification files | 16 / 16 (100%) |
 | Test cases with real execution logs | 11 / 16 (69%) — TC001–TC011 have real execution logs; TC012–TC016 (added 2026-08-07) do not, since they have not been executed |
 | Test cases with genuine Android GIF/screenshot evidence | 10 / 11 (TC006 is iOS-only, not executed) |
-| Test cases with genuine iOS evidence | 0 / 11 (no macOS/Xcode/iOS Simulator available) |
+| Test cases with genuine iOS evidence | 0 / 16 (no macOS/Xcode/iOS Simulator available; target app also has no working iOS build regardless, §3.10) |
 | Formal defect reports | 6 / 6 (BUG002–BUG007 — all execution issues documented, Android only; BUG001 is a pre-execution template, see §2.5) |
 | iOS-specific test cases | 1 (TC006) — designed, not executed |
 | Automation tests using correct framework | 64 — 57 API/unit/BDD + 7 Appium (Selenium replaced) |

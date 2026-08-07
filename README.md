@@ -34,7 +34,7 @@ This repository contains a complete QA portfolio applied to the open-source [arx
 ## Target Application
 
 **Name:** [arxiv-papers-mobile](https://github.com/lopespm/arxiv-papers-mobile)  
-**Tech Stack:** React Native (Android/iOS)  
+**Tech Stack:** React Native (Android — the only platform the app currently builds and ships for; an `ios/` folder exists in its source but is unbuilt scaffolding, per the target app's own README — see "Platform coverage — how to frame it" below)  
 **Features:** Search for academic papers via arXiv API, view details, download papers for offline access
 
 ---
@@ -88,7 +88,7 @@ This project demonstrates enterprise QA workflows using Azure DevOps methodologi
 
 ### Platform Coverage
 - **Android Testing (executed)**: Multiple device sizes, Android API levels (21+); all applicable test cases recorded on a real emulator
-- **iOS Testing (designed, not executed)**: Test cases are written to mirror the Android suite, but no macOS/Xcode/iOS Simulator was available — see "Platform coverage — how to frame it" below for the honest breakdown
+- **iOS Testing (designed, not executed)**: Test cases are written to mirror the Android suite. No macOS/Xcode/iOS Simulator was available — but that's not the whole story: the target app itself has no working iOS build (see "Platform coverage — how to frame it" below for the honest breakdown)
 
 ### Mobile-Specific Test Areas
 - Touch interactions and gestures
@@ -214,7 +214,7 @@ This repository includes **real manual test execution** on the actual arXiv Pape
 
 ### 📱 Live Testing Evidence
 - **🤖 Android Testing:** Recorded on Android API 28 emulator (Pixel 3, Google Play image) using `adb screenrecord` + ffmpeg
-- **🍎 iOS Testing:** Not executed — no macOS/Xcode/iOS Simulator was available. The "iOS" GIFs in `evidence/ios/` are the Android recording with a "Pending macOS environment" banner overlaid, kept as an honest placeholder rather than deleted. See [Platform coverage — how to frame it](#platform-coverage--how-to-frame-it) below.
+- **🍎 iOS Testing:** Not executed — no macOS/Xcode/iOS Simulator was available, and (found 2026-08-07) the target app has no working iOS build regardless. The "iOS" GIFs in `evidence/ios/` are the Android recording with a "Pending macOS environment" banner overlaid, kept as an honest placeholder rather than deleted. See [Platform coverage — how to frame it](#platform-coverage--how-to-frame-it) below.
 - **🎥 Video Documentation:** Android GIFs are real screen recordings from the actual app (v1.0 APK)
 - **📊 Traceability:** Complete evidence linking from requirements to results
 
@@ -290,9 +290,11 @@ This demonstrates **genuine QA work** with verifiable evidence on a real React N
 
 **Android:** Fully executed. All 10 applicable test cases recorded on Android API 28 emulator with real `adb screenrecord` evidence, verified frame by frame.
 
-**iOS:** Test cases fully designed and structured (TC001–TC006, TC008–TC009) and mirroring the Android suite. Execution and recording are pending access to a macOS environment or physical iOS device. The `evidence/ios/` folder contains placeholder GIFs (the Android recording with a "Pending macOS environment" banner) rather than empty entries — kept as a visible marker of what's missing, not deleted or passed off as real. The iOS-specific case (TC006: Safari PDF integration) is documented based on iOS platform behavior documentation but was never executed.
+**iOS:** Test cases fully designed and structured (TC001–TC016) and mirroring the Android suite. Execution and recording are pending both (a) access to a macOS environment or physical iOS device, and (b) — found while investigating (a), 2026-08-07 — a working iOS build of the target app to test against, which does not currently exist. The target app's own README states it "is currently available for Android smartphone and tablet devices" and lists "iOS version" as an unbuilt "Next step," explicitly naming file download/management (the feature behind TC003, TC005, TC006, TC008–TC010, TC012, TC013) as native functionality still to be ported. The `evidence/ios/` folder contains placeholder GIFs (the Android recording with a "Pending macOS environment" banner) rather than empty entries — kept as a visible marker of what's missing, not deleted or passed off as real. The iOS-specific case (TC006: Safari PDF integration) is documented based on iOS platform behavior documentation but was never executed. Full write-up: `docs/QA_AUDIT.md` §3.10, `docs/MARKET_GAP_ANALYSIS.md` §3.5.
 
-**In an interview:** *"The Android coverage is complete with verified recordings. The iOS test cases are fully designed — I need a Mac or physical device to record them, which is the next step."*
+**On hardware access specifically:** GitHub Actions' `macos-latest` runners are free and unlimited on public repositories, and Appium's XCUITest driver needs no code signing for Simulator-only testing — so "get a Mac" was never actually the hard part. That's confirmed available and not yet attempted.
+
+**In an interview:** *"Android coverage is complete with verified recordings. For iOS, I looked past 'I need a Mac' and found the deeper issue: the open-source app I'm testing was never actually built for iOS — its own README lists that as an unfinished next step, specifically missing the download/file-management code most of my test cases exercise. I confirmed free CI hardware exists via GitHub Actions macOS runners, so the next real step is a build spike to see if even the search flow is viable on iOS at all — not just recording on a device I don't own."*
 
 ---
 

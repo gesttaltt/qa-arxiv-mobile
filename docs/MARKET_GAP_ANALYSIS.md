@@ -145,15 +145,15 @@ variable for easy environment switching. Run via Newman CLI:
 
 ---
 
-### 3.5 iOS Coverage — NOT RESOLVED, disclosed honestly
+### 3.5 iOS Coverage — NOT RESOLVED, disclosed honestly (root cause corrected 2026-08-07)
 
 **Market demand:** MentorMate Senior QA Mobile posting requires "Android and iOS" coverage.
 Every mobile QA job description reviewed listed both platforms.
 
-**Current state (August 2026):** iOS execution is at 0/16 test cases — no macOS/Xcode/iOS
-Simulator was ever available. 8 test cases have a placeholder GIF in `evidence/ios/` (the
-Android recording with a "Pending macOS environment" banner overlaid); TC006, TC010, TC011,
-and the 5 test cases added 2026-08-07 (TC012–TC016) have no iOS file at all. Two screenshots (`TC001_ios_search_results.png`,
+**Current state (August 2026):** iOS execution is at 0/16 test cases. 8 test cases have a
+placeholder GIF in `evidence/ios/` (the Android recording with a "Pending macOS environment"
+banner overlaid); TC006, TC010, TC011, and the 5 test cases added 2026-08-07 (TC012–TC016)
+have no iOS file at all. Two screenshots (`TC001_ios_search_results.png`,
 `TC006_safari_pdf.png`) are synthetic text mockups, not real captures. All execution logs
 mark iOS as "N/A — Not Executed" rather than claiming a pass, and this is cross-referenced
 in `evidence/README.md`, the traceability docs, and `TESTING_CHECKLIST.md`.
@@ -163,11 +163,25 @@ observations (dialog text, gesture timing) as if they had been observed — they
 was corrected on 2026-07-08: every iOS-related claim now either reflects a real Android
 observation or is explicitly marked not executed.
 
-**Remaining gap:** iOS needs to be executed from scratch once macOS/Xcode/iOS Simulator
-access exists. No macOS CI stage for iOS simulator testing. No Appium fixture for iOS
-(requires Xcode + WebDriverAgent). Documenting the gap honestly — including correcting the
-earlier fabricated claims — is the correct approach for a portfolio without physical iOS
-hardware.
+**Root cause, corrected 2026-08-07 — it was never *only* "no Mac":** every version of this
+document through July 2026 attributed the gap solely to lacking macOS/Xcode/iOS Simulator
+access. That access constraint is real, but investigating whether GitHub Actions'
+`macos-latest` runners (free and unlimited on public repos, no Apple Developer account needed
+for Simulator-only testing) could remove it surfaced a bigger problem: **the target app,
+`lopespm/arxiv-papers-mobile`, has never had a working iOS build.** Its own README states it
+"is currently available for Android smartphone and tablet devices" and lists "iOS version" as
+an unbuilt "Next step," explicitly naming file download/management — the feature TC003, TC005,
+TC006, TC008, TC009, TC010, TC012, and TC013 all exercise — as native functionality that "would
+also need" implementing. The `ios/` folder present in that repo is React Native's default
+scaffold, not a working app; only `npm run android` is documented. See `docs/QA_AUDIT.md`
+§3.10 for the full write-up.
+
+**Remaining gap:** even with free macOS CI access (confirmed available, not yet attempted),
+only the search-only flows (TC001, TC002, TC004, TC011-equivalent VoiceOver, TC014, TC016)
+have any plausible chance of running against a from-scratch iOS build — and that itself is
+unverified, since no one has attempted compiling the target app's `ios/` project. Documenting
+the *real* gap — an unbuilt upstream platform, not merely absent hardware — is the correct,
+honest framing for a portfolio project testing someone else's open-source app.
 
 ---
 
@@ -289,10 +303,11 @@ scenarios (TC001 valid search, TC002 empty query, Scenario Outline × 3 academic
 
 | # | Area | Effort | Impact |
 |---|---|---|---|
-| 1 | iOS Appium fixture (requires macOS + Xcode) | High | Medium |
-| 2 | macOS CI stage for iOS simulator | High | Low (hardware constraint) |
-| 3 | Execute all 16 manual test cases on a real iOS device/simulator (currently 0/16 — placeholder evidence only for the original 8) | High | High — this is the single biggest gap against "Android and iOS" job requirements |
-| 4 | Execute TC012–TC016 on Android (designed 2026-08-07, not yet run on any platform) | Medium | Medium — closes real functional gaps (download cancel, storage full, network resilience) independent of the iOS gap |
+| 1 | Spike: build the target app's `ios/` project on a free `macos-latest` GitHub Actions runner, Simulator only, and see how far it gets (§3.5) | Medium | Low-Medium — proves/disproves whether even search-only iOS flows are viable before investing further |
+| 2 | iOS Appium fixture — contingent on #1 succeeding at all | High | Medium — blocked on #1, and even then capped to search-only flows (§3.5) |
+| 3 | macOS CI stage for iOS simulator — no longer a pure hardware constraint; free runners exist (§3.5) | Medium | Low — the constraint is the target app's incomplete iOS port, not runner access |
+| 4 | Execute all 16 manual test cases on a real iOS device/simulator (currently 0/16 — placeholder evidence only for the original 8) | High | Capped — TC003/005/006/008–010/012/013 depend on native download/file-management functionality the target app has never implemented for iOS (§3.5) |
+| 5 | Execute TC012–TC016 on Android (designed 2026-08-07, not yet run on any platform) | Medium | Medium — closes real functional gaps (download cancel, storage full, network resilience) independent of the iOS gap |
 
 ---
 
