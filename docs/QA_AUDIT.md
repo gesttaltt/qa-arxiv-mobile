@@ -495,10 +495,19 @@ The standalone `ruff.toml` has been removed and its configuration has been merge
 |---|--------|---------|
 | 9 | Execute all iOS test cases for the first time (currently 0/11) once macOS/Xcode/iOS Simulator access exists; TC010 needs an iOS file created from scratch (none exists, not even a placeholder) | `evidence/ios/`, all execution logs |
 | 10 | Create iOS-specific test cases: VoiceOver, Dynamic Type, Dark Mode, Safe Area/Notch | New test case files |
-| 11 | Add iOS-specific preconditions (simulator version, Xcode) to all cross-platform test cases | `TC001–TC005`, `TC008–TC010` |
-| 12 | Add performance threshold (≤ 5 s search response) as explicit acceptance criterion in TC001 | `TC001_search_valid.md` |
-| 13 | Add WCAG 2.1 AA accessibility validation steps to TC001–TC003 | `TC001–TC003` |
+| ~~11~~ | ~~Add iOS-specific preconditions (simulator version, Xcode) to all cross-platform test cases~~ | ~~`TC001–TC005`, `TC008–TC010`~~ — **DONE (2026-08-07)**, design-only; not re-executed |
+| ~~12~~ | ~~Add performance threshold (≤ 5 s search response) as explicit acceptance criterion in TC001~~ | ~~`TC001_search_valid.md`~~ — **DONE (2026-08-07)** |
+| ~~13~~ | ~~Add WCAG 2.1 AA accessibility validation steps to TC001–TC003~~ | ~~`TC001–TC003`~~ — **DONE (2026-08-07)**, new steps not yet executed |
 | 14 | Document TestFlight beta distribution process | New doc |
+
+**Note on items 11–13 (2026-08-07):** these are specification-only changes — new preconditions,
+an explicit performance criterion, and new accessibility-check rows were added to the test case
+files themselves. None of the 8 iOS precondition additions, the TC001 performance step, or the
+6 new accessibility rows (TC001 A1–A2, TC002 A1, TC003 A1–A2) have been executed yet; no new
+evidence or execution-log entries were produced. They will show as "Pass/Fail" blank in their
+respective files until a real pass — Android or iOS — runs them. This follows the same
+disclose-before-claiming-done rule used everywhere else in this document (§2, §3.7): the roadmap
+item is closed because the design work is done, not because the checks have been verified.
 
 ---
 

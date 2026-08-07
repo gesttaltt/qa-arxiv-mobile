@@ -15,6 +15,7 @@ than empty or broken states.
 
 **Preconditions:**
 - App is installed and running on a device with internet connectivity.
+- iOS testing: iPhone simulator or device running iOS 15 or later (Xcode 15+ if using Simulator).
 - At least one search has been performed successfully (results are cached locally).
 - At least one paper has been downloaded.
 

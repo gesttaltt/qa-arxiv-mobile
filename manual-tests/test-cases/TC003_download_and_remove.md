@@ -7,6 +7,7 @@ Verify that the user can download a paper for offline access and remove it from 
 - At least one paper is shown in the results list.  
 - Internet is connected.  
 - Testing on Android **and** iOS (run steps on each platform independently).  
+- iOS testing: iPhone simulator or device running iOS 15 or later (Xcode 15+ if using Simulator).  
 
 **Test Steps:**  
 1. Perform a valid search (`deep learning`).  
@@ -26,6 +27,15 @@ Verify that the user can download a paper for offline access and remove it from 
 | 3    | Download starts, no crash             |           |
 | 5    | Paper appears in DOWNLOADED tab       |           |
 | 7    | Paper removed from DOWNLOADED tab     |           |
+
+---
+
+**Accessibility Validation (WCAG 2.1 AA):**
+
+| # | Check | Expected Outcome | Pass/Fail |
+|---|---|---|---|
+| A1 | Enable TalkBack/VoiceOver and repeat the download + remove actions | Download and trash/delete icons expose an accessible name (not icon-only/unlabeled) and meet the 44×44pt (iOS) / 48×48dp (Android) minimum touch target — WCAG 2.1 SC 2.5.5, 4.1.2 |  |
+| A2 | After removal, listen for a state-change announcement | Screen reader announces the removal or the updated list count — WCAG 2.1 SC 4.1.3 |  |
 
 ---
 

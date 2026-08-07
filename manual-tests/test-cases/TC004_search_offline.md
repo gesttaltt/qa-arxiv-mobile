@@ -15,6 +15,7 @@ indefinitely.
 
 **Preconditions:**  
 - App is installed and running.  
+- iOS testing: iPhone simulator or device running iOS 15 or later (Xcode 15+ if using Simulator).  
 - At least one previous search has been performed (results may be cached).  
 - Device network (WiFi and mobile data) is **disabled** before step 1.
 
